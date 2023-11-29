@@ -20,15 +20,15 @@ jobs:
         run: npm install
       - name: Test
         run: npm test
-  # formatting:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: [16.15.0]
-  #   steps:
-  #     - name: Install
-  #       run: npm install
-  #     - name: Eslint
-  #       run: npm lint
-  #     - name: Prettier
-  #       run: npm run prettier:check
+  formatting:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.15.0]
+    steps:
+      - name: Install
+        run: npm install
+      - name: Eslint
+        run: npm lint
+      - name: Prettier
+        run: npm prettier:check
