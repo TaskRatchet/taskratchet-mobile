@@ -5,7 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "xcrun simctl shutdown all && xcrun simctl erase all && react-native run-ios --simulator=\"iPhone 15 Pro Max\"",
-    "lint": "eslint .",
+    "lint": "eslint",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "start": "react-native start",
