@@ -6,13 +6,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["16.15.0"]
+        node-version: [16.15.0]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        run: |
-          nvm install ${{ matrix.node-version }}
-          nvm use ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Create .env file
         run: |
           echo "${{ secrets.DOTENV }}" > .env
