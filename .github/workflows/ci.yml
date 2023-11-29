@@ -18,10 +18,8 @@ jobs:
           echo "${{ secrets.DOTENV }}" > .env
       - name: Install
         run: npm install
-        working-directory: ./server
       - name: Test
         run: npm test
-        working-directory: ./server
   formatting:
     runs-on: ubuntu-latest
     strategy:
@@ -30,10 +28,7 @@ jobs:
     steps:
       - name: Install
         run: npm install
-        working-directory: ./server
       - name: Eslint
         run: npm lint
-        working-directory: ./server
       - name: Prettier
         run: npm run prettier:check
-        working-directory: ./server
