@@ -18,5 +18,7 @@ jobs:
           echo "${{ secrets.DOTENV }}" > .env
       - name: Install
         run: npm install
+        working-directory: ../../mobile
       - name: Test
         run: npm test
+        working-directory: ../../mobile
