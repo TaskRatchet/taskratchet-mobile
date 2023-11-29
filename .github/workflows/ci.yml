@@ -22,3 +22,6 @@ jobs:
       - name: Test
         run: npm test
         working-directory: ./mobile
+      - name: Run iOS
+        run: npx react-native run-ios
+        working-directory: ./mobile
