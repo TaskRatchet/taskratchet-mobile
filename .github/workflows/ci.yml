@@ -18,7 +18,22 @@ jobs:
           echo "${{ secrets.DOTENV }}" > .env
       - name: Install
         run: npm install
-        working-directory: ./mobile
+        working-directory: ./server
       - name: Test
         run: npm test
-        working-directory: ./mobile
+        working-directory: ./server
+  formatting:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.15.0]
+    steps:
+      - name: Install
+        run: npm install
+        working-directory: ./server
+      - name: Eslint
+        run: npm lint
+        working-directory: ./server
+      - name: Prettier
+        run: npm run prettier:check
+        working-directory: ./server
