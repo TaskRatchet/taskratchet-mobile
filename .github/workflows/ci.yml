@@ -17,6 +17,6 @@ jobs:
         run: |
           echo "${{ secrets.DOTENV }}" > .env
       - name: Install
-        run: nvm run install
+        run: npm install
       - name: Test
-        run: nvm run test
+        run: npm test
