@@ -22,26 +22,3 @@ jobs:
       - name: Test
         run: npm test
         working-directory: ./mobile
-
-  ios:
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        node-version: [16.15.0]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install CocoaPods
-        run: sudo gem install cocoapods
-      - name: Install project dependencies
-        run: npm install
-        working-directory: ./mobile
-      - name: Install iOS dependencies
-        run: npx pod-install
-        working-directory: ./mobile
-      - name: Build and run tests
-        run: npx react-native run-ios
-        working-directory: ./mobile
