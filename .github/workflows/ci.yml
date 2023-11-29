@@ -26,6 +26,8 @@ jobs:
       matrix:
         node-version: [16.15.0]
     steps:
+      - name: Show Directory
+        run: pwd
       - name: Install
         run: npm install
       - name: Eslint
