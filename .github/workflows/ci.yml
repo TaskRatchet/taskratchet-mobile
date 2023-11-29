@@ -16,6 +16,8 @@ jobs:
       - name: Create .env file
         run: |
           echo "${{ secrets.DOTENV }}" > .env
+      - name: Show Directory
+        run: pwd
       - name: Install
         run: npm install
       - name: Test
