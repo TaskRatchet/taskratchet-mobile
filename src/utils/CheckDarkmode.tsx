@@ -1,5 +1,5 @@
 import {useColorScheme} from 'react-native';
 
-export default function useIsDarkMode(): boolean {
+export default function isLightMode(): boolean {
   return useColorScheme() === 'dark';
 }
