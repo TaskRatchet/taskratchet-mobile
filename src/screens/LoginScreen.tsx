@@ -11,28 +11,33 @@ import {
   Button,
   Pressable,
 } from 'react-native';
-import useIsDarkMode from '../utils/checkDarkMode';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 //local imports
 import checkCredentials from '../utils/checkCredentials';
-import {s} from 'vitest/dist/reporters-5f784f42';
+import useIsDarkMode from '../utils/checkDarkMode';
+import themeProvider from '../components/providers/themeProvider';
 
 export default function LoginScreen(): JSX.Element {
   const backgroundStyle = {
-    backgroundColor: useIsDarkMode() ? '#005257' : '#00e1f0',
+    // this is the background color of the login screen
+    backgroundColor: useIsDarkMode()
+      ? themeProvider.colorsDark.background
+      : themeProvider.colorsLight.background,
   };
 
   const textColorStyle = {
+    // this is the text color logic for the login screen
     color: useIsDarkMode() ? 'white' : 'black',
   };
 
+  // these are the default states for the username and password inputs \/
   const [userInput, setUserInput] = React.useState('');
   const [passInput, setPassInput] = React.useState('');
-
   const [outputStatus, setOutputStatus] = React.useState('');
 
   return (
+    // this is the background \/
     <View style={[backgroundStyle, styles.screen]}>
       <Image
         style={{

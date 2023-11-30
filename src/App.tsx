@@ -1,11 +1,13 @@
 // react imports:
-import React from 'react';
 import {SafeAreaView} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import * as React from 'react';
 
 // local imports:
 import isLightMode from './utils/checkDarkMode';
-import LoginScreen from './screens/LoginScreen'; // replace with actual path
+import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 function App(): JSX.Element {
   const backgroundStyle = {
@@ -13,7 +15,15 @@ function App(): JSX.Element {
   };
 
   return (
-    <LoginScreen />
+    // <NavigationContainer>
+    //   <Stack.Navigator initialRouteName="LoginScreen">
+    //     <Stack.Screen name="LoginScreen" component={LoginScreen} />
+    //     <Stack.Screen name="HomeScreen" component={HomeScreen} />
+    //     <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
+    // <LoginScreen />
+    <HomeScreen />
     // <SafeAreaView style={backgroundStyle}></SafeAreaView>
   );
 }
