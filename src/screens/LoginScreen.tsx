@@ -11,7 +11,7 @@ import {
   Button,
   Pressable,
 } from 'react-native';
-import useIsDarkMode from '../utils/checkDarkmode';
+import useIsDarkMode from '../utils/checkDarkMode';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 //local imports

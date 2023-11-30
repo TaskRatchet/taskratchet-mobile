@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 // local imports:
-import isLightMode from './utils/checkDarkmode';
+import isLightMode from './utils/checkDarkMode';
 import LoginScreen from './screens/LoginScreen'; // replace with actual path
 
 function App(): JSX.Element {
