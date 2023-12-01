@@ -1,5 +1,5 @@
 //dependencie imports
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -10,6 +10,7 @@ import {
   Image,
   Button,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
@@ -18,7 +19,7 @@ import checkCredentials from '../utils/checkCredentials';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../components/providers/themeProvider';
 
-export default function LoginScreen(): JSX.Element {
+export default function LoginScreen({navigation}): JSX.Element {
   const backgroundStyle = {
     // this is the background color of the login screen
     backgroundColor: useIsDarkMode()
@@ -91,7 +92,7 @@ export default function LoginScreen(): JSX.Element {
             console.log('Username', userInput);
             console.log('Password', passInput);
             checkCredentials(userInput, passInput)
-              ? setOutputStatus('Login Successful!')
+              ? navigation.navigate('HomeScreen')
               : setOutputStatus('Login Failed, try again!');
           }}>
           <Text style={styles.loginText}>Login</Text>

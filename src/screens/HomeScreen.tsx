@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
   userProfile: {
     flexDirection: 'row',
     height: '15%',
-    marginTop: '5%',
     alignItems: 'center',
     justifyContent: 'center',
   },
