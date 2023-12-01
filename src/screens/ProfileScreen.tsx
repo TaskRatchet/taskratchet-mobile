@@ -33,16 +33,59 @@ export default function ProfileScreen({navigation, route}: props) {
         </Text>
         <Image source={{uri: user.avatar}} style={styles.avatar} />
       </View>
-
-      <Text style={[textColorStyle, styles.paragraph]}>
-        This is the Profile Screen of TaskRatchet
-      </Text>
-      <Button title="Logout" onPress={goToLoginScreen} />
+      <View style={styles.dataGroup}>
+        <View>
+          <View style={styles.dataPair}>
+            <Text style={[textColorStyle, styles.dataText]}>Name:</Text>
+            <Text style={[textColorStyle, styles.dataValueText]}>
+              {currentUser !== null ? currentUser.username : 'Guest'}
+            </Text>
+          </View>
+        </View>
+        <View>
+          <View style={styles.dataPair}>
+            <Text style={[textColorStyle, styles.dataText]}>Email:</Text>
+            <Text style={[textColorStyle, styles.dataValueText]}>
+              {currentUser !== null ? currentUser.email : 'Guest'}
+            </Text>
+          </View>
+        </View>
+        <View>
+          <View style={styles.dataPair}>
+            <Text style={[textColorStyle, styles.dataText]}>Phone:</Text>
+            <Text style={[textColorStyle, styles.dataValueText]}>
+              {currentUser !== null ? currentUser.phone : 'Guest'}
+            </Text>
+          </View>
+        </View>
+        <Button title="Logout" onPress={goToLoginScreen} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  dataValueText: {
+    fontSize: 18,
+  },
+  dataText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  dataGroup: {
+    marginTop: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dataPair: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    width: 300,
+    padding: 8,
+    margin: 8,
+  },
   nameAndAvatar: {
     flexDirection: 'row',
     alignItems: 'center',
