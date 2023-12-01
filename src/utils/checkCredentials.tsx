@@ -1,4 +1,10 @@
-const users = {
+type User = {
+  username: string;
+  password?: string;
+  email: string;
+};
+
+const users: Record<string, User> = {
   User1: {
     username: 'John',
     password: '123456',
@@ -20,7 +26,9 @@ export default function checkCredentials(username: string, password: string) {
   );
 
   if (matchingUser && password === matchingUser.password) {
-    return matchingUser.username;
+    const userPrivate = {...matchingUser};
+    delete userPrivate.password;
+    return userPrivate;
   } else {
     return null;
   }
