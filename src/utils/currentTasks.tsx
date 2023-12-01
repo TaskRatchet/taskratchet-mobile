@@ -1,7 +1,7 @@
 // mockData.ts
-import {Task, Tasks} from '../components/types';
+import {taskType, tasksType} from '../components/types';
 
-const tasks: Tasks = {
+const tasks: tasksType = {
   0o0: {
     id: 0o0,
     title: 'Finish React project',

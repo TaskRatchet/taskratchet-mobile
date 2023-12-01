@@ -3,13 +3,13 @@ import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 
 //local imports
-import themeProvider from './providers/themeProvider';
+import themeProvider from '../providers/themeProvider';
 import tasks from '../utils/currentTasks';
-import {Task, Tasks} from './types';
+import {taskType, tasksType} from './types';
 
 const tasksArray = Object.values(tasks) as Task[];
 
-export default function task({item}: {item: string}): JSX.Element {
+export default function Task({item}: {item: string}): JSX.Element {
   const {title, deadline, stakes} = tasksArray[Number(item)];
   return (
     <View style={styles.taskBlock}>

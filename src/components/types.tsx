@@ -1,5 +1,5 @@
 // types.ts
-export type Task = {
+export type taskType = {
   id: number;
   title: string;
   description: string;
@@ -8,6 +8,6 @@ export type Task = {
   stakes: string;
 };
 
-export type Tasks = {
-  [key: string]: Task;
+export type tasksType = {
+  [key: string]: taskType;
 };

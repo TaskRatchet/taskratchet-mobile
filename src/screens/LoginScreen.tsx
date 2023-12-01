@@ -13,7 +13,7 @@ import {
 //local imports
 import checkCredentials from '../utils/checkCredentials';
 import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../components/providers/themeProvider';
+import themeProvider from '../providers/themeProvider';
 import {UserContext} from '../App';
 
 export default function LoginScreen({navigation}): JSX.Element {
@@ -57,7 +57,7 @@ export default function LoginScreen({navigation}): JSX.Element {
           source={require('../../assets/images/logo_taskratchet_512_bordered.png')}
         />
         <View style={styles.titleGroup}>
-          <Text style={[textColorStyle, styles.title]}>Taskratchet</Text>
+          <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
           <Text style={[textColorStyle, styles.title]}>Login</Text>
         </View>
 
@@ -67,7 +67,6 @@ export default function LoginScreen({navigation}): JSX.Element {
             <TextInput
               style={[textColorStyle, styles.inputField]}
               onChangeText={setUserInput}
-              // value={number}
               placeholder="Username"
               placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
               keyboardType="default"
@@ -78,7 +77,6 @@ export default function LoginScreen({navigation}): JSX.Element {
             <TextInput
               style={[textColorStyle, styles.inputField]}
               onChangeText={setPassInput}
-              // value={number}
               placeholder="Password"
               placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
               keyboardType="default"
@@ -113,7 +111,7 @@ const styles = StyleSheet.create({
   loginText: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#2A5364', //'#0000EE',
+    color: '#2A5364',
     textAlign: 'center',
   },
   login: {

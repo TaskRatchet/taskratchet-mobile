@@ -1,4 +1,3 @@
-//dependencie imports
 import React, {useContext} from 'react';
 import {
   SafeAreaView,
@@ -12,12 +11,9 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {useState} from 'react';
 
-//local imports
 import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../components/providers/themeProvider';
+import themeProvider from '../providers/themeProvider';
 import NavBar from '../components/navBar';
 import user from '../utils/currentUser';
 import Task from '../components/task';
@@ -54,8 +50,6 @@ export default function HomeScreen(): JSX.Element {
           })}
         </View>
       </ScrollView>
-
-      <View style={styles.navBar}></View>
     </View>
   );
 }

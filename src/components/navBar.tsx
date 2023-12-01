@@ -1,8 +1,7 @@
 import {StyleSheet, View, Image} from 'react-native';
 import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../components/providers/themeProvider';
-import {c} from 'vitest/dist/reporters-5f784f42';
-import {create} from 'domain';
+import themeProvider from '../providers/themeProvider';
+import React from 'react';
 
 export default function NavBar(): JSX.Element {
   const secondaryStyle = {

@@ -1,4 +1,4 @@
-//replace with backend hiden real data!!!
+// TODO: replace with backend hiden real data!!!
 
 const User = {
   id: 0o1,
