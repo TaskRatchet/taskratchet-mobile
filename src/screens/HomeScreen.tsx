@@ -1,5 +1,5 @@
 //dependencie imports
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -22,6 +22,7 @@ import NavBar from '../components/navBar';
 import user from '../utils/currentUser';
 import Task from '../components/task';
 import tasks from '../utils/currentTasks';
+import {UserContext} from '../App';
 
 export default function HomeScreen(): JSX.Element {
   const backgroundStyle = {
@@ -30,36 +31,39 @@ export default function HomeScreen(): JSX.Element {
       : themeProvider.colorsLight.background,
   };
 
+  const handleUserProfilePress = () => {
+    console.log('user profile pressed');
+  };
+
+  const {currentUser} = useContext(UserContext);
+
   return (
     <View style={[backgroundStyle, styles.background]}>
-      <ScrollView style={styles.scroll}>
+      <ScrollView>
         <View style={styles.userProfile}>
           <Pressable
             style={styles.userProfile}
-            onPress={() => {
-              console.log('user profile pressed');
-            }}>
-            <Text style={styles.name}>{user.name}</Text>
+            onPress={handleUserProfilePress}>
+            <Text style={styles.name}>{currentUser}</Text>
             <Image source={{uri: user.avatar}} style={styles.avatar} />
           </Pressable>
         </View>
         <View style={styles.taskList}>
           {Object.keys(tasks).map(key => {
-            console.log(key);
-            return <Task key={key} item={Number(key)} />;
+            return <Task key={key} item={key} />;
           })}
         </View>
       </ScrollView>
 
-      <View style={styles.scroll}></View>
-      <View style={styles.navBar}>
-        <NavBar />
-      </View>
+      <View style={styles.navBar}></View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   taskList: {},
   avatar: {
     width: 50,
@@ -76,11 +80,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  scroll: {
-    flex: 0,
-  },
   navBar: {},
-  background: {
-    height: '100%',
-  },
 });

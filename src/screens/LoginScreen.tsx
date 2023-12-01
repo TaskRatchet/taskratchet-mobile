@@ -2,22 +2,19 @@
 import React, {useState} from 'react';
 import {
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
   TextInput,
   Image,
-  Button,
   Pressable,
-  TouchableOpacity,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 //local imports
 import checkCredentials from '../utils/checkCredentials';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../components/providers/themeProvider';
+import {UserContext} from '../App';
 
 export default function LoginScreen({navigation}): JSX.Element {
   const backgroundStyle = {
@@ -36,6 +33,8 @@ export default function LoginScreen({navigation}): JSX.Element {
   const [userInput, setUserInput] = React.useState('');
   const [passInput, setPassInput] = React.useState('');
   const [outputStatus, setOutputStatus] = React.useState('');
+
+  const {setCurrentUser} = React.useContext(UserContext);
 
   return (
     // this is the background \/
@@ -91,9 +90,16 @@ export default function LoginScreen({navigation}): JSX.Element {
           onPress={() => {
             console.log('Username', userInput);
             console.log('Password', passInput);
-            checkCredentials(userInput, passInput)
-              ? navigation.navigate('HomeScreen')
-              : setOutputStatus('Login Failed, try again!');
+            const credentialsCheckResult = checkCredentials(
+              userInput,
+              passInput,
+            );
+            if (credentialsCheckResult !== null) {
+              setCurrentUser(credentialsCheckResult);
+              navigation.navigate('HomeScreen');
+            } else {
+              setOutputStatus('Login Failed, try again!');
+            }
           }}>
           <Text style={styles.loginText}>Login</Text>
         </Pressable>
@@ -124,7 +130,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   container: {
-    marginTop: '50%',
+    marginTop: '30%',
     padding: 24,
     fontSize: 50,
     alignItems: 'center',
