@@ -19,17 +19,18 @@ import user from '../utils/currentUser';
 import Task from '../components/task';
 import tasks from '../utils/currentTasks';
 import {UserContext} from '../App';
+import {props} from '../components/types';
 
-export default function HomeScreen(): JSX.Element {
+export default function HomeScreen({navigation}: props): JSX.Element {
   const backgroundStyle = {
     backgroundColor: useIsDarkMode()
       ? themeProvider.colorsDark.background
       : themeProvider.colorsLight.background,
   };
 
-  const handleUserProfilePress = () => {
-    console.log('user profile pressed');
-  };
+  function handleUserProfilePress() {
+    navigation.navigate('ProfileScreen');
+  }
 
   const {currentUser} = useContext(UserContext);
 
@@ -40,7 +41,9 @@ export default function HomeScreen(): JSX.Element {
           <Pressable
             style={styles.userProfile}
             onPress={handleUserProfilePress}>
-            <Text style={styles.name}>{currentUser}</Text>
+            <Text style={styles.name}>
+              {currentUser !== null ? currentUser.username : 'Guest'}
+            </Text>
             <Image source={{uri: user.avatar}} style={styles.avatar} />
           </Pressable>
         </View>
