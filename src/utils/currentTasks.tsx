@@ -3,132 +3,108 @@ import {taskType, tasksType} from '../components/types';
 
 const tasks: tasksType = {
   0o0: {
-    id: 0o0,
-    title: 'Finish React project',
-    description: 'Complete the remaining components for the React project.',
-    completed: false,
-    deadline: '2022-12-01',
-    stakes: '$15',
-  },
-  0o1: {
-    id: 0o1,
-    title: 'Study for Math exam',
-    description: 'Review chapters 4 to 6 for the upcoming Math exam.',
-    completed: false,
-    deadline: '2022-12-05',
-    stakes: '$10',
-  },
-  0o2: {
-    id: 0o2,
-    title: 'Buy groceries',
-    description: 'Buy milk, eggs, bread, and vegetables from the supermarket.',
-    completed: false,
-    deadline: '2022-11-30',
-    stakes: '$20',
-  },
-  0o3: {
-    id: 0o3,
-    title: 'Prepare presentation',
-    description: 'Prepare slides for the project presentation next week.',
-    completed: false,
-    deadline: '2022-12-07',
-    stakes: '$15',
-  },
-  0o4: {
     id: 0o4,
     title: 'Write blog post',
     description: 'Write a blog post about the latest JavaScript features.',
     completed: false,
-    deadline: '2022-12-10',
+    deadline: '2023-12-04', // Due today
     stakes: '$20',
   },
-  0o5: {
+  0o1: {
     id: 0o5,
     title: 'Read a book',
     description: 'Read "The Pragmatic Programmer" book.',
     completed: false,
-    deadline: '2022-12-20',
+    deadline: '2023-12-05', // Due tomorrow
     stakes: '$15',
   },
-  0o6: {
+  0o2: {
     id: 0o6,
     title: 'Attend conference',
     description: 'Attend the virtual Web Development conference.',
     completed: false,
-    deadline: '2022-12-22',
+    deadline: '2023-12-03', // Due yesterday
     stakes: '$10',
   },
-  0o7: {
+  0o3: {
     id: 0o7,
     title: 'Visit doctor',
     description: 'Have a regular check-up with the doctor.',
     completed: false,
-    deadline: '2022-12-23',
+    deadline: '2023-11-01', // Past due
     stakes: '$20',
   },
-  0o10: {
+  0o4: {
     id: 0o10,
     title: 'Clean the house',
     description: 'Do a general cleaning of the house.',
     completed: false,
-    deadline: '2022-12-24',
+    deadline: '2024-12-04', // Due within the next year
     stakes: '$15',
   },
-  0o11: {
+  0o5: {
     id: 0o11,
     title: 'Finish online course',
     description: 'Finish the remaining modules of the online course.',
     completed: false,
-    deadline: '2022-12-25',
+    deadline: '2024-06-04', // Due within the next year
     stakes: '$20',
   },
-  0o12: {
+  0o6: {
     id: 0o12,
+    title: 'Write a novel',
+    description: 'Write a novel about the recent event.',
+    completed: false,
+    deadline: '2023-01-04', // Due within the next year
+    stakes: '$15',
+  },
+  0o7: {
+    id: 0o13,
     title: 'Write a report',
     description: 'Write a report about the recent project.',
     completed: false,
-    deadline: '2022-12-26',
+    deadline: '2024-01-04', // Due within the next year
     stakes: '$15',
+  },
+  0o10: {
+    id: 0o14,
+    title: 'Clean the house',
+    description: 'Deep clean the entire house before the holidays.',
+    completed: false,
+    deadline: '2023-12-20', // Due within the next year
+    stakes: '$50',
+  },
+  0o11: {
+    id: 0o11,
+    title: 'Complete Python course',
+    description: 'Finish the Python for Data Science course on Coursera.',
+    completed: false,
+    deadline: '2023-12-31', // Due within the next year
+    stakes: '$100',
+  },
+  0o12: {
+    id: 0o12,
+    title: 'Write a novel',
+    description: 'Complete the first draft of the science fiction novel.',
+    completed: false,
+    deadline: '2024-06-01', // Due within the next year
+    stakes: '$200',
   },
   0o13: {
     id: 0o13,
-    title: 'Prepare a meal',
-    description: 'Prepare a healthy meal for dinner.',
+    title: 'Prepare annual report',
+    description: 'Compile data and write the annual financial report.',
     completed: false,
-    deadline: '2022-12-27',
-    stakes: '$10',
+    deadline: '2024-01-15', // Due within the next year
+    stakes: '$150',
   },
   0o14: {
     id: 0o14,
-    title: 'Do laundry',
-    description: 'Wash and iron clothes.',
+    title: 'Plan summer vacation',
+    description: 'Research and plan the family vacation for summer 2024.',
     completed: false,
-    deadline: '2022-12-28',
-    stakes: '$20',
-  },
-  0o15: {
-    id: 0o15,
-    title: 'Call a friend',
-    description: 'Catch up with a friend over a phone call.',
-    completed: false,
-    deadline: '2022-12-29',
-    stakes: '$15',
-  },
-  0o16: {
-    id: 0o16,
-    title: 'Go for a run',
-    description: 'Do a 5km run in the park.',
-    completed: false,
-    deadline: '2022-12-30',
-    stakes: '$10',
-  },
-  0o17: {
-    id: 0o17,
-    title: 'Plan vacation',
-    description: 'Plan the itinerary for the upcoming vacation.',
-    completed: false,
-    deadline: '2022-12-15',
-    stakes: '$15',
+    deadline: '2024-04-30', // Due within the next year
+    stakes: '$75',
   },
 };
 export default tasks;

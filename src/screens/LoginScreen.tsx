@@ -15,8 +15,9 @@ import checkCredentials from '../utils/checkCredentials';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import {UserContext} from '../App';
+import {props} from '../components/types';
 
-export default function LoginScreen({navigation}): JSX.Element {
+export default function LoginScreen({navigation, route}: props): JSX.Element {
   const backgroundStyle = {
     // this is the background color of the login screen
     backgroundColor: useIsDarkMode()
@@ -70,6 +71,7 @@ export default function LoginScreen({navigation}): JSX.Element {
               placeholder="Username"
               placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
               keyboardType="default"
+              autoComplete="username"
             />
           </View>
           <View style={styles.inputGroup}>
@@ -80,14 +82,14 @@ export default function LoginScreen({navigation}): JSX.Element {
               placeholder="Password"
               placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
               keyboardType="default"
+              autoComplete="current-password"
+              secureTextEntry={true}
             />
           </View>
         </View>
         <Pressable
           style={styles.login}
           onPress={() => {
-            console.log('Username', userInput);
-            console.log('Password', passInput);
             const credentialsCheckResult = checkCredentials(
               userInput,
               passInput,

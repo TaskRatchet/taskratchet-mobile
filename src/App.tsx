@@ -4,15 +4,13 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 // local imports:
-import isLightMode from './utils/checkDarkMode';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import {enableScreens} from 'react-native-screens';
-import User from './utils/currentUser';
 import {userType} from './components/types';
 
 enableScreens();

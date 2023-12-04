@@ -1,6 +1,7 @@
 import {type} from 'os';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
+import {Dispatch, SetStateAction} from 'react';
 
 // types.ts
 export type taskType = {
@@ -40,3 +41,14 @@ export type props = {
   navigation: ProfileScreenNavigationProp;
   route: ProfileScreenRouteProp;
 };
+
+export type TaskPopupProps = {
+  item: string;
+  modalVisible: boolean;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+};
+
+export type LoginScreenProps = StackScreenProps<
+  RootStackParamList,
+  'LoginScreen'
+>;
