@@ -43,7 +43,6 @@ export default function HomeScreen({navigation}: props): JSX.Element {
   }
 
   function taskItemPress(key: string) {
-    console.log('task item pressed');
     setModalVisible(!modalVisible);
     setClickedItem(key);
   }
@@ -52,6 +51,18 @@ export default function HomeScreen({navigation}: props): JSX.Element {
 
   return (
     <View style={[backgroundStyle, styles.background]}>
+      <Image
+        style={{
+          width: '140%',
+          height: '80%',
+          opacity: 0.5,
+          position: 'absolute',
+          top: '-30%',
+          left: '-40%',
+        }}
+        blurRadius={10}
+        source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
+      />
       <TaskPopup
         item={clickedItem}
         modalVisible={modalVisible}
@@ -77,8 +88,8 @@ export default function HomeScreen({navigation}: props): JSX.Element {
             )
             .map(key => {
               return (
-                <Pressable onPress={() => taskItemPress(key)}>
-                  <Task key={key} item={key} />
+                <Pressable key={key} onPress={() => taskItemPress(key)}>
+                  <Task item={key} />
                 </Pressable>
               );
             })}

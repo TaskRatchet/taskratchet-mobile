@@ -16,6 +16,7 @@ import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import {UserContext} from '../App';
 import {props} from '../components/types';
+import {login} from '../services/taskratchet/login';
 
 export default function LoginScreen({navigation, route}: props): JSX.Element {
   const backgroundStyle = {
@@ -90,16 +91,27 @@ export default function LoginScreen({navigation, route}: props): JSX.Element {
         <Pressable
           style={styles.login}
           onPress={() => {
-            const credentialsCheckResult = checkCredentials(
-              userInput,
-              passInput,
-            );
-            if (credentialsCheckResult !== null) {
-              setCurrentUser(credentialsCheckResult);
-              navigation.navigate('HomeScreen');
-            } else {
-              setOutputStatus('Login Failed, try again!');
-            }
+            console.log(userInput, passInput);
+            console.log(login(userInput, passInput));
+
+            login(userInput, passInput)
+              .then(result => {
+                console.log(result);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+
+            // const credentialsCheckResult = checkCredentials(
+            //   userInput,
+            //   passInput,
+            // );
+            // if (credentialsCheckResult !== null) {
+            //   setCurrentUser(credentialsCheckResult);
+            //   navigation.navigate('HomeScreen');
+            // } else {
+            //   setOutputStatus('Login Failed, try again!');
+            // }
           }}>
           <Text style={styles.loginText}>Login</Text>
         </Pressable>

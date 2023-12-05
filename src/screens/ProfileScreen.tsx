@@ -27,6 +27,18 @@ export default function ProfileScreen({navigation, route}: props) {
 
   return (
     <View style={[backgroundStyle, styles.container]}>
+      <Image
+        style={{
+          width: '140%',
+          height: '80%',
+          opacity: 0.5,
+          position: 'absolute',
+          top: '-30%',
+          left: '-40%',
+        }}
+        blurRadius={10}
+        source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
+      />
       <View style={styles.nameAndAvatar}>
         <Text style={[textColorStyle, styles.name]}>
           {currentUser !== null ? currentUser.username : 'Guest'}
