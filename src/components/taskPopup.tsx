@@ -1,18 +1,68 @@
 //react imports
 import {View, Text, StyleSheet, Modal, Alert, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {updateTask} from '../services/taskratchet/updateTask';
 
 //local imports
 import themeProvider from '../providers/themeProvider';
+import getStoredTasks from '../utils/currentTasks';
+import checkDate from '../utils/checkDate';
+import useIsDarkMode from '../utils/checkDarkMode';
 import tasks from '../utils/currentTasks';
-import {TaskPopupProps} from './types';
+import {TaskPopupProps, task} from './types';
+import convertCents from '../utils/convertCents';
 
 export default function TaskPopup({
   item,
   modalVisible,
   setModalVisible,
 }: TaskPopupProps): JSX.Element {
-  // const {title, deadline, stakes} = tasksArray[Number(item)];
+  const [tasks, setTasks] = useState<task[]>([]);
+
+  useEffect(() => {
+    async function fetchTasks() {
+      const fetchedTasks = await getStoredTasks();
+      setTasks(fetchedTasks);
+    }
+
+    fetchTasks();
+  }, []);
+
+  function getDeadlineDetails(days: number) {
+    if (days === null) return {text: '', style: {}}; // this is a temporary fix for null data
+    switch (true) {
+      case days < 0:
+        return {text: 'Overdue', style: styles.textRed};
+      case days === 0:
+        return {text: 'Due Today', style: styles.textYellow};
+      case days === 1:
+        return {text: 'Due Tomorrow', style: styles.textYellow};
+      default:
+        return {text: 'Due in ' + days + ' days', style: styles.textGreen};
+    }
+  }
+
+  function CompletionText() {
+    if (item !== undefined && tasks[item] !== undefined) {
+      if (tasks[item].complete !== undefined && tasks[item].complete) {
+        return 'Mark Incomplete';
+      } else {
+        return 'Mark Complete';
+      }
+    } else {
+      // return a default value or handle the error appropriately
+      return 'Task not found';
+    }
+  }
+
+  const deadlineDetails =
+    tasks[item] && tasks[item].due
+      ? getDeadlineDetails(checkDate(tasks[item].due))
+      : {text: '', style: {}};
+
+  console.log(tasks[item]);
   return (
     <View>
       <Modal
@@ -20,26 +70,57 @@ export default function TaskPopup({
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.title}>{tasks[item].title}</Text>
-            <Text style={styles.description}>{tasks[item].description}</Text>
             <View style={styles.line}>
-              <Text style={styles.deadline}>{tasks[item].deadline}</Text>
-              <Text style={styles.stakes}>{tasks[item].stakes}</Text>
+              <View>
+                <Text style={styles.title} numberOfLines={1}>
+                  {tasks !== null && tasks.length > 0
+                    ? tasks[item].task
+                    : 'Loading...'}
+                </Text>
+                <Text style={deadlineDetails.style}>
+                  {deadlineDetails.text}
+                </Text>
+              </View>
+              <Text style={styles.stakes}>
+                {tasks[item] ? convertCents(tasks[item].cents) : 'Loading...'}
+              </Text>
             </View>
+            {tasks[item] && checkDate(tasks[item].due) >= 0 ? (
+              <Pressable
+                style={({pressed}) => [
+                  {
+                    backgroundColor: pressed
+                      ? 'rgba(0, 103, 69, 0.5)'
+                      : '#006745',
+                  },
+                  styles.button,
+                  styles.buttonComplete,
+                ]}
+                onPress={() => {
+                  if (tasks[item].complete) {
+                    updateTask(tasks[item].id, {complete: false});
+                  } else {
+                    updateTask(tasks[item].id, {complete: true});
+                  }
+                }}>
+                <Text style={styles.textStyle}>{CompletionText()}</Text>
+              </Pressable>
+            ) : null}
             <Pressable
-              style={[styles.button, styles.buttonComplete]}
-              onPress={() => {
-                console.log('complete'); /* DOTO: add completion logic */
-              }}>
-              <Text style={styles.textStyle}>Mark Complete</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={({pressed}) => [
+                {
+                  backgroundColor: pressed
+                    ? 'rgba(33, 150, 243, 0.5)'
+                    : '#2196F3',
+                  marginTop:
+                    tasks[item] && checkDate(tasks[item].due) >= 0 ? 5 : 35,
+                },
+                styles.button,
+              ]}
               onPress={() => setModalVisible(!modalVisible)}>
               <Text style={styles.textStyle}>Hide</Text>
             </Pressable>
@@ -51,12 +132,22 @@ export default function TaskPopup({
 }
 
 const styles = StyleSheet.create({
+  textRed: {
+    color: '#D03131',
+  },
+  textYellow: {
+    color: '#9DA41D',
+  },
+  textGreen: {
+    color: '#33AB1E',
+  },
   line: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   stakes: {
-    fontSize: 16,
+    fontSize: 30,
+    fontFamily: 'Trebuchet MS',
   },
   title: {
     fontSize: 20,
@@ -97,7 +188,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonComplete: {
-    backgroundColor: '#006745',
     marginTop: 40,
   },
   buttonClose: {

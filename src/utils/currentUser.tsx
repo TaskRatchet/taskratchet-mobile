@@ -1,11 +1,7 @@
-// TODO: replace with backend hiden real data!!!
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const User = {
-  id: 0o1,
-  name: 'John Doe',
-  email: `johndoe@gmail.com`,
-  password: '123456',
-  avatar: 'https://i.pravatar.cc/300',
-};
-
-export default User;
+export default async function getStoredUser() {
+  const me = await AsyncStorage.getItem('me');
+  console.log('getStoredUser ' + (await me) + ' from getStoredUser');
+  return me != null ? JSON.parse(me) : null;
+}

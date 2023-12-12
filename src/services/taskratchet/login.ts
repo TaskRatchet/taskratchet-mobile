@@ -1,5 +1,6 @@
 import {publishSession} from './sessions';
 import fetch1 from './fetch1';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function login(email: string, password: string): Promise<boolean> {
   const res = await fetch1('account/login', false, 'POST', {
@@ -11,8 +12,8 @@ export async function login(email: string, password: string): Promise<boolean> {
 
   const token = await res.text();
 
-  window.localStorage.setItem('token', token);
-  window.localStorage.setItem('email', email);
+  AsyncStorage.setItem('token', token);
+  AsyncStorage.setItem('email', email);
 
   publishSession();
 

@@ -1,10 +1,17 @@
 import {Text, View, StyleSheet, Button, Image} from 'react-native';
 import {UserContext} from '../App';
 import user from '../utils/currentUser';
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import {props} from '../components/types';
+
+//api imports
+import {User} from '../services/taskratchet/getMe';
+import fetch1 from '../services/taskratchet/fetch1';
+
+//local imports
+import getStoredUser from '../utils/currentUser';
 
 export default function ProfileScreen({navigation, route}: props) {
   const backgroundStyle = {
@@ -18,12 +25,25 @@ export default function ProfileScreen({navigation, route}: props) {
     color: useIsDarkMode() ? 'white' : 'black',
   };
 
-  let dataObj = route.params;
-  const {currentUser} = useContext(UserContext);
+  const [user, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    async function getUser() {
+      const result: User = await getStoredUser();
+      if (result === null) {
+        throw new Error('Unable to get user info');
+      }
+      setCurrentUser(result);
+    }
+
+    getUser();
+  }, []);
 
   function goToLoginScreen() {
     navigation.navigate('LoginScreen');
   }
+
+  console.log(fetch1('me/tasks', true));
 
   return (
     <View style={[backgroundStyle, styles.container]}>
@@ -40,33 +60,36 @@ export default function ProfileScreen({navigation, route}: props) {
         source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
       />
       <View style={styles.nameAndAvatar}>
-        <Text style={[textColorStyle, styles.name]}>
-          {currentUser !== null ? currentUser.username : 'Guest'}
-        </Text>
-        <Image source={{uri: user.avatar}} style={styles.avatar} />
+        <Text style={[textColorStyle, styles.name]}>Profile</Text>
       </View>
       <View style={styles.dataGroup}>
         <View>
           <View style={styles.dataPair}>
             <Text style={[textColorStyle, styles.dataText]}>Name:</Text>
-            <Text style={[textColorStyle, styles.dataValueText]}>
-              {currentUser !== null ? currentUser.username : 'Guest'}
+            <Text
+              style={[textColorStyle, styles.dataValueText]}
+              numberOfLines={1}>
+              {user !== null ? user.name : '...'}
             </Text>
           </View>
         </View>
         <View>
           <View style={styles.dataPair}>
             <Text style={[textColorStyle, styles.dataText]}>Email:</Text>
-            <Text style={[textColorStyle, styles.dataValueText]}>
-              {currentUser !== null ? currentUser.email : 'Guest'}
+            <Text
+              style={[textColorStyle, styles.dataValueText]}
+              numberOfLines={1}>
+              {user !== null ? user.email : '...'}
             </Text>
           </View>
         </View>
         <View>
           <View style={styles.dataPair}>
-            <Text style={[textColorStyle, styles.dataText]}>Phone:</Text>
-            <Text style={[textColorStyle, styles.dataValueText]}>
-              {currentUser !== null ? currentUser.phone : 'Guest'}
+            <Text style={[textColorStyle, styles.dataText]}>Timezone:</Text>
+            <Text
+              style={[textColorStyle, styles.dataValueText]}
+              numberOfLines={1}>
+              {user !== null ? user.timezone : '...'}
             </Text>
           </View>
         </View>

@@ -4,7 +4,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 
 // local imports:
 import LoginScreen from './screens/LoginScreen';

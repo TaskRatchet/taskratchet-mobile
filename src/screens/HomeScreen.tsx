@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -13,20 +13,46 @@ import {
   Modal,
   Alert,
 } from 'react-native';
+import {useQuery} from 'react-query';
 
+//api imports
+import {getMe, User} from '../services/taskratchet/getMe';
+import {getTasks} from '../services/taskratchet/getTasks';
+
+//local imports
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import NavBar from '../components/navBar';
-import user from '../utils/currentUser';
 import Task from '../components/taskListItem';
-import tasks from '../utils/currentTasks';
 import {UserContext} from '../App';
-import {props} from '../components/types';
+import {props, task} from '../components/types';
 import TaskPopup from '../components/taskPopup';
+import getStoredUser from '../utils/currentUser';
+import getStoredTasks from '../utils/currentTasks';
+import checkDate from '../utils/checkDate';
 
 export default function HomeScreen({navigation}: props): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
   const [clickedItem, setClickedItem] = useState('0');
+  const [user, setCurrentUser] = useState<User | null>(null);
+  const [tasks, setCurrentTasks] = useState<task[]>([]);
+
+  useEffect(() => {
+    async function getUser() {
+      const result: User = await getStoredUser();
+      setCurrentUser(result);
+    }
+
+    getUser();
+
+    async function getTasksAsync() {
+      const result = await getStoredTasks();
+      setCurrentTasks(result);
+    }
+
+    getTasksAsync();
+  }, []);
+
   const backgroundStyle = {
     backgroundColor: useIsDarkMode()
       ? themeProvider.colorsDark.background
@@ -47,8 +73,6 @@ export default function HomeScreen({navigation}: props): JSX.Element {
     setClickedItem(key);
   }
 
-  const {currentUser} = useContext(UserContext);
-
   return (
     <View style={[backgroundStyle, styles.background]}>
       <Image
@@ -64,7 +88,7 @@ export default function HomeScreen({navigation}: props): JSX.Element {
         source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
       />
       <TaskPopup
-        item={clickedItem}
+        item={Number(clickedItem)}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
@@ -74,25 +98,32 @@ export default function HomeScreen({navigation}: props): JSX.Element {
             style={styles.userProfile}
             onPress={handleUserProfilePress}>
             <Text style={[textColorStyle, styles.name]}>
-              {currentUser !== null ? currentUser.username : 'Guest'}
+              {user !== null ? user.name : '...'}
             </Text>
-            <Image source={{uri: user.avatar}} style={styles.avatar} />
           </Pressable>
         </View>
         <View style={styles.taskList}>
-          {Object.keys(tasks)
-            .sort(
-              (a, b) =>
-                new Date(tasks[a].deadline).getTime() -
-                new Date(tasks[b].deadline).getTime(),
-            )
-            .map(key => {
-              return (
-                <Pressable key={key} onPress={() => taskItemPress(key)}>
-                  <Task item={key} />
-                </Pressable>
-              );
-            })}
+          {tasks &&
+            Object.keys(tasks)
+              .sort((a, b) => {
+                const diffDaysA = checkDate(tasks[a].due);
+                const diffDaysB = checkDate(tasks[b].due);
+
+                // If the deadline is past, return a large number to sort the task to the bottom
+                const timeLeftA =
+                  diffDaysA < 0 ? Number.MAX_SAFE_INTEGER : diffDaysA;
+                const timeLeftB =
+                  diffDaysB < 0 ? Number.MAX_SAFE_INTEGER : diffDaysB;
+
+                return timeLeftA - timeLeftB;
+              })
+              .map(key => {
+                return (
+                  <Pressable key={key} onPress={() => taskItemPress(key)}>
+                    <Task item={Number(key)} />
+                  </Pressable>
+                );
+              })}
           <View style={{height: 100} /* spacer */}></View>
         </View>
       </ScrollView>

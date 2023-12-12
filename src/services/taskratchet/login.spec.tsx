@@ -1,6 +1,8 @@
 import {login} from './login';
 import {expect, it, describe, vi, beforeEach} from 'vitest';
 import {signInWithEmailAndPassword} from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import fetchMock from 'jest-fetch-mock';
 
 vi.mock('firebase/auth');
 
@@ -18,7 +20,7 @@ describe('login', () => {
 
     await login('test', 'test');
 
-    expect(window.localStorage.getItem('token')).toBe('token');
+    expect(AsyncStorage.getItem('token')).toBe('token');
   });
 
   it('stores session email on successful login', async () => {
@@ -26,6 +28,6 @@ describe('login', () => {
 
     await login('test', 'test');
 
-    expect(window.localStorage.getItem('email')).toBe('test');
+    expect(AsyncStorage.getItem('email')).toBe('test');
   });
 });

@@ -1,5 +1,6 @@
 import {logout} from './sessions';
 import {API1_BASE} from './constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const _trim = (s: string, c: string) => {
   if (c === ']') c = '\\]';
@@ -13,7 +14,7 @@ export default async function fetch1(
   method = 'GET',
   data: unknown = null,
 ): Promise<Response> {
-  const token = window.localStorage.getItem('token');
+  const token = await AsyncStorage.getItem('token');
   const route_ = _trim(route, '/');
 
   if (protected_ && !token) {

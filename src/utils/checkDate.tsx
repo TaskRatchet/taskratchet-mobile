@@ -1,7 +1,8 @@
+import moment from 'moment';
+
 export default function checkDate(date: string): number {
-  const today = new Date();
-  const deadline = new Date(date);
-  const diff = deadline.getTime() - today.getTime();
-  const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+  const today = moment();
+  const deadline = moment(date, 'M/D/YYYY, h:mm A');
+  const diffDays = deadline.diff(today, 'days');
   return diffDays;
 }

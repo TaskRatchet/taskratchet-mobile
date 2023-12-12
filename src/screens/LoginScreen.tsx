@@ -8,7 +8,13 @@ import {
   TextInput,
   Image,
   Pressable,
+  KeyboardAvoidingView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//api imports
+import {getMe} from '../services/taskratchet/getMe';
+import {getTasks} from '../services/taskratchet/getTasks';
 
 //local imports
 import checkCredentials from '../utils/checkCredentials';
@@ -17,6 +23,7 @@ import themeProvider from '../providers/themeProvider';
 import {UserContext} from '../App';
 import {props} from '../components/types';
 import {login} from '../services/taskratchet/login';
+import {get} from 'http';
 
 export default function LoginScreen({navigation, route}: props): JSX.Element {
   const backgroundStyle = {
@@ -53,69 +60,65 @@ export default function LoginScreen({navigation, route}: props): JSX.Element {
         blurRadius={10}
         source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
       />
-      <SafeAreaView style={styles.container}>
-        <Image
-          style={{width: 60, height: 60}}
-          source={require('../../assets/images/logo_taskratchet_512_bordered.png')}
-        />
-        <View style={styles.titleGroup}>
-          <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
-          <Text style={[textColorStyle, styles.title]}>Login</Text>
-        </View>
-
-        <View style={styles.credentials}>
-          <View style={styles.inputGroup}>
-            <Text style={[textColorStyle, styles.inputTitle]}>Username</Text>
-            <TextInput
-              style={[textColorStyle, styles.inputField]}
-              onChangeText={setUserInput}
-              placeholder="Username"
-              placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
-              keyboardType="default"
-              autoComplete="username"
-            />
+      <SafeAreaView>
+        <KeyboardAvoidingView style={styles.container}>
+          <Image
+            style={{width: 60, height: 60}}
+            source={require('../../assets/images/logo_taskratchet_512_bordered.png')}
+          />
+          <View style={styles.titleGroup}>
+            <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
+            <Text style={[textColorStyle, styles.title]}>Login</Text>
           </View>
-          <View style={styles.inputGroup}>
-            <Text style={[textColorStyle, styles.inputTitle]}>Password</Text>
-            <TextInput
-              style={[textColorStyle, styles.inputField]}
-              onChangeText={setPassInput}
-              placeholder="Password"
-              placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
-              keyboardType="default"
-              autoComplete="current-password"
-              secureTextEntry={true}
-            />
+
+          <View style={styles.credentials}>
+            <View style={styles.inputGroup}>
+              <Text style={[textColorStyle, styles.inputTitle]}>Username</Text>
+              <TextInput
+                style={[textColorStyle, styles.inputField]}
+                onChangeText={setUserInput}
+                placeholder="Username"
+                placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
+                keyboardType="default"
+                autoComplete="username"
+              />
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={[textColorStyle, styles.inputTitle]}>Password</Text>
+              <TextInput
+                style={[textColorStyle, styles.inputField]}
+                onChangeText={setPassInput}
+                placeholder="Password"
+                placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
+                keyboardType="default"
+                autoComplete="current-password"
+                secureTextEntry={true}
+              />
+            </View>
           </View>
-        </View>
-        <Pressable
-          style={styles.login}
-          onPress={() => {
-            console.log(userInput, passInput);
-            console.log(login(userInput, passInput));
-
-            login(userInput, passInput)
-              .then(result => {
-                console.log(result);
-              })
-              .catch(error => {
-                console.log(error);
-              });
-
-            // const credentialsCheckResult = checkCredentials(
-            //   userInput,
-            //   passInput,
-            // );
-            // if (credentialsCheckResult !== null) {
-            //   setCurrentUser(credentialsCheckResult);
-            //   navigation.navigate('HomeScreen');
-            // } else {
-            //   setOutputStatus('Login Failed, try again!');
-            // }
-          }}>
-          <Text style={styles.loginText}>Login</Text>
-        </Pressable>
-        <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
+          <Pressable
+            style={styles.login}
+            onPress={async () => {
+              try {
+                const result = await login(userInput, passInput);
+                if (result === true) {
+                  navigation.navigate('HomeScreen');
+                  const me = await getMe();
+                  const tasks = await getTasks();
+                  await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+                  await AsyncStorage.setItem('me', JSON.stringify(me));
+                } else {
+                  setOutputStatus('Login Failed, try again!');
+                }
+              } catch (error) {
+                console.log('login error ' + error);
+                setOutputStatus('Login Failed, try again!');
+              }
+            }}>
+            <Text style={styles.loginText}>Login</Text>
+          </Pressable>
+          <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
   );

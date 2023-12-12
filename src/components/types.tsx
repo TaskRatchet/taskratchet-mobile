@@ -43,7 +43,7 @@ export type props = {
 };
 
 export type TaskPopupProps = {
-  item: string;
+  item: number;
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
@@ -52,3 +52,14 @@ export type LoginScreenProps = StackScreenProps<
   RootStackParamList,
   'LoginScreen'
 >;
+
+export type task = {
+  id: string;
+  task: string;
+  due: string;
+  due_timestamp: number;
+  cents: number;
+  complete: boolean;
+  status: string;
+  timezone: string;
+};

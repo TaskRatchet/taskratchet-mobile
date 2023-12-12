@@ -1,4 +1,4 @@
-import {getAuth, signOut} from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type Session = {
   token: string;
@@ -8,9 +8,9 @@ export type Session = {
 // TODO: Add proper type
 let sessionSubs: Array<CallableFunction> = [];
 
-export function getSession(): Session | undefined {
-  const email = window.localStorage.getItem('email');
-  const token = window.localStorage.getItem('token');
+export async function getSession(): Promise<Session | undefined> {
+  const email = await AsyncStorage.getItem('email');
+  const token = await AsyncStorage.getItem('token');
   if (email && token) {
     return {email, token};
   }
@@ -25,8 +25,8 @@ export function unsubscribeFromSession(callback: CallableFunction): void {
 }
 
 // TODO: Should this function be in separate file?
-export function publishSession(): void {
-  const session: Session | undefined = getSession();
+export async function publishSession(): Promise<void> {
+  const session: Session | undefined = await getSession();
 
   sessionSubs.forEach((x: CallableFunction) => {
     x(session);
@@ -35,15 +35,8 @@ export function publishSession(): void {
 
 // TODO: Should this function be in separate file?
 export function logout(): void {
-  window.localStorage.removeItem('email');
-  window.localStorage.removeItem('token');
-  window.localStorage.removeItem('firebase_token');
-
-  const auth = getAuth();
-  signOut(auth).catch(e => {
-    // TODO find better logging
-    console.log(e);
-  });
+  AsyncStorage.removeItem('email');
+  AsyncStorage.removeItem('token');
 
   publishSession();
 }
