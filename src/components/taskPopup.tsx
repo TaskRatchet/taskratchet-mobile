@@ -58,11 +58,14 @@ export default function TaskPopup({
   }
 
   const deadlineDetails =
-    tasks[item] && tasks[item].due
+    tasks && tasks[item] && tasks[item].due
       ? getDeadlineDetails(checkDate(tasks[item].due))
       : {text: '', style: {}};
 
-  console.log(tasks[item]);
+  if (tasks && tasks[item]) {
+    console.log(tasks[item]);
+  }
+
   return (
     <View>
       <Modal

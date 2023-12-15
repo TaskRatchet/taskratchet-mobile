@@ -1,13 +1,17 @@
 import fetch1 from './fetch1';
-import {describe, it, expect} from 'vitest';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import fetchMock from 'jest-fetch-mock';
 
 describe('fetch1', () => {
+  beforeEach(() => {
+    fetchMock.enableMocks();
+  });
   it('uses localStorage token', async () => {
     fetchMock.mockResponse(JSON.stringify({}));
 
     const token = 'token';
 
-    localStorage.setItem('token', token);
+    await AsyncStorage.setItem('token', token);
 
     const url = 'https://example.com';
     await fetch1(url);

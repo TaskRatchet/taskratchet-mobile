@@ -9,7 +9,7 @@
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --watchAll",
     "doctor": "react-native doctor"
   },
   "dependencies": {
