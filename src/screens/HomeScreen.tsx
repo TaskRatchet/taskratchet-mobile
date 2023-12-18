@@ -27,7 +27,7 @@ import Task from '../components/taskListItem';
 import {UserContext} from '../App';
 import {props, task} from '../components/types';
 import TaskPopup from '../components/taskPopup';
-import getStoredUser from '../utils/currentUser';
+import getStoredUser from '../utils/getStoredUser';
 import getStoredTasks from '../utils/currentTasks';
 import checkDate from '../utils/checkDate';
 
@@ -88,6 +88,7 @@ export default function HomeScreen({navigation}: props): JSX.Element {
         source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
       />
       <TaskPopup
+        testID="taskPopup"
         item={Number(clickedItem)}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

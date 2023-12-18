@@ -12,8 +12,8 @@ export async function login(email: string, password: string): Promise<boolean> {
 
   const token = await res.text();
 
-  AsyncStorage.setItem('token', token);
-  AsyncStorage.setItem('email', email);
+  await AsyncStorage.setItem('token', token);
+  await AsyncStorage.setItem('email', email);
 
   publishSession();
 

@@ -34,9 +34,9 @@ export async function publishSession(): Promise<void> {
 }
 
 // TODO: Should this function be in separate file?
-export function logout(): void {
-  AsyncStorage.removeItem('email');
-  AsyncStorage.removeItem('token');
+export async function logout(): Promise<void> {
+  await AsyncStorage.removeItem('email');
+  await AsyncStorage.removeItem('token');
 
   publishSession();
 }

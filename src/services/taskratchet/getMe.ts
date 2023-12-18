@@ -1,4 +1,4 @@
-import fetch1 from "./fetch1";
+import fetch1 from './fetch1';
 
 export type Card = {
   brand: string;
@@ -21,10 +21,10 @@ export type User = {
 };
 
 export async function getMe(): Promise<User> {
-  const response = await fetch1("me", true);
+  const response = await fetch1('me', true);
 
   if (!response.ok) {
-    throw new Error("Failed to get me");
+    throw new Error('Failed to get me');
   }
 
   return response.json() as Promise<User>;

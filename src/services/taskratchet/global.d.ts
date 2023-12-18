@@ -1,1 +1,1 @@
-import "vitest-fetch-mock";
+import 'vitest-fetch-mock';

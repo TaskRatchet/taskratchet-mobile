@@ -1,6 +1,6 @@
 import {Text, View, StyleSheet, Button, Image} from 'react-native';
 import {UserContext} from '../App';
-import user from '../utils/currentUser';
+import user from '../utils/getStoredUser';
 import React, {useContext, useState, useEffect} from 'react';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
@@ -11,7 +11,7 @@ import {User} from '../services/taskratchet/getMe';
 import fetch1 from '../services/taskratchet/fetch1';
 
 //local imports
-import getStoredUser from '../utils/currentUser';
+import getStoredUser from '../utils/getStoredUser';
 
 export default function ProfileScreen({navigation, route}: props) {
   const backgroundStyle = {

@@ -43,6 +43,7 @@ export type props = {
 };
 
 export type TaskPopupProps = {
+  testID?: string;
   item: number;
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
