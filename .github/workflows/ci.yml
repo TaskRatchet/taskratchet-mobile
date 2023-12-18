@@ -18,7 +18,7 @@ jobs:
       - name: Install
         run: npm install
       - name: Test
-        run: npm test -- --ci --coverage
+        run: npm test -- --ci --coverage --watchAll=false
   Prettier:
     runs-on: ubuntu-latest
     steps:
