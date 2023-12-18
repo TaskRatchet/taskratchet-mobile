@@ -3,7 +3,6 @@ import getStoredUser from '../src/utils/getStoredUser';
 
 // Note: import explicitly to use the types shiped with jest.
 import {it, expect} from '@jest/globals';
-import {get} from 'http';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({

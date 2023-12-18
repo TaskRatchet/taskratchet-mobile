@@ -1,9 +1,7 @@
-import {type} from 'os';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {Dispatch, SetStateAction} from 'react';
 
-// types.ts
 export type taskType = {
   id: number;
   title: string;

@@ -1,4 +1,4 @@
-//dependencie imports
+//dependency imports
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -17,24 +17,21 @@ import {getMe} from '../services/taskratchet/getMe';
 import {getTasks} from '../services/taskratchet/getTasks';
 
 //local imports
-import checkCredentials from '../utils/checkCredentials';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import {UserContext} from '../App';
 import {props} from '../components/types';
 import {login} from '../services/taskratchet/login';
-import {get} from 'http';
+import {styles} from '../styles/loginScreenStyle';
 
 export default function LoginScreen({navigation, route}: props): JSX.Element {
   const backgroundStyle = {
-    // this is the background color of the login screen
     backgroundColor: useIsDarkMode()
       ? themeProvider.colorsDark.background
       : themeProvider.colorsLight.background,
   };
 
   const textColorStyle = {
-    // this is the text color logic for the login screen
     color: useIsDarkMode() ? 'white' : 'black',
   };
 
@@ -46,7 +43,6 @@ export default function LoginScreen({navigation, route}: props): JSX.Element {
   const {setCurrentUser} = React.useContext(UserContext);
 
   return (
-    // this is the background \/
     <View style={[backgroundStyle, styles.screen]}>
       <Image
         style={{
@@ -123,70 +119,3 @@ export default function LoginScreen({navigation, route}: props): JSX.Element {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  loginText: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#2A5364',
-    textAlign: 'center',
-  },
-  login: {
-    width: 300,
-    marginTop: 15,
-    marginBottom: 15,
-    padding: 5,
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 20,
-    backgroundColor: '#AAD9EB',
-  },
-  screen: {
-    height: '100%',
-  },
-  container: {
-    marginTop: '30%',
-    padding: 24,
-    fontSize: 50,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  credentials: {
-    alignItems: 'flex-end',
-  },
-  inputTitle: {
-    textAlign: 'right',
-    marginLeft: 10,
-    margin: 20,
-    fontSize: 18,
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  inputField: {
-    backgroundColor: 'grey',
-    opacity: 0.5,
-    width: '50%',
-    margin: 12,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-    fontWeight: 'normal',
-  },
-  titleGroup: {
-    fontSize: 50,
-    alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 15,
-  },
-  text: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-});

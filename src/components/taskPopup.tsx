@@ -1,18 +1,15 @@
 //react imports
-import {View, Text, StyleSheet, Modal, Alert, Pressable} from 'react-native';
+import {View, Text, Modal, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {updateTask} from '../services/taskratchet/updateTask';
 
 //local imports
-import themeProvider from '../providers/themeProvider';
-import getStoredTasks from '../utils/currentTasks';
+import getStoredTasks from '../utils/getStoredTasks';
 import checkDate from '../utils/checkDate';
-import useIsDarkMode from '../utils/checkDarkMode';
-import tasks from '../utils/currentTasks';
 import {TaskPopupProps, task} from './types';
 import convertCents from '../utils/convertCents';
+import {styles} from '../styles/taskPopupStyle';
 
 export default function TaskPopup({
   item,
@@ -31,7 +28,7 @@ export default function TaskPopup({
   }, []);
 
   function getDeadlineDetails(days: number) {
-    if (days === null) return {text: '', style: {}}; // this is a temporary fix for null data
+    if (days === null) return {text: '', style: {}}; // TODO: this is a temporary fix for null data
     switch (true) {
       case days < 0:
         return {text: 'Overdue', style: styles.textRed};
@@ -52,7 +49,6 @@ export default function TaskPopup({
         return 'Mark Complete';
       }
     } else {
-      // return a default value or handle the error appropriately
       return 'Task not found';
     }
   }
@@ -76,7 +72,7 @@ export default function TaskPopup({
             <View style={styles.line}>
               <View>
                 <Text style={styles.title} numberOfLines={1}>
-                  {tasks !== null && tasks.length > 0
+                  {tasks && tasks !== null && tasks.length > 0
                     ? tasks[item].task
                     : 'Loading...'}
                 </Text>
@@ -85,10 +81,12 @@ export default function TaskPopup({
                 </Text>
               </View>
               <Text style={styles.stakes}>
-                {tasks[item] ? convertCents(tasks[item].cents) : 'Loading...'}
+                {tasks && tasks[item]
+                  ? convertCents(tasks[item].cents)
+                  : 'Loading...'}
               </Text>
             </View>
-            {tasks[item] && checkDate(tasks[item].due) >= 0 ? (
+            {tasks && tasks[item] && checkDate(tasks[item].due) >= 0 ? (
               <Pressable
                 style={({pressed}) => [
                   {
@@ -129,79 +127,3 @@ export default function TaskPopup({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  textRed: {
-    color: '#D03131',
-  },
-  textYellow: {
-    color: '#9DA41D',
-  },
-  textGreen: {
-    color: '#33AB1E',
-  },
-  line: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  stakes: {
-    fontSize: 30,
-    fontFamily: 'Trebuchet MS',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    marginBottom: 10,
-  },
-  description: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  deadline: {
-    fontSize: 16,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    margin: 5,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonComplete: {
-    marginTop: 40,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  background: {
-    flex: 1,
-  },
-});

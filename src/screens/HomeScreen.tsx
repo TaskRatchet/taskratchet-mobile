@@ -1,35 +1,20 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  Button,
-  Pressable,
-  ScrollView,
-  Modal,
-  Alert,
-} from 'react-native';
-import {useQuery} from 'react-query';
+import React, {useState, useEffect} from 'react';
+import {Text, View, Image, Pressable, ScrollView} from 'react-native';
 
 //api imports
-import {getMe, User} from '../services/taskratchet/getMe';
-import {getTasks} from '../services/taskratchet/getTasks';
+import {User} from '../services/taskratchet/getMe';
 
 //local imports
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import NavBar from '../components/navBar';
 import Task from '../components/taskListItem';
-import {UserContext} from '../App';
 import {props, task} from '../components/types';
 import TaskPopup from '../components/taskPopup';
 import getStoredUser from '../utils/getStoredUser';
-import getStoredTasks from '../utils/currentTasks';
+import getStoredTasks from '../utils/getStoredTasks';
 import checkDate from '../utils/checkDate';
+import {styles} from '../styles/homeScreenStyle';
 
 export default function HomeScreen({navigation}: props): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,7 +45,6 @@ export default function HomeScreen({navigation}: props): JSX.Element {
   };
 
   const textColorStyle = {
-    // this is the text color logic for the login screen
     color: useIsDarkMode() ? 'white' : 'black',
   };
 
@@ -131,73 +115,3 @@ export default function HomeScreen({navigation}: props): JSX.Element {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  scroll: {},
-  date: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  background: {
-    flex: 1,
-  },
-  taskList: {},
-  avatar: {
-    width: 50,
-    height: 50,
-    marginLeft: 10,
-    borderRadius: 15,
-  },
-  name: {
-    fontSize: 30,
-    height: 40,
-  },
-  userProfile: {
-    flexDirection: 'row',
-    height: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  navBar: {},
-});

@@ -6,7 +6,6 @@ describe('TaskPopup', () => {
   it('does not render at login', () => {
     const {queryByTestId} = render(<App />);
 
-    // Assuming TaskPopup has a testID prop set to 'taskPopup'
     const taskPopup = queryByTestId('taskPopup');
 
     expect(taskPopup).toBeNull();

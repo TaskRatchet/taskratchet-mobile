@@ -1,21 +1,21 @@
 //react imports
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 //local imports
 import themeProvider from '../providers/themeProvider';
-import getStoredTasks from '../utils/currentTasks';
-import {taskType, tasksType, task} from './types';
+import getStoredTasks from '../utils/getStoredTasks';
+import {task} from './types';
 import checkDate from '../utils/checkDate';
 import useIsDarkMode from '../utils/checkDarkMode';
 import convertCents from '../utils/convertCents';
+import {styles} from '../styles/taskListItemStyle';
 
 interface taskProps {
   item: number;
 }
 
 export default function Task({item}: taskProps): JSX.Element {
-  // const {title, deadline, stakes} = tasksArray[Number(item)];
   const primaryStyle = {
     backgroundColor: useIsDarkMode()
       ? themeProvider.colorsDark.primary
@@ -122,68 +122,3 @@ export default function Task({item}: taskProps): JSX.Element {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  footerGreen: {
-    backgroundColor: '#33AB1E',
-  },
-  footerYellow: {
-    backgroundColor: '#B6A30B',
-  },
-  footerRed: {
-    backgroundColor: '#D03131',
-  },
-  footerGrey: {
-    backgroundColor: '#A8A8A8',
-  },
-  statusFooter: {
-    height: 5,
-    marginTop: 10,
-    marginBottom: -15,
-    marginLeft: -20,
-    marginRight: -20,
-  },
-  taskBlock: {
-    padding: 15,
-    paddingLeft: 20,
-    paddingRight: 20,
-    margin: 10,
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: {width: 1, height: 2},
-    shadowOpacity: 0.25,
-    overflow: 'hidden',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  textRed: {
-    color: '#D03131',
-  },
-  textYellow: {
-    color: '#9DA41D',
-  },
-  textGreen: {
-    color: '#33AB1E',
-  },
-  taskSideRight: {
-    right: 0,
-    top: 0,
-    bottom: 0,
-    justifyContent: 'center',
-  },
-  taskStakes: {
-    fontSize: 23,
-    marginRight: 0,
-  },
-  taskDeadline: {
-    fontSize: 13,
-    fontWeight: 'bold',
-  },
-  taskTitle: {
-    fontSize: 20,
-    marginBottom: 5,
-  },
-});

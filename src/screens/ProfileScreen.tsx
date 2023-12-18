@@ -1,7 +1,5 @@
-import {Text, View, StyleSheet, Button, Image} from 'react-native';
-import {UserContext} from '../App';
-import user from '../utils/getStoredUser';
-import React, {useContext, useState, useEffect} from 'react';
+import {Text, View, Button, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import {props} from '../components/types';
@@ -12,6 +10,7 @@ import fetch1 from '../services/taskratchet/fetch1';
 
 //local imports
 import getStoredUser from '../utils/getStoredUser';
+import {styles} from '../styles/profileScreenStyle';
 
 export default function ProfileScreen({navigation, route}: props) {
   const backgroundStyle = {
@@ -21,7 +20,6 @@ export default function ProfileScreen({navigation, route}: props) {
   };
 
   const textColorStyle = {
-    // this is the text color logic for the login screen
     color: useIsDarkMode() ? 'white' : 'black',
   };
 
@@ -98,51 +96,3 @@ export default function ProfileScreen({navigation, route}: props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  dataValueText: {
-    fontSize: 18,
-  },
-  dataText: {
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
-  dataGroup: {
-    marginTop: 20,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dataPair: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    width: 300,
-    padding: 8,
-    margin: 8,
-  },
-  nameAndAvatar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    marginLeft: 10,
-    borderRadius: 15,
-  },
-  name: {
-    fontSize: 30,
-  },
-  container: {
-    padding: 24,
-    flex: 1,
-    alignItems: 'center',
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
