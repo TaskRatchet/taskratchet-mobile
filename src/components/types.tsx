@@ -1,6 +1,7 @@
 import {type} from 'os';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
+import {Dispatch, SetStateAction} from 'react';
 
 // types.ts
 export type taskType = {
@@ -36,7 +37,36 @@ type ProfileScreenNavigationProp = StackNavigationProp<
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'ProfileScreen'>;
 
-export type props = {
+export type Props = {
   navigation: ProfileScreenNavigationProp;
   route: ProfileScreenRouteProp;
+};
+
+export type TaskPopupProps = {
+  testID?: string;
+  item: number;
+  modalVisible: boolean;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+};
+
+export type infoPopupProps = {
+  testID?: string;
+  modalVisible: boolean;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+};
+
+export type LoginScreenProps = StackScreenProps<
+  RootStackParamList,
+  'LoginScreen'
+>;
+
+export type TaskType = {
+  id: string;
+  task: string;
+  due: string;
+  due_timestamp: number;
+  cents: number;
+  complete: boolean;
+  status: string;
+  timezone: string;
 };

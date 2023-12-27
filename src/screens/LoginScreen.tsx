@@ -8,25 +8,36 @@ import {
   TextInput,
   Image,
   Pressable,
+  KeyboardAvoidingView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//api imports
+import {getMe} from '../services/taskratchet/getMe';
+import {getTasks} from '../services/taskratchet/getTasks';
 
 //local imports
 import checkCredentials from '../utils/checkCredentials';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import {UserContext} from '../App';
+import {Props} from '../components/types';
+import {login} from '../services/taskratchet/login';
+import {get} from 'http';
 
-export default function LoginScreen({navigation}): JSX.Element {
+export default function LoginScreen({navigation, route}: Props): JSX.Element {
+  const isDarkMode = useIsDarkMode();
+
   const backgroundStyle = {
     // this is the background color of the login screen
-    backgroundColor: useIsDarkMode()
+    backgroundColor: isDarkMode
       ? themeProvider.colorsDark.background
       : themeProvider.colorsLight.background,
   };
 
   const textColorStyle = {
     // this is the text color logic for the login screen
-    color: useIsDarkMode() ? 'white' : 'black',
+    color: isDarkMode ? 'white' : 'black',
   };
 
   // these are the default states for the username and password inputs \/
@@ -51,57 +62,66 @@ export default function LoginScreen({navigation}): JSX.Element {
         blurRadius={10}
         source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
       />
-      <SafeAreaView style={styles.container}>
-        <Image
-          style={{width: 60, height: 60}}
-          source={require('../../assets/images/logo_taskratchet_512_bordered.png')}
-        />
-        <View style={styles.titleGroup}>
-          <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
-          <Text style={[textColorStyle, styles.title]}>Login</Text>
-        </View>
+      <SafeAreaView>
+        <KeyboardAvoidingView style={styles.container}>
+          <Image
+            style={{width: 60, height: 60}}
+            source={require('../../assets/images/logo_taskratchet_512_bordered.png')}
+          />
+          <View style={styles.titleGroup}>
+            <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
+            <Text style={[textColorStyle, styles.title]}>Login</Text>
+          </View>
 
-        <View style={styles.credentials}>
-          <View style={styles.inputGroup}>
-            <Text style={[textColorStyle, styles.inputTitle]}>Username</Text>
-            <TextInput
-              style={[textColorStyle, styles.inputField]}
-              onChangeText={setUserInput}
-              placeholder="Username"
-              placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
-              keyboardType="default"
-            />
+          <View style={styles.credentials}>
+            <View style={styles.inputGroup}>
+              <Text style={[textColorStyle, styles.inputTitle]}>Username</Text>
+              <TextInput
+                style={[textColorStyle, styles.inputField]}
+                onChangeText={setUserInput}
+                placeholder="Username"
+                placeholderTextColor={textColorStyle.color}
+                keyboardType="default"
+                autoComplete="username"
+              />
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={[textColorStyle, styles.inputTitle]}>Password</Text>
+              <TextInput
+                style={[textColorStyle, styles.inputField]}
+                onChangeText={setPassInput}
+                placeholder="Password"
+                placeholderTextColor={textColorStyle.color}
+                keyboardType="default"
+                autoComplete="current-password"
+                secureTextEntry={true}
+              />
+            </View>
           </View>
-          <View style={styles.inputGroup}>
-            <Text style={[textColorStyle, styles.inputTitle]}>Password</Text>
-            <TextInput
-              style={[textColorStyle, styles.inputField]}
-              onChangeText={setPassInput}
-              placeholder="Password"
-              placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
-              keyboardType="default"
-            />
-          </View>
-        </View>
-        <Pressable
-          style={styles.login}
-          onPress={() => {
-            console.log('Username', userInput);
-            console.log('Password', passInput);
-            const credentialsCheckResult = checkCredentials(
-              userInput,
-              passInput,
-            );
-            if (credentialsCheckResult !== null) {
-              setCurrentUser(credentialsCheckResult);
-              navigation.navigate('HomeScreen');
-            } else {
-              setOutputStatus('Login Failed, try again!');
-            }
-          }}>
-          <Text style={styles.loginText}>Login</Text>
-        </Pressable>
-        <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
+          <Pressable
+            testID="loginButton"
+            style={styles.login}
+            onPress={async () => {
+              try {
+                const result = await login(userInput, passInput);
+                if (result === true) {
+                  const me = await getMe();
+                  const tasks = await getTasks();
+                  await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+                  await AsyncStorage.setItem('me', JSON.stringify(me));
+                  navigation.navigate('HomeScreen');
+                } else {
+                  setOutputStatus('Login Failed, try again!');
+                }
+              } catch (error) {
+                console.error('login error ' + error);
+                setOutputStatus('Login Failed, try again!');
+              }
+            }}>
+            <Text style={styles.loginText}>Login</Text>
+          </Pressable>
+          <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
   );
