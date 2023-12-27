@@ -1,12 +1,12 @@
 const themeProvider = {
   colorsLight: {
-    background: '#45999F',
-    primary: '#C7DBDF',
+    background: '#EBF3FA',
+    primary: '#C5C3C9',
     secondary: '#fff',
   },
   colorsDark: {
-    background: '#004347',
-    primary: '#627C80',
+    background: '#1A2533',
+    primary: 'rgba(124, 138, 159, 0.4)',
     secondary: '#001E24',
   },
 };

@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 //local imports
 import themeProvider from '../providers/themeProvider';
 import getStoredTasks from '../utils/currentTasks';
-import {taskType, tasksType, task} from './types';
+import {taskType, tasksType, TaskType} from './types';
 import checkDate from '../utils/checkDate';
 import useIsDarkMode from '../utils/checkDarkMode';
 import convertCents from '../utils/convertCents';
@@ -16,17 +16,18 @@ interface taskProps {
 
 export default function Task({item}: taskProps): JSX.Element {
   // const {title, deadline, stakes} = tasksArray[Number(item)];
+  const isDarkMode = useIsDarkMode();
   const primaryStyle = {
-    backgroundColor: useIsDarkMode()
+    backgroundColor: isDarkMode
       ? themeProvider.colorsDark.primary
       : themeProvider.colorsLight.primary,
   };
 
   const textColorStyle = {
-    color: useIsDarkMode() ? 'white' : 'black',
+    color: isDarkMode ? 'white' : 'black',
   };
 
-  const [tasks, setTasks] = useState<task[]>([]);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -183,7 +184,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   taskTitle: {
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 5,
+    maxWidth: '97%',
   },
 });

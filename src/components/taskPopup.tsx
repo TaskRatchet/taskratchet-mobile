@@ -1,7 +1,6 @@
 //react imports
 import {View, Text, StyleSheet, Modal, Alert, Pressable} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {updateTask} from '../services/taskratchet/updateTask';
 
@@ -11,7 +10,7 @@ import getStoredTasks from '../utils/currentTasks';
 import checkDate from '../utils/checkDate';
 import useIsDarkMode from '../utils/checkDarkMode';
 import tasks from '../utils/currentTasks';
-import {TaskPopupProps, task} from './types';
+import {TaskPopupProps, TaskType} from './types';
 import convertCents from '../utils/convertCents';
 
 export default function TaskPopup({
@@ -19,7 +18,7 @@ export default function TaskPopup({
   modalVisible,
   setModalVisible,
 }: TaskPopupProps): JSX.Element {
-  const [tasks, setTasks] = useState<task[]>([]);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -75,7 +74,7 @@ export default function TaskPopup({
           <View style={styles.modalView}>
             <View style={styles.line}>
               <View>
-                <Text style={styles.title} numberOfLines={1}>
+                <Text style={styles.title}>
                   {tasks !== null && tasks.length > 0
                     ? tasks[item].task
                     : 'Loading...'}
@@ -85,10 +84,12 @@ export default function TaskPopup({
                 </Text>
               </View>
               <Text style={styles.stakes}>
-                {tasks[item] ? convertCents(tasks[item].cents) : 'Loading...'}
+                {tasks && tasks[item]
+                  ? convertCents(tasks[item].cents)
+                  : 'Loading...'}
               </Text>
             </View>
-            {tasks[item] && checkDate(tasks[item].due) >= 0 ? (
+            {tasks && tasks[item] && checkDate(tasks[item].due) >= 0 ? (
               <Pressable
                 style={({pressed}) => [
                   {
@@ -145,18 +146,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   stakes: {
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: 'Trebuchet MS',
   },
   title: {
+    flexShrink: 1,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'left',
     marginBottom: 10,
-  },
-  description: {
-    fontSize: 16,
-    marginBottom: 5,
+    maxWidth: '90%',
   },
   deadline: {
     fontSize: 16,

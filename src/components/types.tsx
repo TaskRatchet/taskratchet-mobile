@@ -37,7 +37,7 @@ type ProfileScreenNavigationProp = StackNavigationProp<
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'ProfileScreen'>;
 
-export type props = {
+export type Props = {
   navigation: ProfileScreenNavigationProp;
   route: ProfileScreenRouteProp;
 };
@@ -49,12 +49,18 @@ export type TaskPopupProps = {
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
 
+export type infoPopupProps = {
+  testID?: string;
+  modalVisible: boolean;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+};
+
 export type LoginScreenProps = StackScreenProps<
   RootStackParamList,
   'LoginScreen'
 >;
 
-export type task = {
+export type TaskType = {
   id: string;
   task: string;
   due: string;

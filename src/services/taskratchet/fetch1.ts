@@ -1,6 +1,7 @@
 import {logout} from './sessions';
 import {API1_BASE} from './constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import secureKeystore from 'react-native-secure-key-store';
 
 const _trim = (s: string, c: string) => {
   if (c === ']') c = '\\]';
@@ -10,11 +11,17 @@ const _trim = (s: string, c: string) => {
 
 export default async function fetch1(
   route: string,
-  protected_ = false,
+  protected_: boolean,
   method = 'GET',
   data: unknown = null,
 ): Promise<Response> {
-  const token = await AsyncStorage.getItem('token');
+  let token;
+  try {
+    token = await secureKeystore.get('token');
+  } catch (error) {
+    token = false;
+  }
+
   const route_ = _trim(route, '/');
 
   if (protected_ && !token) {
