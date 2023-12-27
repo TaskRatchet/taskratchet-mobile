@@ -6,10 +6,10 @@ import {updateTask} from '../services/taskratchet/updateTask';
 
 //local imports
 import themeProvider from '../providers/themeProvider';
-import getStoredTasks from '../utils/currentTasks';
+import getStoredTasks from '../utils/getStoredTasks';
 import checkDate from '../utils/checkDate';
 import useIsDarkMode from '../utils/checkDarkMode';
-import tasks from '../utils/currentTasks';
+import tasks from '../utils/getStoredTasks';
 import {TaskPopupProps, TaskType} from './types';
 import convertCents from '../utils/convertCents';
 

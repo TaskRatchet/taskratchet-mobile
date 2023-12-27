@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 
 //local imports
 import themeProvider from '../providers/themeProvider';
-import getStoredTasks from '../utils/currentTasks';
+import getStoredTasks from '../utils/getStoredTasks';
 import {taskType, tasksType, TaskType} from './types';
 import checkDate from '../utils/checkDate';
 import useIsDarkMode from '../utils/checkDarkMode';

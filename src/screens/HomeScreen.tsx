@@ -29,7 +29,7 @@ import {Props, TaskType} from '../components/types';
 import TaskPopup from '../components/taskPopup';
 import InfoPopup from '../components/infoPopup';
 import getStoredUser from '../utils/getStoredUser';
-import getStoredTasks from '../utils/currentTasks';
+import getStoredTasks from '../utils/getStoredTasks';
 import checkDate from '../utils/checkDate';
 
 export default function HomeScreen({navigation}: Props): JSX.Element {
