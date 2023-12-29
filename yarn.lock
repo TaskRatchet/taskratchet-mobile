@@ -1024,7 +1024,7 @@
     "@babel/helper-create-regexp-features-plugin" "^7.22.15"
     "@babel/helper-plugin-utils" "^7.22.5"
 
-"@babel/preset-env@^7.1.6", "@babel/preset-env@^7.20.0":
+"@babel/preset-env@^7.1.6", "@babel/preset-env@^7.23.6":
   version "7.23.6"
   resolved "https://registry.npmjs.org/@babel/preset-env/-/preset-env-7.23.6.tgz"
   integrity sha512-2XPn/BqKkZCpzYhUUNZ1ssXw7DcXfKQEjv/uXZUXgaebCMYmkEsfZ2yY+vv+xtXv50WmL5SGhyB6/xsWxIvvOQ==
@@ -1110,7 +1110,7 @@
     core-js-compat "^3.31.0"
     semver "^6.3.1"
 
-"@babel/preset-flow@^7.13.13":
+"@babel/preset-flow@^7.13.13", "@babel/preset-flow@^7.23.3":
   version "7.23.3"
   resolved "https://registry.npmjs.org/@babel/preset-flow/-/preset-flow-7.23.3.tgz"
   integrity sha512-7yn6hl8RIv+KNk6iIrGZ+D06VhVY35wLVf23Cz/mMu1zOr7u4MMP4j0nZ9tLf8+4ZFpnib8cFYgB/oYg9hfswA==
@@ -3340,10 +3340,10 @@ babel-helper-replace-supers@^6.24.1:
     babel-traverse "^6.24.1"
     babel-types "^6.24.1"
 
-babel-jest@^29.0.0, babel-jest@^29.2.1, babel-jest@^29.7.0:
-  version "29.7.0"
-  resolved "https://registry.npmjs.org/babel-jest/-/babel-jest-29.7.0.tgz"
-  integrity sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==
+"babel-jest@^29.0.0", "babel-jest@^29.7.0":
+  "integrity" "sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg=="
+  "resolved" "https://registry.npmjs.org/babel-jest/-/babel-jest-29.7.0.tgz"
+  "version" "29.7.0"
   dependencies:
     "@jest/transform" "^29.7.0"
     "@types/babel__core" "^7.1.14"
@@ -8522,6 +8522,11 @@ react-native-screens@^3.27.0, "react-native-screens@>= 3.0.0":
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+"react-native-secure-key-store@^2.0.10":
+  "integrity" "sha512-K7aVlIGxyklnjhCidVexVgZF3LsgUD9GIxMy2NB/xkQsS9E2SJWkD/fJ56e25L2I6a9Mp1zuJrKnCtfBs1CvAw=="
+  "resolved" "https://registry.npmjs.org/react-native-secure-key-store/-/react-native-secure-key-store-2.0.10.tgz"
+  "version" "2.0.10"
 
 react-native-vector-icons@^10.0.2:
   version "10.0.3"

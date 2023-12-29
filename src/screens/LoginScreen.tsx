@@ -20,19 +20,21 @@ import {getTasks} from '../services/taskratchet/getTasks';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
 import {UserContext} from '../App';
-import {props} from '../components/types';
+import {Props} from '../components/types';
 import {login} from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
 
-export default function LoginScreen({navigation, route}: props): JSX.Element {
+export default function LoginScreen({navigation, route}: Props): JSX.Element {
+  const isDarkMode = useIsDarkMode();
+
   const backgroundStyle = {
-    backgroundColor: useIsDarkMode()
+    backgroundColor: isDarkMode
       ? themeProvider.colorsDark.background
       : themeProvider.colorsLight.background,
   };
 
   const textColorStyle = {
-    color: useIsDarkMode() ? 'white' : 'black',
+    color: isDarkMode ? 'white' : 'black',
   };
 
   // these are the default states for the username and password inputs \/
@@ -74,7 +76,7 @@ export default function LoginScreen({navigation, route}: props): JSX.Element {
                 style={[textColorStyle, styles.inputField]}
                 onChangeText={setUserInput}
                 placeholder="Username"
-                placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
+                placeholderTextColor={textColorStyle.color}
                 keyboardType="default"
                 autoComplete="username"
               />
@@ -85,7 +87,7 @@ export default function LoginScreen({navigation, route}: props): JSX.Element {
                 style={[textColorStyle, styles.inputField]}
                 onChangeText={setPassInput}
                 placeholder="Password"
-                placeholderTextColor={useIsDarkMode() ? 'white' : 'black'}
+                placeholderTextColor={textColorStyle.color}
                 keyboardType="default"
                 autoComplete="current-password"
                 secureTextEntry={true}
@@ -93,21 +95,22 @@ export default function LoginScreen({navigation, route}: props): JSX.Element {
             </View>
           </View>
           <Pressable
+            testID="loginButton"
             style={styles.login}
             onPress={async () => {
               try {
                 const result = await login(userInput, passInput);
                 if (result === true) {
-                  navigation.navigate('HomeScreen');
                   const me = await getMe();
                   const tasks = await getTasks();
                   await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
                   await AsyncStorage.setItem('me', JSON.stringify(me));
+                  navigation.navigate('HomeScreen');
                 } else {
                   setOutputStatus('Login Failed, try again!');
                 }
               } catch (error) {
-                console.log('login error ' + error);
+                console.error('login error ' + error);
                 setOutputStatus('Login Failed, try again!');
               }
             }}>

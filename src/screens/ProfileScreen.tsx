@@ -2,7 +2,7 @@ import {Text, View, Button, Image} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import useIsDarkMode from '../utils/checkDarkMode';
 import themeProvider from '../providers/themeProvider';
-import {props} from '../components/types';
+import {Props} from '../components/types';
 
 //api imports
 import {User} from '../services/taskratchet/getMe';
@@ -12,18 +12,21 @@ import fetch1 from '../services/taskratchet/fetch1';
 import getStoredUser from '../utils/getStoredUser';
 import {styles} from '../styles/profileScreenStyle';
 
-export default function ProfileScreen({navigation, route}: props) {
+export default function ProfileScreen({navigation, route}: Props) {
+  const isDarkMode = useIsDarkMode();
   const backgroundStyle = {
-    backgroundColor: useIsDarkMode()
+    backgroundColor: isDarkMode
       ? themeProvider.colorsDark.background
       : themeProvider.colorsLight.background,
   };
 
   const textColorStyle = {
-    color: useIsDarkMode() ? 'white' : 'black',
+    color: isDarkMode ? 'white' : 'black',
   };
 
   const [user, setCurrentUser] = useState<User | null>(null);
+
+  const dataBorderColor = {borderColor: isDarkMode ? 'white' : 'black'};
 
   useEffect(() => {
     async function getUser() {
@@ -40,8 +43,6 @@ export default function ProfileScreen({navigation, route}: props) {
   function goToLoginScreen() {
     navigation.navigate('LoginScreen');
   }
-
-  console.log(fetch1('me/tasks', true));
 
   return (
     <View style={[backgroundStyle, styles.container]}>
@@ -62,7 +63,7 @@ export default function ProfileScreen({navigation, route}: props) {
       </View>
       <View style={styles.dataGroup}>
         <View>
-          <View style={styles.dataPair}>
+          <View style={[dataBorderColor, styles.dataPair]}>
             <Text style={[textColorStyle, styles.dataText]}>Name:</Text>
             <Text
               style={[textColorStyle, styles.dataValueText]}
@@ -72,7 +73,7 @@ export default function ProfileScreen({navigation, route}: props) {
           </View>
         </View>
         <View>
-          <View style={styles.dataPair}>
+          <View style={[dataBorderColor, styles.dataPair]}>
             <Text style={[textColorStyle, styles.dataText]}>Email:</Text>
             <Text
               style={[textColorStyle, styles.dataValueText]}
@@ -82,7 +83,7 @@ export default function ProfileScreen({navigation, route}: props) {
           </View>
         </View>
         <View>
-          <View style={styles.dataPair}>
+          <View style={[dataBorderColor, styles.dataPair]}>
             <Text style={[textColorStyle, styles.dataText]}>Timezone:</Text>
             <Text
               style={[textColorStyle, styles.dataValueText]}

@@ -4,8 +4,9 @@ import themeProvider from '../providers/themeProvider';
 import React from 'react';
 
 export default function NavBar(): JSX.Element {
+  const isDarkMode = useIsDarkMode();
   const secondaryStyle = {
-    backgroundColor: useIsDarkMode()
+    backgroundColor: isDarkMode
       ? themeProvider.colorsDark.secondary
       : themeProvider.colorsLight.secondary,
   };

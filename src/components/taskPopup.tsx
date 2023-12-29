@@ -16,7 +16,7 @@ export default function TaskPopup({
   modalVisible,
   setModalVisible,
 }: TaskPopupProps): JSX.Element {
-  const [tasks, setTasks] = useState<task[]>([]);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -71,7 +71,7 @@ export default function TaskPopup({
           <View style={styles.modalView}>
             <View style={styles.line}>
               <View>
-                <Text style={styles.title} numberOfLines={1}>
+                <Text style={styles.title}>
                   {tasks && tasks !== null && tasks.length > 0
                     ? tasks[item].task
                     : 'Loading...'}
