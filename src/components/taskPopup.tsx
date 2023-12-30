@@ -1,15 +1,14 @@
-//react imports
-import {View, Text, Modal, Pressable} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Modal, Pressable, Text, View} from 'react-native';
 
+import themeProvider from '../providers/themeProvider';
 import {updateTask} from '../services/taskratchet/updateTask';
-
-//local imports
-import getStoredTasks from '../utils/getStoredTasks';
-import checkDate from '../utils/checkDate';
-import {TaskPopupProps, task} from './types';
-import convertCents from '../utils/convertCents';
 import {styles} from '../styles/taskPopupStyle';
+import useIsDarkMode from '../utils/checkDarkMode';
+import checkDate from '../utils/checkDate';
+import convertCents from '../utils/convertCents';
+import getStoredTasks from '../utils/getStoredTasks';
+import {TaskPopupProps, TaskType} from './types';
 
 export default function TaskPopup({
   item,
@@ -18,17 +17,37 @@ export default function TaskPopup({
 }: TaskPopupProps): JSX.Element {
   const [tasks, setTasks] = useState<TaskType[]>([]);
 
+  const isDarkMode = useIsDarkMode();
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode
+      ? themeProvider.colorsDark.secondary
+      : themeProvider.colorsLight.secondary,
+  };
+
+  const textColorStyle = {
+    color: isDarkMode ? 'white' : 'black',
+  };
+
   useEffect(() => {
     async function fetchTasks() {
-      const fetchedTasks = await getStoredTasks();
-      setTasks(fetchedTasks);
+      try {
+        const fetchedTasks = await getStoredTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    fetchTasks();
+    fetchTasks().catch(error => {
+      console.error('Error fetching tasks:', error);
+    });
   }, []);
 
   function getDeadlineDetails(days: number) {
-    if (days === null) return {text: '', style: {}}; // TODO: this is a temporary fix for null data
+    if (days === null) {
+      return {text: '', style: {}}; // TODO: this is a temporary fix for null data
+    }
     switch (true) {
       case days < 0:
         return {text: 'Overdue', style: styles.textRed};
@@ -68,10 +87,10 @@ export default function TaskPopup({
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+          <View style={[styles.modalView, backgroundStyle]}>
             <View style={styles.line}>
               <View>
-                <Text style={styles.title}>
+                <Text style={[styles.title, textColorStyle]}>
                   {tasks && tasks !== null && tasks.length > 0
                     ? tasks[item].task
                     : 'Loading...'}
@@ -80,7 +99,7 @@ export default function TaskPopup({
                   {deadlineDetails.text}
                 </Text>
               </View>
-              <Text style={styles.stakes}>
+              <Text style={[styles.stakes, textColorStyle]}>
                 {tasks && tasks[item]
                   ? convertCents(tasks[item].cents)
                   : 'Loading...'}
@@ -99,9 +118,23 @@ export default function TaskPopup({
                 ]}
                 onPress={() => {
                   if (tasks[item].complete) {
-                    updateTask(tasks[item].id, {complete: false});
+                    updateTask(tasks[item].id, {complete: false}).catch(
+                      error => {
+                        console.error(
+                          'Error updating complete task to incomplete:',
+                          error,
+                        );
+                      },
+                    );
                   } else {
-                    updateTask(tasks[item].id, {complete: true});
+                    updateTask(tasks[item].id, {complete: true}).catch(
+                      error => {
+                        console.error(
+                          'Error updating incomplete task to complete:',
+                          error,
+                        );
+                      },
+                    );
                   }
                 }}>
                 <Text style={styles.textStyle}>{CompletionText()}</Text>

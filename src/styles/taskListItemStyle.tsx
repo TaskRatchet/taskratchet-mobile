@@ -63,4 +63,7 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 5,
   },
+  flexOne: {
+    flex: 1,
+  },
 });

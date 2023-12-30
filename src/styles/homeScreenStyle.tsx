@@ -62,10 +62,46 @@ export const styles = StyleSheet.create({
     height: 40,
   },
   userProfile: {
-    flexDirection: 'row',
-    height: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginLeft: 10,
+    marginTop: 10,
+    fontSize: 18,
+    height: 33,
   },
   navBar: {},
+  profile_infoButtons: {
+    flex: 1,
+    flexContent: 'space_between',
+    flexDirection: 'row',
+  },
+  profileImage: {
+    marginLeft: 10,
+    marginTop: 12,
+    width: 18,
+    height: 18,
+  },
+  infoImageStyle: {
+    marginRight: 10,
+    marginTop: 12,
+    width: 22,
+    height: 22,
+  },
+  headerStylesBox: {
+    margin: 50,
+    alignItems: 'center',
+  },
+  screenTitle: {
+    fontSize: 28,
+    fontFamily: 'Roboto-Bold',
+  },
+  imageStyle: {
+    width: '140%',
+    height: '80%',
+    opacity: 0.5,
+    position: 'absolute',
+    top: '-30%',
+    left: '-40%',
+  },
+  spacer: {
+    height: 100,
+  },
 });

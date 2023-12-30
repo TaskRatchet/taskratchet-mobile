@@ -1,7 +1,9 @@
-import {StyleSheet, View, Image} from 'react-native';
-import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../providers/themeProvider';
 import React from 'react';
+import {Image, ImageSourcePropType, StyleSheet, View} from 'react-native';
+
+import navCheckBlack from '../../assets/images/nav_check_black.png';
+import themeProvider from '../providers/themeProvider';
+import useIsDarkMode from '../utils/checkDarkMode';
 
 export default function NavBar(): JSX.Element {
   const isDarkMode = useIsDarkMode();
@@ -13,14 +15,14 @@ export default function NavBar(): JSX.Element {
 
   return (
     <View style={[secondaryStyle, styles.navBar]}>
-      <View style={styles.barElement}></View>
+      <View style={styles.barElement} />
       <View style={styles.barElement}>
         <Image
           style={styles.navIcon}
-          source={require('../../assets/images/nav_check_black.png')}
+          source={navCheckBlack as ImageSourcePropType}
         />
       </View>
-      <View style={styles.barElement}></View>
+      <View style={styles.barElement} />
     </View>
   );
 }

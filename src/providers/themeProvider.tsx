@@ -7,7 +7,8 @@ const themeProvider = {
   colorsDark: {
     background: '#1A2533',
     primary: 'rgba(124, 138, 159, 0.4)',
-    secondary: '#001E24',
+    secondary: '#0C0E11',
+    secondaryLight: '#1A2533',
   },
 };
 

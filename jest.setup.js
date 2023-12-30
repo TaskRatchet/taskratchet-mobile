@@ -1,3 +1,5 @@
+import React from 'react';
+
 jest.mock('react-native-screens', () => ({
   enableScreens: jest.fn(),
 }));

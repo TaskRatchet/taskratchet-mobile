@@ -65,4 +65,16 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
   },
+  backgroundImage: {
+    width: '140%',
+    height: '80%',
+    opacity: 0.5,
+    position: 'absolute',
+    top: '-30%',
+    left: '-40%',
+  },
+  logoBoardered: {
+    width: 60,
+    height: 60,
+  },
 });

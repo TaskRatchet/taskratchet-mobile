@@ -19,14 +19,12 @@ export const styles = StyleSheet.create({
     fontFamily: 'Trebuchet MS',
   },
   title: {
+    flexShrink: 1,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'left',
     marginBottom: 10,
-  },
-  description: {
-    fontSize: 16,
-    marginBottom: 5,
+    maxWidth: '90%',
   },
   deadline: {
     fontSize: 16,
@@ -38,7 +36,6 @@ export const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     shadowColor: '#000',

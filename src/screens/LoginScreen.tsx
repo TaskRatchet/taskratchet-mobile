@@ -1,30 +1,27 @@
-//dependency imports
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  Pressable,
-  KeyboardAvoidingView,
-} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
+import {
+  Image,
+  ImageSourcePropType,
+  KeyboardAvoidingView,
+  Pressable,
+  SafeAreaView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
-//api imports
+import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
+import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
+import {Props} from '../components/types';
+import themeProvider from '../providers/themeProvider';
 import {getMe} from '../services/taskratchet/getMe';
 import {getTasks} from '../services/taskratchet/getTasks';
-
-//local imports
-import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../providers/themeProvider';
-import {UserContext} from '../App';
-import {Props} from '../components/types';
 import {login} from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
+import useIsDarkMode from '../utils/checkDarkMode';
 
-export default function LoginScreen({navigation, route}: Props): JSX.Element {
+export default function LoginScreen({navigation}: Props): JSX.Element {
   const isDarkMode = useIsDarkMode();
 
   const backgroundStyle = {
@@ -42,27 +39,36 @@ export default function LoginScreen({navigation, route}: Props): JSX.Element {
   const [passInput, setPassInput] = React.useState('');
   const [outputStatus, setOutputStatus] = React.useState('');
 
-  const {setCurrentUser} = React.useContext(UserContext);
+  async function handleLogin() {
+    try {
+      const result = await login(userInput, passInput);
+      if (result === true) {
+        const me = await getMe();
+        const tasks = await getTasks();
+        await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+        await AsyncStorage.setItem('me', JSON.stringify(me));
+        navigation.navigate('HomeScreen');
+      } else {
+        setOutputStatus('Login Failed, try again!');
+      }
+    } catch (error) {
+      console.error('login error ' + String(error));
+      setOutputStatus('Login Failed, try again!');
+    }
+  }
 
   return (
     <View style={[backgroundStyle, styles.screen]}>
       <Image
-        style={{
-          width: '140%',
-          height: '80%',
-          opacity: 0.5,
-          position: 'absolute',
-          top: '-30%',
-          left: '-40%',
-        }}
+        style={styles.backgroundImage}
         blurRadius={10}
-        source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
+        source={logo as ImageSourcePropType}
       />
       <SafeAreaView>
         <KeyboardAvoidingView style={styles.container}>
           <Image
-            style={{width: 60, height: 60}}
-            source={require('../../assets/images/logo_taskratchet_512_bordered.png')}
+            style={styles.logoBoardered}
+            source={logoBordered as ImageSourcePropType}
           />
           <View style={styles.titleGroup}>
             <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
@@ -97,22 +103,10 @@ export default function LoginScreen({navigation, route}: Props): JSX.Element {
           <Pressable
             testID="loginButton"
             style={styles.login}
-            onPress={async () => {
-              try {
-                const result = await login(userInput, passInput);
-                if (result === true) {
-                  const me = await getMe();
-                  const tasks = await getTasks();
-                  await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
-                  await AsyncStorage.setItem('me', JSON.stringify(me));
-                  navigation.navigate('HomeScreen');
-                } else {
-                  setOutputStatus('Login Failed, try again!');
-                }
-              } catch (error) {
-                console.error('login error ' + error);
-                setOutputStatus('Login Failed, try again!');
-              }
+            onPress={() => {
+              handleLogin().catch(error => {
+                console.error('login error ' + String(error));
+              });
             }}>
             <Text style={styles.loginText}>Login</Text>
           </Pressable>

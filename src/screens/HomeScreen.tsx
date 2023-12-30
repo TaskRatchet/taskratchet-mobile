@@ -1,55 +1,49 @@
-import React, {useState, useEffect} from 'react';
-import {Text, View, Image, Pressable, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 
-//api imports
-import {User} from '../services/taskratchet/getMe';
-
-//local imports
-import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../providers/themeProvider';
-import NavBar from '../components/navBar';
-import Task from '../components/taskListItem';
-import {TaskType} from '../components/types';
-import TaskPopup from '../components/taskPopup';
+import infoIconBlack from '../../assets/icons/information_icon(black).png';
+import infoIconWhite from '../../assets/icons/information_icon(white).png';
+import userLogoBlack from '../../assets/icons/user_logo(black).png';
+import userLogoWhite from '../../assets/icons/user_logo(white).png';
+import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import InfoPopup from '../components/infoPopup';
-import getStoredUser from '../utils/getStoredUser';
-import getStoredTasks from '../utils/getStoredTasks';
-import checkDate from '../utils/checkDate';
+import Task from '../components/taskListItem';
+import TaskPopup from '../components/taskPopup';
+import {Props, TaskType} from '../components/types';
+import themeProvider from '../providers/themeProvider';
 import {styles} from '../styles/homeScreenStyle';
+import useIsDarkMode from '../utils/checkDarkMode';
+import checkDate from '../utils/checkDate';
+import getStoredTasks from '../utils/getStoredTasks';
 
 export default function HomeScreen({navigation}: Props): JSX.Element {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [clickedItem, setClickedItem] = useState('0');
-  const [user, setCurrentUser] = useState<User | null>(null);
-  const [tasks, setCurrentTasks] = useState<Task[]>([]);
+  const [tasks, setCurrentTasks] = useState<TaskType[]>([]);
 
   useEffect(() => {
-    async function getUser() {
-      try {
-        const result: User = await getStoredUser();
-        setCurrentUser(result);
-      } catch (error) {
-        console.error(
-          `Error retrieving user from storage. Error Log: ${error}`,
-        );
-      }
-    }
-
-    getUser();
-
     async function getTasksAsync() {
       try {
-        const result = await getStoredTasks();
+        const result: TaskType[] = await getStoredTasks();
         setCurrentTasks(result);
       } catch (error) {
         console.error(
-          `Error retrieving tasks from storage. Error Log: ${error}`,
+          `Error retrieving tasks from storage. Error Log: ${String(error)}`,
         );
       }
     }
 
-    getTasksAsync();
+    getTasksAsync().catch(error => {
+      console.error('error fetching tasks', error);
+    });
   }, []);
 
   const isDarkMode = useIsDarkMode();
@@ -80,16 +74,9 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   return (
     <View style={[backgroundStyle, styles.background]}>
       <Image
-        style={{
-          width: '140%',
-          height: '80%',
-          opacity: 0.5,
-          position: 'absolute',
-          top: '-30%',
-          left: '-40%',
-        }}
+        style={styles.imageStyle}
         blurRadius={10}
-        source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
+        source={logo as ImageSourcePropType}
       />
       <InfoPopup
         testID="infoPopup"
@@ -111,8 +98,8 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               style={styles.profileImage}
               source={
                 isDarkMode
-                  ? require('../../assets/icons/user_logo(white).png')
-                  : require('../../assets/icons/user_logo(black).png')
+                  ? (userLogoWhite as ImageSourcePropType)
+                  : (userLogoBlack as ImageSourcePropType)
               }
             />
             <Text style={[textColorStyle, styles.userProfile]}>
@@ -124,8 +111,8 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               style={styles.infoImageStyle}
               source={
                 isDarkMode
-                  ? require('../../assets/icons/information_icon(white).png')
-                  : require('../../assets/icons/information_icon(black).png')
+                  ? (infoIconWhite as ImageSourcePropType)
+                  : (infoIconBlack as ImageSourcePropType)
               }
             />
           </Pressable>
@@ -137,16 +124,23 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
           {tasks &&
             Object.keys(tasks)
               .sort((a, b) => {
-                const diffDaysA = checkDate(tasks[a].due);
-                const diffDaysB = checkDate(tasks[b].due);
+                const taskA = tasks[Number(a)];
+                const taskB = tasks[Number(b)];
 
-                // If the deadline is past, return a large number to sort the task to the bottom
-                const timeLeftA =
-                  diffDaysA < 0 ? Number.MAX_SAFE_INTEGER : diffDaysA;
-                const timeLeftB =
-                  diffDaysB < 0 ? Number.MAX_SAFE_INTEGER : diffDaysB;
+                if ('due' in taskA && 'due' in taskB) {
+                  const diffDaysA = checkDate(String(taskA.due));
+                  const diffDaysB = checkDate(String(taskB.due));
 
-                return timeLeftA - timeLeftB;
+                  // If the deadline is past, return a large number to sort the task to the bottom
+                  const timeLeftA =
+                    diffDaysA < 0 ? Number.MAX_SAFE_INTEGER : diffDaysA;
+                  const timeLeftB =
+                    diffDaysB < 0 ? Number.MAX_SAFE_INTEGER : diffDaysB;
+
+                  return timeLeftA - timeLeftB;
+                } else {
+                  return 0;
+                }
               })
               .map(key => {
                 return (
@@ -155,7 +149,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
                   </Pressable>
                 );
               })}
-          <View style={{height: 100} /* spacer */}></View>
+          <View style={styles.spacer /* spacer */} />
         </View>
       </ScrollView>
     </View>

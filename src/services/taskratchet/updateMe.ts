@@ -1,5 +1,5 @@
-import pipeMap from './pipeMap';
 import fetch1 from './fetch1';
+import pipeMap from './pipeMap';
 
 export interface MeInput {
   name?: string | null;

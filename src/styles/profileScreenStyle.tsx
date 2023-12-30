@@ -3,10 +3,12 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   dataValueText: {
     fontSize: 18,
+    maxWidth: '70%',
   },
   dataText: {
     fontWeight: 'bold',
     fontSize: 18,
+    flex: 1,
   },
   dataGroup: {
     marginTop: 20,
@@ -45,5 +47,13 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  backgroundImage: {
+    width: '140%',
+    height: '80%',
+    opacity: 0.5,
+    position: 'absolute',
+    top: '-30%',
+    left: '-40%',
   },
 });

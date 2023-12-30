@@ -1,15 +1,13 @@
-//react imports
-import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {Text, View} from 'react-native';
 
-//local imports
 import themeProvider from '../providers/themeProvider';
+import {styles} from '../styles/taskListItemStyle';
+import useIsDarkMode from '../utils/checkDarkMode';
+import checkDate from '../utils/checkDate';
+import convertCents from '../utils/convertCents';
 import getStoredTasks from '../utils/getStoredTasks';
 import {TaskType} from './types';
-import checkDate from '../utils/checkDate';
-import useIsDarkMode from '../utils/checkDarkMode';
-import convertCents from '../utils/convertCents';
-import {styles} from '../styles/taskListItemStyle';
 
 interface taskProps {
   item: number;
@@ -31,11 +29,17 @@ export default function Task({item}: taskProps): JSX.Element {
 
   useEffect(() => {
     async function fetchTasks() {
-      const fetchedTasks = await getStoredTasks();
-      setTasks(fetchedTasks);
+      try {
+        const fetchedTasks: TaskType[] = await getStoredTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    fetchTasks();
+    fetchTasks().catch(error => {
+      console.error('Error fetching tasks:', error);
+    });
   }, []);
 
   function getDeadlineDetails(isCompleted: boolean, days: number) {
@@ -104,7 +108,7 @@ export default function Task({item}: taskProps): JSX.Element {
   return (
     <View style={[primaryStyle, styles.taskBlock]}>
       <View style={[styles.row]}>
-        <View style={{flex: 1}}>
+        <View style={[styles.flexOne]}>
           <Text style={[textColorStyle, styles.taskTitle]} numberOfLines={1}>
             {tasks && tasks.length > 0 ? tasks[item].task : 'Loading...'}
           </Text>

@@ -1,18 +1,15 @@
-import {Text, View, Button, Image} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../providers/themeProvider';
+import React, {useEffect, useState} from 'react';
+import {Button, Image, ImageSourcePropType, Text, View} from 'react-native';
+
+import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import {Props} from '../components/types';
-
-//api imports
+import themeProvider from '../providers/themeProvider';
 import {User} from '../services/taskratchet/getMe';
-import fetch1 from '../services/taskratchet/fetch1';
-
-//local imports
-import getStoredUser from '../utils/getStoredUser';
 import {styles} from '../styles/profileScreenStyle';
+import useIsDarkMode from '../utils/checkDarkMode';
+import getStoredUser from '../utils/getStoredUser';
 
-export default function ProfileScreen({navigation, route}: Props) {
+export default function ProfileScreen({navigation}: Props) {
   const isDarkMode = useIsDarkMode();
   const backgroundStyle = {
     backgroundColor: isDarkMode
@@ -30,14 +27,19 @@ export default function ProfileScreen({navigation, route}: Props) {
 
   useEffect(() => {
     async function getUser() {
-      const result: User = await getStoredUser();
-      if (result === null) {
-        throw new Error('Unable to get user info');
+      try {
+        const result: User | null = await getStoredUser();
+        if (result === null) {
+          throw new Error('Unable to get user info');
+        }
+        setCurrentUser(result);
+      } catch (error) {
+        console.error('getUser error ' + String(error));
       }
-      setCurrentUser(result);
     }
 
-    getUser();
+    // eslint-disable-next-line no-void
+    void getUser();
   }, []);
 
   function goToLoginScreen() {
@@ -47,16 +49,9 @@ export default function ProfileScreen({navigation, route}: Props) {
   return (
     <View style={[backgroundStyle, styles.container]}>
       <Image
-        style={{
-          width: '140%',
-          height: '80%',
-          opacity: 0.5,
-          position: 'absolute',
-          top: '-30%',
-          left: '-40%',
-        }}
+        style={styles.backgroundImage}
         blurRadius={10}
-        source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
+        source={logo as ImageSourcePropType}
       />
       <View style={styles.nameAndAvatar}>
         <Text style={[textColorStyle, styles.name]}>Profile</Text>
