@@ -1,5 +1,4 @@
 import fetch1 from './fetch1';
-import RNSecureKeyStore from 'react-native-secure-key-store';
 
 export type Card = {
   brand: string;
