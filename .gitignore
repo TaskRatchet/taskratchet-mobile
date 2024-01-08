@@ -2,6 +2,7 @@ ios/Pods/
 android/Pods/
 Identity/
 devReferances
+*.log
 
 # OSX
 #

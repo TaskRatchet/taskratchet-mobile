@@ -38,5 +38,5 @@ export async function logout(): Promise<void> {
   await AsyncStorage.removeItem('email');
   await AsyncStorage.removeItem('token');
 
-  publishSession();
+  await publishSession();
 }

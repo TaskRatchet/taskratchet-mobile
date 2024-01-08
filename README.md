@@ -27,6 +27,19 @@ Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _roo
 ### For Android
 
 ```bash
+# Update the .zshrc file: (usualy located in /Users/Username/.zshrc)
+# Open your zshrc file
+nano ~/.zshrc
+
+# Add the following lines to the bottom of the file: (modify paths if needed)
+export ANDROID_HOME=/Users/lukearthur/Library/Android/sdk
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+
+# Run the following command in terminal to source the .zshrc file again, or restart terminal
+. ~/.zshrc
+```
+
+```bash
 # using npm
 npm run android
 
@@ -79,3 +92,44 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+## Step 4: Modifying and Pushing to GitHub
+
+Assuming you've cloned an existing repository, you can make modifications to the code and then push those changes back to GitHub.
+
+```bash
+# Navigate to your project directory
+cd path/to/your/project
+
+# Make sure you're on the correct branch
+git checkout branch-name
+
+# Add all modified files to the staging area
+git add .
+
+# Commit the changes
+git commit -m "Describe your changes here"
+
+# Push your changes to the GitHub repository
+git push origin branch-name
+```
+
+## Step 5: Pushing to Build
+
+### Using Expo Application Services (EAS)
+
+Expo Application Services (EAS) is a suite of tools and services that help you build, deploy, and update your app more quickly. To use EAS, you need to install the `eas-cli` package globally and log in to your Expo account.
+
+```bash
+# Install eas-cli globally
+npm install -g eas-cli
+
+# Log in to your Expo account
+eas login
+
+# Build your project
+eas build
+
+# Submit your project to the App Store or Google Play
+eas submit
+```
