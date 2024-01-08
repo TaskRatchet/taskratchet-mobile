@@ -21,6 +21,7 @@
     "@testing-library/react-native": "^12.4.2",
     "babel-preset-react-native": "2.1.0",
     "eslint-plugin-react-native": "^4.1.0",
+    "expo-dev-client": "~2.4.12",
     "expo-secure-store": "^12.5.0",
     "firebase": "^10.7.0",
     "moment": "^2.29.4",

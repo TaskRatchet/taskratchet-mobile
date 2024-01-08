@@ -1,4 +1,13 @@
 {
   "name": "mobile",
-  "displayName": "mobile"
+  "displayName": "mobile",
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "634f0123-3105-4f6d-91dc-57d2d4449007"
+      }
+    },
+    "owner": "taskratchet",
+    "slug": "taskratchet-mobile"
+  }
 }
