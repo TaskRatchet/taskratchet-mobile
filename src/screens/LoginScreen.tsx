@@ -67,7 +67,7 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
       <SafeAreaView>
         <KeyboardAvoidingView style={styles.container}>
           <Image
-            style={styles.logoBoardered}
+            style={styles.logoBordered}
             source={logoBordered as ImageSourcePropType}
           />
           <View style={styles.titleGroup}>

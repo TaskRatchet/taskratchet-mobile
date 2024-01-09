@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
     top: '-30%',
     left: '-40%',
   },
-  logoBoardered: {
+  logoBordered: {
     width: 60,
     height: 60,
   },
