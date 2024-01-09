@@ -1,8 +1,9 @@
-import {login} from './login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RNSecureKeyStore from 'react-native-secure-key-store';
 import fetchMock from 'jest-fetch-mock';
+import RNSecureKeyStore, {ACCESSIBLE} from 'react-native-secure-key-store';
+
 import fetch1 from './fetch1';
+import {login} from './login';
 
 jest.mock('react-native-secure-key-store', () => ({
   set: jest.fn(),
@@ -45,7 +46,7 @@ describe('login', () => {
 
     expect(loginResult).toBeTruthy();
     expect(RNSecureKeyStore.set).toHaveBeenCalledWith('token', 'token', {
-      accessible: RNSecureKeyStore.ACCESSIBLE.ALWAYS_THIS_DEVICE_ONLY,
+      accessible: ACCESSIBLE.ALWAYS_THIS_DEVICE_ONLY,
     });
   });
 

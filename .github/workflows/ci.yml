@@ -42,4 +42,4 @@ jobs:
       - name: Install
         run: npm install
       - name: Eslint
-        run: npm run lint
+        run: npm run lint:check

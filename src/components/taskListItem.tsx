@@ -1,21 +1,19 @@
-//react imports
-import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {Text, View} from 'react-native';
 
-//local imports
 import themeProvider from '../providers/themeProvider';
-import getStoredTasks from '../utils/getStoredTasks';
-import {taskType, tasksType, TaskType} from './types';
-import checkDate from '../utils/checkDate';
+import {styles} from '../styles/taskListItemStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
+import checkDate from '../utils/checkDate';
 import convertCents from '../utils/convertCents';
+import getStoredTasks from '../utils/getStoredTasks';
+import {TaskType} from './types';
 
 interface taskProps {
   item: number;
 }
 
 export default function Task({item}: taskProps): JSX.Element {
-  // const {title, deadline, stakes} = tasksArray[Number(item)];
   const isDarkMode = useIsDarkMode();
   const primaryStyle = {
     backgroundColor: isDarkMode
@@ -31,11 +29,17 @@ export default function Task({item}: taskProps): JSX.Element {
 
   useEffect(() => {
     async function fetchTasks() {
-      const fetchedTasks = await getStoredTasks();
-      setTasks(fetchedTasks);
+      try {
+        const fetchedTasks: TaskType[] = await getStoredTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    fetchTasks();
+    fetchTasks().catch(error => {
+      console.error('Error fetching tasks:', error);
+    });
   }, []);
 
   function getDeadlineDetails(isCompleted: boolean, days: number) {
@@ -104,7 +108,7 @@ export default function Task({item}: taskProps): JSX.Element {
   return (
     <View style={[primaryStyle, styles.taskBlock]}>
       <View style={[styles.row]}>
-        <View style={{flex: 1}}>
+        <View style={[styles.flexOne]}>
           <Text style={[textColorStyle, styles.taskTitle]} numberOfLines={1}>
             {tasks && tasks.length > 0 ? tasks[item].task : 'Loading...'}
           </Text>
@@ -123,69 +127,3 @@ export default function Task({item}: taskProps): JSX.Element {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  footerGreen: {
-    backgroundColor: '#33AB1E',
-  },
-  footerYellow: {
-    backgroundColor: '#B6A30B',
-  },
-  footerRed: {
-    backgroundColor: '#D03131',
-  },
-  footerGrey: {
-    backgroundColor: '#A8A8A8',
-  },
-  statusFooter: {
-    height: 5,
-    marginTop: 10,
-    marginBottom: -15,
-    marginLeft: -20,
-    marginRight: -20,
-  },
-  taskBlock: {
-    padding: 15,
-    paddingLeft: 20,
-    paddingRight: 20,
-    margin: 10,
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: {width: 1, height: 2},
-    shadowOpacity: 0.25,
-    overflow: 'hidden',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  textRed: {
-    color: '#D03131',
-  },
-  textYellow: {
-    color: '#9DA41D',
-  },
-  textGreen: {
-    color: '#33AB1E',
-  },
-  taskSideRight: {
-    right: 0,
-    top: 0,
-    bottom: 0,
-    justifyContent: 'center',
-  },
-  taskStakes: {
-    fontSize: 23,
-    marginRight: 0,
-  },
-  taskDeadline: {
-    fontSize: 13,
-    fontWeight: 'bold',
-  },
-  taskTitle: {
-    fontSize: 18,
-    marginBottom: 5,
-    maxWidth: '97%',
-  },
-});

@@ -1,5 +1,5 @@
-import {updateMe} from './updateMe';
 import fetch1 from './fetch1';
+import {updateMe} from './updateMe';
 
 jest.mock('./fetch1');
 

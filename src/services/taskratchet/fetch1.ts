@@ -1,11 +1,15 @@
-import {logout} from './sessions';
-import {API1_BASE} from './constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import secureKeystore from 'react-native-secure-key-store';
 
+import {API1_BASE} from './constants';
+import {logout} from './sessions';
+
 const _trim = (s: string, c: string) => {
-  if (c === ']') c = '\\]';
-  if (c === '\\') c = '\\\\';
+  if (c === ']') {
+    c = '\\]';
+  }
+  if (c === '\\') {
+    c = '\\\\';
+  }
   return s.replace(new RegExp('^[' + c + ']+|[' + c + ']+$', 'g'), '');
 };
 
@@ -15,9 +19,9 @@ export default async function fetch1(
   method = 'GET',
   data: unknown = null,
 ): Promise<Response> {
-  let token;
+  let token: string | false;
   try {
-    token = await secureKeystore.get('token');
+    token = (await secureKeystore.get('token')) as string;
   } catch (error) {
     token = false;
   }
@@ -29,7 +33,7 @@ export default async function fetch1(
   }
 
   // noinspection SpellCheckingInspection
-  const response = await fetch(API1_BASE + route_, {
+  const response: Response = await fetch(API1_BASE + route_, {
     method: method,
     body: data ? JSON.stringify(data) : undefined,
     headers: {
@@ -38,7 +42,7 @@ export default async function fetch1(
   });
 
   if (response.status === 403) {
-    logout();
+    await logout();
   }
 
   return response;

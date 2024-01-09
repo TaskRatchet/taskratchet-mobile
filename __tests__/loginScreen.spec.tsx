@@ -1,8 +1,5 @@
 describe('loginScreen', () => {
-  it('test runs', async () => {
+  it('test runs', () => {
     expect(true).toBeTruthy();
-    // Arrange
-    // Act
-    // Assert
   });
 });

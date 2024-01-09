@@ -1,42 +1,36 @@
-//dependencie imports
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  Pressable,
-  KeyboardAvoidingView,
-} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
+import {
+  Image,
+  ImageSourcePropType,
+  KeyboardAvoidingView,
+  Pressable,
+  SafeAreaView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
-//api imports
+import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
+import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
+import {Props} from '../components/types';
+import themeProvider from '../providers/themeProvider';
 import {getMe} from '../services/taskratchet/getMe';
 import {getTasks} from '../services/taskratchet/getTasks';
-
-//local imports
-import checkCredentials from '../utils/checkCredentials';
-import useIsDarkMode from '../utils/checkDarkMode';
-import themeProvider from '../providers/themeProvider';
-import {UserContext} from '../App';
-import {Props} from '../components/types';
 import {login} from '../services/taskratchet/login';
-import {get} from 'http';
+import {styles} from '../styles/loginScreenStyle';
+import useIsDarkMode from '../utils/checkDarkMode';
 
-export default function LoginScreen({navigation, route}: Props): JSX.Element {
+export default function LoginScreen({navigation}: Props): JSX.Element {
   const isDarkMode = useIsDarkMode();
 
   const backgroundStyle = {
-    // this is the background color of the login screen
     backgroundColor: isDarkMode
       ? themeProvider.colorsDark.background
       : themeProvider.colorsLight.background,
   };
 
   const textColorStyle = {
-    // this is the text color logic for the login screen
     color: isDarkMode ? 'white' : 'black',
   };
 
@@ -45,28 +39,36 @@ export default function LoginScreen({navigation, route}: Props): JSX.Element {
   const [passInput, setPassInput] = React.useState('');
   const [outputStatus, setOutputStatus] = React.useState('');
 
-  const {setCurrentUser} = React.useContext(UserContext);
+  async function handleLogin() {
+    try {
+      const result = await login(userInput, passInput);
+      if (result === true) {
+        const me = await getMe();
+        const tasks = await getTasks();
+        await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+        await AsyncStorage.setItem('me', JSON.stringify(me));
+        navigation.navigate('HomeScreen');
+      } else {
+        setOutputStatus('Login Failed, try again!');
+      }
+    } catch (error) {
+      console.error('login error ' + String(error));
+      setOutputStatus('Login Failed, try again!');
+    }
+  }
 
   return (
-    // this is the background \/
     <View style={[backgroundStyle, styles.screen]}>
       <Image
-        style={{
-          width: '140%',
-          height: '80%',
-          opacity: 0.5,
-          position: 'absolute',
-          top: '-30%',
-          left: '-40%',
-        }}
+        style={styles.backgroundImage}
         blurRadius={10}
-        source={require('../../assets/images/logo_taskratchet_square_64@2.png')}
+        source={logo as ImageSourcePropType}
       />
       <SafeAreaView>
         <KeyboardAvoidingView style={styles.container}>
           <Image
-            style={{width: 60, height: 60}}
-            source={require('../../assets/images/logo_taskratchet_512_bordered.png')}
+            style={styles.logoBordered}
+            source={logoBordered as ImageSourcePropType}
           />
           <View style={styles.titleGroup}>
             <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
@@ -101,22 +103,10 @@ export default function LoginScreen({navigation, route}: Props): JSX.Element {
           <Pressable
             testID="loginButton"
             style={styles.login}
-            onPress={async () => {
-              try {
-                const result = await login(userInput, passInput);
-                if (result === true) {
-                  const me = await getMe();
-                  const tasks = await getTasks();
-                  await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
-                  await AsyncStorage.setItem('me', JSON.stringify(me));
-                  navigation.navigate('HomeScreen');
-                } else {
-                  setOutputStatus('Login Failed, try again!');
-                }
-              } catch (error) {
-                console.error('login error ' + error);
-                setOutputStatus('Login Failed, try again!');
-              }
+            onPress={() => {
+              handleLogin().catch(error => {
+                console.error('login error ' + String(error));
+              });
             }}>
             <Text style={styles.loginText}>Login</Text>
           </Pressable>
@@ -126,70 +116,3 @@ export default function LoginScreen({navigation, route}: Props): JSX.Element {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  loginText: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#2A5364',
-    textAlign: 'center',
-  },
-  login: {
-    width: 300,
-    marginTop: 15,
-    marginBottom: 15,
-    padding: 5,
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 20,
-    backgroundColor: '#AAD9EB',
-  },
-  screen: {
-    height: '100%',
-  },
-  container: {
-    marginTop: '30%',
-    padding: 24,
-    fontSize: 50,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  credentials: {
-    alignItems: 'flex-end',
-  },
-  inputTitle: {
-    textAlign: 'right',
-    marginLeft: 10,
-    margin: 20,
-    fontSize: 18,
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  inputField: {
-    backgroundColor: 'grey',
-    opacity: 0.5,
-    width: '50%',
-    margin: 12,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-    fontWeight: 'normal',
-  },
-  titleGroup: {
-    fontSize: 50,
-    alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 15,
-  },
-  text: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-});
