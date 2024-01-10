@@ -2,6 +2,8 @@ ios/Pods/
 android/Pods/
 Identity/
 devReferances
+*.log
+yarn.lock
 
 # OSX
 #

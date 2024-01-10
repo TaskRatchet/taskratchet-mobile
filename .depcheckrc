@@ -1,0 +1,21 @@
+{
+    "ignores": [
+        "@tsconfig/react-native",
+        "@react-navigation/native-stack",
+        "babel-preset-react-native",
+        "expo-dev-client",
+        "punycode",
+        "@babel/core",
+        "@babel/preset-env",
+        "@babel/preset-flow",
+        "@babel/runtime",
+        "@types/jest",
+        "babel-jest",
+        "fetch-mock",
+        "jest-localstorage-mock",
+        "metro-react-native-babel-preset",
+        "ts-jest",
+        "typescript",
+        "node-fetch"
+    ]
+}
