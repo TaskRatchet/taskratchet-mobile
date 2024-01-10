@@ -5,6 +5,7 @@ import * as React from 'react';
 import {useState} from 'react';
 import {enableScreens} from 'react-native-screens';
 
+import {WithSplashScreen} from './components/splash';
 import {userType} from './components/types';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -25,16 +26,20 @@ export const UserContext = React.createContext({
 function App(): JSX.Element {
   const [currentUser, setCurrentUser] = useState<userType | null>(null);
 
+  const isAppReady = true;
+
   return (
-    <UserContext.Provider value={{currentUser, setCurrentUser}}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginScreen">
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </UserContext.Provider>
+    <WithSplashScreen isAppReady={isAppReady}>
+      <UserContext.Provider value={{currentUser, setCurrentUser}}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="LoginScreen">
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserContext.Provider>
+    </WithSplashScreen>
   );
 }
 

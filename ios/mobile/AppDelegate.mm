@@ -11,7 +11,9 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+  BOOL result = [super application:application didFinishLaunchingWithOptions:launchOptions];
+self.window.rootViewController.view.backgroundColor = [UIColor colorWithRed:0.10196 green:0.14510 blue:0.20000 alpha:1.00];
+return result;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
