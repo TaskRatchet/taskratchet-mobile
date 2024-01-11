@@ -1,6 +1,7 @@
 // react imports:
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import * as React from 'react';
 import {useState} from 'react';
 import {enableScreens} from 'react-native-screens';
@@ -12,6 +13,8 @@ import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 
 enableScreens();
+
+const queryClient = new QueryClient();
 
 const Stack = createStackNavigator();
 
@@ -29,17 +32,19 @@ function App(): JSX.Element {
   const isAppReady = true;
 
   return (
-    <WithSplashScreen isAppReady={isAppReady}>
-      <UserContext.Provider value={{currentUser, setCurrentUser}}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="LoginScreen">
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </UserContext.Provider>
-    </WithSplashScreen>
+    <QueryClientProvider client={queryClient}>
+      <WithSplashScreen isAppReady={isAppReady}>
+        <UserContext.Provider value={{currentUser, setCurrentUser}}>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="LoginScreen">
+              <Stack.Screen name="LoginScreen" component={LoginScreen} />
+              <Stack.Screen name="HomeScreen" component={HomeScreen} />
+              <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </UserContext.Provider>
+      </WithSplashScreen>
+    </QueryClientProvider>
   );
 }
 

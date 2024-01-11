@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {
   Image,
@@ -39,23 +40,21 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
   const [passInput, setPassInput] = React.useState('');
   const [outputStatus, setOutputStatus] = React.useState('');
 
-  async function handleLogin() {
-    try {
-      const result = await login(userInput, passInput);
-      if (result === true) {
-        const me = await getMe();
-        const tasks = await getTasks();
-        await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
-        await AsyncStorage.setItem('me', JSON.stringify(me));
-        navigation?.navigate('HomeScreen');
-      } else {
+  const mutation = useMutation({
+    mutationFn: () => login(userInput, passInput),
+    onSettled: async (data, error) => {
+      if (!data || error) {
+        console.error('login error ' + String(error));
         setOutputStatus('Login Failed, try again!');
+        return;
       }
-    } catch (error) {
-      console.error('login error ' + String(error));
-      setOutputStatus('Login Failed, try again!');
-    }
-  }
+      const me = await getMe();
+      const tasks = await getTasks();
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+      await AsyncStorage.setItem('me', JSON.stringify(me));
+      navigation?.navigate('HomeScreen');
+    },
+  });
 
   return (
     <View style={[backgroundStyle, styles.screen]}>
@@ -104,9 +103,7 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
             testID="loginButton"
             style={styles.login}
             onPress={() => {
-              handleLogin().catch(error => {
-                console.error('login error ' + String(error));
-              });
+              mutation.mutate();
             }}>
             <Text style={styles.loginText}>Login</Text>
           </Pressable>

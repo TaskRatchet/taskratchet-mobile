@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
+import React, {useState} from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -16,35 +17,22 @@ import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import InfoPopup from '../components/infoPopup';
 import Task from '../components/taskListItem';
 import TaskPopup from '../components/taskPopup';
-import {Props, TaskType} from '../components/types';
+import {Props, taskType} from '../components/types';
 import themeProvider from '../providers/themeProvider';
+import {getTasks} from '../services/taskratchet/getTasks';
 import {styles} from '../styles/homeScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import checkDate from '../utils/checkDate';
-import getStoredTasks from '../utils/getStoredTasks';
 
 export default function HomeScreen({navigation}: Props): JSX.Element {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
-  const [clickedItem, setClickedItem] = useState('0');
-  const [tasks, setCurrentTasks] = useState<TaskType[]>([]);
+  const [clickedItem, setClickedItem] = useState<taskType>();
 
-  useEffect(() => {
-    async function getTasksAsync() {
-      try {
-        const result: TaskType[] = await getStoredTasks();
-        setCurrentTasks(result);
-      } catch (error) {
-        console.error(
-          `Error retrieving tasks from storage. Error Log: ${String(error)}`,
-        );
-      }
-    }
-
-    getTasksAsync().catch(error => {
-      console.error('error fetching tasks', error);
-    });
-  }, []);
+  const {data: tasks} = useQuery({
+    queryKey: ['tasks'],
+    queryFn: getTasks,
+  });
 
   const isDarkMode = useIsDarkMode();
 
@@ -66,9 +54,9 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
     setInfoModalVisible(!infoModalVisible);
   }
 
-  function taskItemPress(key: string) {
+  function taskItemPress(item: taskType) {
     setTaskModalVisible(!taskModalVisible);
-    setClickedItem(key);
+    setClickedItem(item);
   }
 
   return (
@@ -85,7 +73,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
       />
       <TaskPopup
         testID="taskPopup"
-        item={Number(clickedItem)}
+        item={clickedItem}
         modalVisible={taskModalVisible}
         setModalVisible={setTaskModalVisible}
       />
@@ -122,10 +110,10 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
         </View>
         <View style={styles.taskList}>
           {tasks &&
-            Object.keys(tasks)
+            tasks
               .sort((a, b) => {
-                const taskA = tasks[Number(a)];
-                const taskB = tasks[Number(b)];
+                const taskA = a;
+                const taskB = b;
 
                 if ('due' in taskA && 'due' in taskB) {
                   const diffDaysA = checkDate(String(taskA.due));
@@ -142,10 +130,10 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
                   return 0;
                 }
               })
-              .map(key => {
+              .map(task => {
                 return (
-                  <Pressable key={key} onPress={() => taskItemPress(key)}>
-                    <Task item={Number(key)} />
+                  <Pressable key={task.id} onPress={() => taskItemPress(task)}>
+                    <Task item={task} />
                   </Pressable>
                 );
               })}

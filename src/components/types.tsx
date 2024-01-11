@@ -2,15 +2,6 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {Dispatch, SetStateAction} from 'react';
 
-export type taskType = {
-  id: number;
-  title: string;
-  description: string;
-  completed: boolean;
-  deadline: string;
-  stakes: string;
-};
-
 export type tasksType = {
   [key: string]: taskType;
 };
@@ -42,7 +33,7 @@ export type Props = {
 
 export type TaskPopupProps = {
   testID?: string;
-  item: number;
+  item?: taskType;
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
@@ -60,11 +51,17 @@ export type LoginScreenProps = StackScreenProps<
 
 export type TaskType = {
   id: string;
+  title: string;
+  description: string;
   task: string;
   due: string;
+  deadline: string;
   due_timestamp: number;
   cents: number;
+  stakes: string;
   complete: boolean;
   status: string;
   timezone: string;
 };
+
+export type taskType = TaskType;

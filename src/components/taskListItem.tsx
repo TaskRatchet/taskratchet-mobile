@@ -10,7 +10,7 @@ import getStoredTasks from '../utils/getStoredTasks';
 import {TaskType} from './types';
 
 interface taskProps {
-  item: number;
+  item: TaskType;
 }
 
 export default function Task({item}: taskProps): JSX.Element {
@@ -82,10 +82,11 @@ export default function Task({item}: taskProps): JSX.Element {
     return {text, style};
   }
 
-  const deadlineDetails = tasks[item]
-    ? getDeadlineDetails(tasks[item].complete, checkDate(tasks[item].due))
+  const deadlineDetails = item
+    ? getDeadlineDetails(item.complete, checkDate(item.due))
     : {text: '', style: {}};
 
+  // TODO: Call this something other than "footer"
   function getFooterStyle(isComplete: boolean, daysToDue: number) {
     switch (true) {
       case isComplete:
@@ -101,8 +102,8 @@ export default function Task({item}: taskProps): JSX.Element {
     }
   }
 
-  const footerStyle = tasks[item]
-    ? getFooterStyle(tasks[item].complete, checkDate(tasks[item].due))
+  const footerStyle = item
+    ? getFooterStyle(item.complete, checkDate(item.due))
     : {style: {}};
 
   return (
@@ -110,7 +111,7 @@ export default function Task({item}: taskProps): JSX.Element {
       <View style={[styles.row]}>
         <View style={[styles.flexOne]}>
           <Text style={[textColorStyle, styles.taskTitle]} numberOfLines={1}>
-            {tasks && tasks.length > 0 ? tasks[item].task : 'Loading...'}
+            {tasks && tasks.length > 0 ? item.task : 'Loading...'}
           </Text>
           <Text style={deadlineDetails.style}>{deadlineDetails.text}</Text>
         </View>
@@ -118,7 +119,7 @@ export default function Task({item}: taskProps): JSX.Element {
         <View style={styles.taskSideRight}>
           <Text style={[textColorStyle, styles.taskStakes]}>
             {tasks && tasks.length > 0
-              ? convertCents(tasks[item].cents)
+              ? convertCents(item.cents)
               : 'Loading...'}
           </Text>
         </View>
