@@ -1,4 +1,4 @@
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
 
@@ -26,12 +26,17 @@ export default function TaskPopup({
     color: isDarkMode ? 'white' : 'black',
   };
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: (vars: {taskId: string; data: TaskInput}) => {
       return updateTask(vars.taskId, vars.data);
     },
     onError: error => {
       console.error('Error updating task:', error);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({queryKey: ['tasks']});
     },
   });
 
@@ -75,7 +80,7 @@ export default function TaskPopup({
                   </Text>
                 </View>
                 <Text style={[styles.stakes, textColorStyle]}>
-                  {item.cents}
+                  ${Number(item.cents / 100).toFixed(2)}
                 </Text>
               </View>
               {checkDate(item.due) >= 0 ? (
