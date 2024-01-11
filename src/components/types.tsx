@@ -36,8 +36,8 @@ type ProfileScreenNavigationProp = StackNavigationProp<
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'ProfileScreen'>;
 
 export type Props = {
-  navigation: ProfileScreenNavigationProp;
-  route: ProfileScreenRouteProp;
+  navigation?: ProfileScreenNavigationProp;
+  route?: ProfileScreenRouteProp;
 };
 
 export type TaskPopupProps = {

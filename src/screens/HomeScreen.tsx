@@ -59,7 +59,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   };
 
   function handleUserProfilePress() {
-    navigation.navigate('ProfileScreen');
+    navigation?.navigate('ProfileScreen');
   }
 
   function handleInfoButtonPress() {

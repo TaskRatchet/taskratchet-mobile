@@ -47,7 +47,7 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
         const tasks = await getTasks();
         await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
         await AsyncStorage.setItem('me', JSON.stringify(me));
-        navigation.navigate('HomeScreen');
+        navigation?.navigate('HomeScreen');
       } else {
         setOutputStatus('Login Failed, try again!');
       }

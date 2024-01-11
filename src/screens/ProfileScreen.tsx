@@ -43,7 +43,7 @@ export default function ProfileScreen({navigation}: Props) {
   }, []);
 
   function goToLoginScreen() {
-    navigation.navigate('LoginScreen');
+    navigation?.navigate('LoginScreen');
   }
 
   return (
