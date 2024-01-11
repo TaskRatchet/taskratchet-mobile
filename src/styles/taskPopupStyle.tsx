@@ -15,6 +15,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   stakes: {
+    position: 'absolute',
+    right: 0,
     fontSize: 30,
     fontFamily: 'Trebuchet MS',
   },
@@ -22,9 +24,7 @@ export const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'left',
     marginBottom: 10,
-    maxWidth: '90%',
   },
   deadline: {
     fontSize: 16,

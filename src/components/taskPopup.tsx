@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
+import {s} from 'vitest/dist/reporters-qc5Smpt5';
 
 import themeProvider from '../providers/themeProvider';
 import {TaskInput, updateTask} from '../services/taskratchet/updateTask';
@@ -57,6 +58,7 @@ export default function TaskPopup({
   }
 
   const deadlineDetails = item && getDeadlineDetails(checkDate(item.due));
+  const [stakesWidth, setStakesWidth] = React.useState(0);
 
   return (
     <View>
@@ -70,7 +72,7 @@ export default function TaskPopup({
         {item ? (
           <View style={styles.centeredView}>
             <View style={[styles.modalView, backgroundStyle]}>
-              <View style={styles.line}>
+              <View style={(styles.line, {paddingRight: stakesWidth + 10})}>
                 <View>
                   <Text style={[styles.title, textColorStyle]}>
                     {item.task}
@@ -79,7 +81,12 @@ export default function TaskPopup({
                     {deadlineDetails?.text}
                   </Text>
                 </View>
-                <Text style={[styles.stakes, textColorStyle]}>
+                <Text
+                  style={[styles.stakes, textColorStyle]}
+                  onLayout={event => {
+                    const {width} = event.nativeEvent.layout;
+                    setStakesWidth(width);
+                  }}>
                   ${Number(item.cents / 100).toFixed(2)}
                 </Text>
               </View>

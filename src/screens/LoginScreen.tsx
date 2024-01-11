@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {
@@ -16,8 +15,6 @@ import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png'
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
-import {getMe} from '../services/taskratchet/getMe';
-import {getTasks} from '../services/taskratchet/getTasks';
 import {login} from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
@@ -42,16 +39,12 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
 
   const mutation = useMutation({
     mutationFn: () => login(userInput, passInput),
-    onSettled: async (data, error) => {
+    onSettled: (data, error) => {
       if (!data || error) {
         console.error('login error ' + String(error));
         setOutputStatus('Login Failed, try again!');
         return;
       }
-      const me = await getMe();
-      const tasks = await getTasks();
-      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
-      await AsyncStorage.setItem('me', JSON.stringify(me));
       navigation?.navigate('HomeScreen');
     },
   });
