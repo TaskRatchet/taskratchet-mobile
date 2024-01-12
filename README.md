@@ -127,7 +127,9 @@ npm install -g eas-cli
 # Log in to your Expo account
 eas login
 
-# Build your project
+# Build your project with one of these commands
+# Use the --platform tag to select between android and ios builds
+# Use the --profile tage to choose between develpoment, preview, and production build modules. These can be updated in the eas.json file.
 eas build
 
 # Submit your project to the App Store or Google Play
