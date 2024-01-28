@@ -1,22 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import React from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
 
 import themeProvider from '../providers/themeProvider';
-import {updateTask} from '../services/taskratchet/updateTask';
+import {TaskInput, updateTask} from '../services/taskratchet/updateTask';
 import {styles} from '../styles/taskPopupStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import checkDate from '../utils/checkDate';
-import convertCents from '../utils/convertCents';
-import getStoredTasks from '../utils/getStoredTasks';
-import {TaskPopupProps, TaskType} from './types';
+import {TaskPopupProps} from './types';
 
 export default function TaskPopup({
   item,
   modalVisible,
   setModalVisible,
 }: TaskPopupProps): JSX.Element {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-
   const isDarkMode = useIsDarkMode();
 
   const backgroundStyle = {
@@ -29,20 +26,19 @@ export default function TaskPopup({
     color: isDarkMode ? 'white' : 'black',
   };
 
-  useEffect(() => {
-    async function fetchTasks() {
-      try {
-        const fetchedTasks = await getStoredTasks();
-        setTasks(fetchedTasks);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  const queryClient = useQueryClient();
 
-    fetchTasks().catch(error => {
-      console.error('Error fetching tasks:', error);
-    });
-  }, []);
+  const mutation = useMutation({
+    mutationFn: (vars: {taskId: string; data: TaskInput}) => {
+      return updateTask(vars.taskId, vars.data);
+    },
+    onError: error => {
+      console.error('Error updating task:', error);
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({queryKey: ['tasks']});
+    },
+  });
 
   function getDeadlineDetails(days: number) {
     if (days === null) {
@@ -60,22 +56,8 @@ export default function TaskPopup({
     }
   }
 
-  function CompletionText() {
-    if (item !== undefined && tasks[item] !== undefined) {
-      if (tasks[item].complete !== undefined && tasks[item].complete) {
-        return 'Mark Incomplete';
-      } else {
-        return 'Mark Complete';
-      }
-    } else {
-      return 'Task not found';
-    }
-  }
-
-  const deadlineDetails =
-    tasks && tasks[item] && tasks[item].due
-      ? getDeadlineDetails(checkDate(tasks[item].due))
-      : {text: '', style: {}};
+  const deadlineDetails = item && getDeadlineDetails(checkDate(item.due));
+  const [stakesWidth, setStakesWidth] = React.useState(0);
 
   return (
     <View>
@@ -86,76 +68,67 @@ export default function TaskPopup({
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-        <View style={styles.centeredView}>
-          <View style={[styles.modalView, backgroundStyle]}>
-            <View style={styles.line}>
-              <View>
-                <Text style={[styles.title, textColorStyle]}>
-                  {tasks && tasks !== null && tasks.length > 0
-                    ? tasks[item].task
-                    : 'Loading...'}
-                </Text>
-                <Text style={deadlineDetails.style}>
-                  {deadlineDetails.text}
+        {item ? (
+          <View style={styles.centeredView}>
+            <View style={[styles.modalView, backgroundStyle]}>
+              <View style={(styles.line, {paddingRight: stakesWidth + 10})}>
+                <View>
+                  <Text style={[styles.title, textColorStyle]}>
+                    {item.task}
+                  </Text>
+                  <Text style={deadlineDetails?.style}>
+                    {deadlineDetails?.text}
+                  </Text>
+                </View>
+                <Text
+                  style={[styles.stakes, textColorStyle]}
+                  onLayout={event => {
+                    const {width} = event.nativeEvent.layout;
+                    setStakesWidth(width);
+                  }}>
+                  ${Number(item.cents / 100).toFixed(2)}
                 </Text>
               </View>
-              <Text style={[styles.stakes, textColorStyle]}>
-                {tasks && tasks[item]
-                  ? convertCents(tasks[item].cents)
-                  : 'Loading...'}
-              </Text>
-            </View>
-            {tasks && tasks[item] && checkDate(tasks[item].due) >= 0 ? (
+              {checkDate(item.due) >= 0 ? (
+                <Pressable
+                  style={({pressed}) => [
+                    {
+                      backgroundColor: pressed
+                        ? 'rgba(0, 103, 69, 0.5)'
+                        : '#006745',
+                    },
+                    styles.button,
+                    styles.buttonComplete,
+                  ]}
+                  onPress={() => {
+                    mutation.mutate({
+                      taskId: item.id,
+                      data: {complete: !item.complete},
+                    });
+                  }}>
+                  <Text style={styles.textStyle}>
+                    {item.complete ? 'Mark Incomplete' : 'Mark Complete'}
+                  </Text>
+                </Pressable>
+              ) : null}
               <Pressable
                 style={({pressed}) => [
                   {
                     backgroundColor: pressed
-                      ? 'rgba(0, 103, 69, 0.5)'
-                      : '#006745',
+                      ? 'rgba(33, 150, 243, 0.5)'
+                      : '#2196F3',
+                    marginTop: checkDate(item.due) >= 0 ? 5 : 35,
                   },
                   styles.button,
-                  styles.buttonComplete,
                 ]}
-                onPress={() => {
-                  if (tasks[item].complete) {
-                    updateTask(tasks[item].id, {complete: false}).catch(
-                      error => {
-                        console.error(
-                          'Error updating complete task to incomplete:',
-                          error,
-                        );
-                      },
-                    );
-                  } else {
-                    updateTask(tasks[item].id, {complete: true}).catch(
-                      error => {
-                        console.error(
-                          'Error updating incomplete task to complete:',
-                          error,
-                        );
-                      },
-                    );
-                  }
-                }}>
-                <Text style={styles.textStyle}>{CompletionText()}</Text>
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Hide</Text>
               </Pressable>
-            ) : null}
-            <Pressable
-              style={({pressed}) => [
-                {
-                  backgroundColor: pressed
-                    ? 'rgba(33, 150, 243, 0.5)'
-                    : '#2196F3',
-                  marginTop:
-                    tasks[item] && checkDate(tasks[item].due) >= 0 ? 5 : 35,
-                },
-                styles.button,
-              ]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide</Text>
-            </Pressable>
+            </View>
           </View>
-        </View>
+        ) : (
+          <Text>Failed to find selected item</Text>
+        )}
       </Modal>
     </View>
   );

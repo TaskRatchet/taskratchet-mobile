@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Text, View} from 'react-native';
 
 import themeProvider from '../providers/themeProvider';
@@ -6,11 +6,10 @@ import {styles} from '../styles/taskListItemStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import checkDate from '../utils/checkDate';
 import convertCents from '../utils/convertCents';
-import getStoredTasks from '../utils/getStoredTasks';
 import {TaskType} from './types';
 
 interface taskProps {
-  item: number;
+  item: TaskType;
 }
 
 export default function Task({item}: taskProps): JSX.Element {
@@ -24,23 +23,6 @@ export default function Task({item}: taskProps): JSX.Element {
   const textColorStyle = {
     color: isDarkMode ? 'white' : 'black',
   };
-
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-
-  useEffect(() => {
-    async function fetchTasks() {
-      try {
-        const fetchedTasks: TaskType[] = await getStoredTasks();
-        setTasks(fetchedTasks);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchTasks().catch(error => {
-      console.error('Error fetching tasks:', error);
-    });
-  }, []);
 
   function getDeadlineDetails(isCompleted: boolean, days: number) {
     let text;
@@ -82,10 +64,11 @@ export default function Task({item}: taskProps): JSX.Element {
     return {text, style};
   }
 
-  const deadlineDetails = tasks[item]
-    ? getDeadlineDetails(tasks[item].complete, checkDate(tasks[item].due))
+  const deadlineDetails = item
+    ? getDeadlineDetails(item.complete, checkDate(item.due))
     : {text: '', style: {}};
 
+  // TODO: Call this something other than "footer"
   function getFooterStyle(isComplete: boolean, daysToDue: number) {
     switch (true) {
       case isComplete:
@@ -101,8 +84,8 @@ export default function Task({item}: taskProps): JSX.Element {
     }
   }
 
-  const footerStyle = tasks[item]
-    ? getFooterStyle(tasks[item].complete, checkDate(tasks[item].due))
+  const footerStyle = item
+    ? getFooterStyle(item.complete, checkDate(item.due))
     : {style: {}};
 
   return (
@@ -110,16 +93,14 @@ export default function Task({item}: taskProps): JSX.Element {
       <View style={[styles.row]}>
         <View style={[styles.flexOne]}>
           <Text style={[textColorStyle, styles.taskTitle]} numberOfLines={1}>
-            {tasks && tasks.length > 0 ? tasks[item].task : 'Loading...'}
+            {item.task}
           </Text>
           <Text style={deadlineDetails.style}>{deadlineDetails.text}</Text>
         </View>
 
         <View style={styles.taskSideRight}>
           <Text style={[textColorStyle, styles.taskStakes]}>
-            {tasks && tasks.length > 0
-              ? convertCents(tasks[item].cents)
-              : 'Loading...'}
+            {convertCents(item.cents)}
           </Text>
         </View>
       </View>

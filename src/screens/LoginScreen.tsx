@@ -1,9 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useMutation} from '@tanstack/react-query';
 import React from 'react';
 import {
   Image,
   ImageSourcePropType,
   KeyboardAvoidingView,
+  Linking,
   Pressable,
   SafeAreaView,
   Text,
@@ -15,8 +16,6 @@ import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png'
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
-import {getMe} from '../services/taskratchet/getMe';
-import {getTasks} from '../services/taskratchet/getTasks';
 import {login} from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
@@ -39,23 +38,17 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
   const [passInput, setPassInput] = React.useState('');
   const [outputStatus, setOutputStatus] = React.useState('');
 
-  async function handleLogin() {
-    try {
-      const result = await login(userInput, passInput);
-      if (result === true) {
-        const me = await getMe();
-        const tasks = await getTasks();
-        await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
-        await AsyncStorage.setItem('me', JSON.stringify(me));
-        navigation.navigate('HomeScreen');
-      } else {
+  const mutation = useMutation({
+    mutationFn: () => login(userInput, passInput),
+    onSettled: (data, error) => {
+      if (!data || error) {
+        console.error('login error ' + String(error));
         setOutputStatus('Login Failed, try again!');
+        return;
       }
-    } catch (error) {
-      console.error('login error ' + String(error));
-      setOutputStatus('Login Failed, try again!');
-    }
-  }
+      navigation?.navigate('HomeScreen');
+    },
+  });
 
   return (
     <View style={[backgroundStyle, styles.screen]}>
@@ -104,11 +97,19 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
             testID="loginButton"
             style={styles.login}
             onPress={() => {
-              handleLogin().catch(error => {
-                console.error('login error ' + String(error));
-              });
+              mutation.mutate();
             }}>
             <Text style={styles.loginText}>Login</Text>
+          </Pressable>
+          <Pressable
+            testID="registerButton"
+            style={styles.register}
+            onPress={() => {
+              Linking.openURL('https://app.taskratchet.com/register').catch(
+                err => console.error('An error occurred', err),
+              );
+            }}>
+            <Text style={styles.registerText}>Register</Text>
           </Pressable>
           <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
         </KeyboardAvoidingView>

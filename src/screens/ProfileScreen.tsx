@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
+import React from 'react';
 import {Button, Image, ImageSourcePropType, Text, View} from 'react-native';
 
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
-import {User} from '../services/taskratchet/getMe';
+import {getMe} from '../services/taskratchet/getMe';
 import {styles} from '../styles/profileScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
-import getStoredUser from '../utils/getStoredUser';
 
 export default function ProfileScreen({navigation}: Props) {
   const isDarkMode = useIsDarkMode();
@@ -21,29 +21,12 @@ export default function ProfileScreen({navigation}: Props) {
     color: isDarkMode ? 'white' : 'black',
   };
 
-  const [user, setCurrentUser] = useState<User | null>(null);
+  const {data: user} = useQuery({queryKey: ['user'], queryFn: getMe});
 
   const dataBorderColor = {borderColor: isDarkMode ? 'white' : 'black'};
 
-  useEffect(() => {
-    async function getUser() {
-      try {
-        const result: User | null = await getStoredUser();
-        if (result === null) {
-          throw new Error('Unable to get user info');
-        }
-        setCurrentUser(result);
-      } catch (error) {
-        console.error('getUser error ' + String(error));
-      }
-    }
-
-    // eslint-disable-next-line no-void
-    void getUser();
-  }, []);
-
   function goToLoginScreen() {
-    navigation.navigate('LoginScreen');
+    navigation?.navigate('LoginScreen');
   }
 
   return (
@@ -57,36 +40,42 @@ export default function ProfileScreen({navigation}: Props) {
         <Text style={[textColorStyle, styles.name]}>Profile</Text>
       </View>
       <View style={styles.dataGroup}>
-        <View>
-          <View style={[dataBorderColor, styles.dataPair]}>
-            <Text style={[textColorStyle, styles.dataText]}>Name:</Text>
-            <Text
-              style={[textColorStyle, styles.dataValueText]}
-              numberOfLines={1}>
-              {user !== null ? user.name : '...'}
-            </Text>
-          </View>
-        </View>
-        <View>
-          <View style={[dataBorderColor, styles.dataPair]}>
-            <Text style={[textColorStyle, styles.dataText]}>Email:</Text>
-            <Text
-              style={[textColorStyle, styles.dataValueText]}
-              numberOfLines={1}>
-              {user !== null ? user.email : '...'}
-            </Text>
-          </View>
-        </View>
-        <View>
-          <View style={[dataBorderColor, styles.dataPair]}>
-            <Text style={[textColorStyle, styles.dataText]}>Timezone:</Text>
-            <Text
-              style={[textColorStyle, styles.dataValueText]}
-              numberOfLines={1}>
-              {user !== null ? user.timezone : '...'}
-            </Text>
-          </View>
-        </View>
+        {user ? (
+          <>
+            <View>
+              <View style={[dataBorderColor, styles.dataPair]}>
+                <Text style={[textColorStyle, styles.dataText]}>Name:</Text>
+                <Text
+                  style={[textColorStyle, styles.dataValueText]}
+                  numberOfLines={1}>
+                  {user.name}
+                </Text>
+              </View>
+            </View>
+            <View>
+              <View style={[dataBorderColor, styles.dataPair]}>
+                <Text style={[textColorStyle, styles.dataText]}>Email:</Text>
+                <Text
+                  style={[textColorStyle, styles.dataValueText]}
+                  numberOfLines={1}>
+                  {user.email}
+                </Text>
+              </View>
+            </View>
+            <View>
+              <View style={[dataBorderColor, styles.dataPair]}>
+                <Text style={[textColorStyle, styles.dataText]}>Timezone:</Text>
+                <Text
+                  style={[textColorStyle, styles.dataValueText]}
+                  numberOfLines={1}>
+                  {user.timezone}
+                </Text>
+              </View>
+            </View>
+          </>
+        ) : (
+          <Text>Loading...</Text>
+        )}
         <Button title="Logout" onPress={goToLoginScreen} />
       </View>
     </View>

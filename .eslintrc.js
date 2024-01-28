@@ -6,7 +6,13 @@ module.exports = {
     tsconfigRootDir: __dirname,
     ecmaVersion: 2018,
   },
-  plugins: ['simple-import-sort', 'react-native', 'unused-imports', 'jest'],
+  plugins: [
+    'simple-import-sort',
+    'react-native',
+    'unused-imports',
+    'jest',
+    'no-autofix',
+  ],
   env: {
     jest: true,
   },
@@ -15,7 +21,8 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     'no-unused-vars': 'error',
     'react-native/no-unused-styles': 'error',
-    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-imports': 'off',
+    'no-autofix/unused-imports/no-unused-imports': 'error',
   },
   overrides: [
     {

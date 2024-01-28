@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   login: {
     width: 300,
     marginTop: 15,
-    marginBottom: 15,
+    marginBottom: 10,
     padding: 5,
     borderColor: 'white',
     borderWidth: 1,
@@ -76,5 +76,16 @@ export const styles = StyleSheet.create({
   logoBordered: {
     width: 60,
     height: 60,
+  },
+  register: {
+    padding: 3,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  registerText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#2A5364',
+    textAlign: 'center',
   },
 });
