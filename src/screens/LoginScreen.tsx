@@ -4,6 +4,7 @@ import {
   Image,
   ImageSourcePropType,
   KeyboardAvoidingView,
+  Linking,
   Pressable,
   SafeAreaView,
   Text,
@@ -99,6 +100,16 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
               mutation.mutate();
             }}>
             <Text style={styles.loginText}>Login</Text>
+          </Pressable>
+          <Pressable
+            testID="registerButton"
+            style={styles.register}
+            onPress={() => {
+              Linking.openURL('https://app.taskratchet.com/register').catch(
+                err => console.error('An error occurred', err),
+              );
+            }}>
+            <Text style={styles.registerText}>Register</Text>
           </Pressable>
           <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
         </KeyboardAvoidingView>
