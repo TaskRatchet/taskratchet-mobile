@@ -1,7 +1,6 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
-import {s} from 'vitest/dist/reporters-qc5Smpt5';
 
 import themeProvider from '../providers/themeProvider';
 import {TaskInput, updateTask} from '../services/taskratchet/updateTask';
