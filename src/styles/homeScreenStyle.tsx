@@ -85,6 +85,17 @@ export const styles = StyleSheet.create({
     width: 22,
     height: 22,
   },
+  helpImageStyle: {
+    marginRight: 5,
+    marginTop: 12,
+    width: 22,
+    height: 22,
+  },
+  infoHelpPair: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   headerStylesBox: {
     margin: 50,
     alignItems: 'center',

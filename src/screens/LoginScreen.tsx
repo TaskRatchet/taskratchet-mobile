@@ -12,6 +12,8 @@ import {
   View,
 } from 'react-native';
 
+import helpIconBlack from '../../assets/icons/help_circle(black).png';
+import helpIconWhite from '../../assets/icons/help_circle(white).png';
 import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import {Props} from '../components/types';
@@ -19,6 +21,7 @@ import themeProvider from '../providers/themeProvider';
 import {login} from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
+import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
 
 export default function LoginScreen({navigation}: Props): JSX.Element {
   const isDarkMode = useIsDarkMode();
@@ -58,6 +61,16 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
         source={logo as ImageSourcePropType}
       />
       <SafeAreaView>
+        <Pressable style={styles.topButtonBox} onPress={handleHelpButtonPress}>
+          <Image
+            style={styles.helpImageStyle}
+            source={
+              isDarkMode
+                ? (helpIconWhite as ImageSourcePropType)
+                : (helpIconBlack as ImageSourcePropType)
+            }
+          />
+        </Pressable>
         <KeyboardAvoidingView style={styles.container}>
           <Image
             style={styles.logoBordered}
@@ -67,7 +80,6 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
             <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
             <Text style={[textColorStyle, styles.title]}>Login</Text>
           </View>
-
           <View style={styles.credentials}>
             <View style={styles.inputGroup}>
               <Text style={[textColorStyle, styles.inputTitle]}>Username</Text>
