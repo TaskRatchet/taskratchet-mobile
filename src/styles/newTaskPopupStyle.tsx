@@ -42,7 +42,6 @@ export const styles = StyleSheet.create({
   datePicker: {},
   datePair: {
     marginBottom: 10,
-    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },

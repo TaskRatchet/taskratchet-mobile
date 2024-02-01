@@ -55,6 +55,12 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
       : themeProvider.colorsLight.plusButton,
   };
 
+  const plusButtonColorPressed = {
+    backgroundColor: isDarkMode
+      ? themeProvider.colorsDark.plusButtonPressed
+      : themeProvider.colorsLight.plusButtonPressed,
+  };
+
   const textColorStyle = {
     color: isDarkMode ? 'white' : 'black',
   };
@@ -175,7 +181,22 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
         </View>
       </ScrollView>
       <Pressable
-        style={[styles.plusImageBox, plusButtonColor]}
+        // style={[styles.plusImageBox, plusButtonColor]}
+        // style={({pressed}) => [
+        //   {
+        //     backgroundColor: pressed ? 'rgba(33, 150, 243, 0.5)' : '#2196F3',
+        //   },
+        //   styles.button,
+        // ]}
+        style={({pressed}) => [
+          styles.plusImageBox,
+          {
+            backgroundColor: pressed
+              ? plusButtonColorPressed.backgroundColor
+              : plusButtonColor.backgroundColor,
+          },
+          styles.button,
+        ]}
         onPress={handleNewTaskPress}>
         <Image
           style={styles.plusImage}
