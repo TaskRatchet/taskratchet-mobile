@@ -50,7 +50,11 @@ export const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  taskList: {},
+  taskList: {
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.5,
+  },
   avatar: {
     width: 50,
     height: 50,
@@ -95,6 +99,20 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  plusImage: {
+    width: 30,
+    height: 30,
+  },
+  plusImageBox: {
+    position: 'absolute',
+    bottom: '5%',
+    right: '8%',
+    padding: 10,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.8,
   },
   headerStylesBox: {
     margin: 50,

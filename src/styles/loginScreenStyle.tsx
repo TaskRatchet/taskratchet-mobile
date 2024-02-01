@@ -18,10 +18,13 @@ export const styles = StyleSheet.create({
     backgroundColor: '#AAD9EB',
   },
   screen: {
-    height: '100%',
+    flex: 1,
   },
   container: {
-    marginTop: '30%',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  containerInner: {
     padding: 24,
     fontSize: 50,
     alignItems: 'center',
@@ -67,10 +70,10 @@ export const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '140%',
-    height: '80%',
+    height: '140%',
     opacity: 0.5,
     position: 'absolute',
-    top: '-30%',
+    top: '-70%',
     left: '-40%',
   },
   logoBordered: {
