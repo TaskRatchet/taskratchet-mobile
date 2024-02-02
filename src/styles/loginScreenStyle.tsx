@@ -88,4 +88,15 @@ export const styles = StyleSheet.create({
     color: '#2A5364',
     textAlign: 'center',
   },
+  helpImageStyle: {
+    marginRight: 5,
+    marginTop: 12,
+    width: 22,
+    height: 22,
+  },
+  topButtonBox: {
+    position: 'absolute',
+    top: 5,
+    right: 10,
+  },
 });

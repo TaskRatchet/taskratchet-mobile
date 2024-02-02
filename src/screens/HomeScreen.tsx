@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native';
 
+import helpIconBlack from '../../assets/icons/help_circle(black).png';
+import helpIconWhite from '../../assets/icons/help_circle(white).png';
 import infoIconBlack from '../../assets/icons/information_icon(black).png';
 import infoIconWhite from '../../assets/icons/information_icon(white).png';
 import userLogoBlack from '../../assets/icons/user_logo(black).png';
@@ -23,6 +25,7 @@ import {getTasks} from '../services/taskratchet/getTasks';
 import {styles} from '../styles/homeScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import checkDate from '../utils/checkDate';
+import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
 
 export default function HomeScreen({navigation}: Props): JSX.Element {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
@@ -94,16 +97,28 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               User Profile
             </Text>
           </Pressable>
-          <Pressable onPress={handleInfoButtonPress}>
-            <Image
-              style={styles.infoImageStyle}
-              source={
-                isDarkMode
-                  ? (infoIconWhite as ImageSourcePropType)
-                  : (infoIconBlack as ImageSourcePropType)
-              }
-            />
-          </Pressable>
+          <View style={styles.infoHelpPair}>
+            <Pressable onPress={handleHelpButtonPress}>
+              <Image
+                style={styles.helpImageStyle}
+                source={
+                  isDarkMode
+                    ? (helpIconWhite as ImageSourcePropType)
+                    : (helpIconBlack as ImageSourcePropType)
+                }
+              />
+            </Pressable>
+            <Pressable onPress={handleInfoButtonPress}>
+              <Image
+                style={styles.infoImageStyle}
+                source={
+                  isDarkMode
+                    ? (infoIconWhite as ImageSourcePropType)
+                    : (infoIconBlack as ImageSourcePropType)
+                }
+              />
+            </Pressable>
+          </View>
         </View>
         <View style={styles.headerStylesBox}>
           <Text style={[textColorStyle, styles.screenTitle]}>TASK RATCHET</Text>
