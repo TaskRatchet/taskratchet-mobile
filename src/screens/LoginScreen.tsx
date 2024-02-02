@@ -17,6 +17,7 @@ import helpIconBlack from '../../assets/icons/help_circle(black).png';
 import helpIconWhite from '../../assets/icons/help_circle(white).png';
 import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
+import PressableLoading from '../components/pressableLoading';
 import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
 import {login} from '../services/taskratchet/login';
@@ -114,14 +115,16 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
                 />
               </View>
             </View>
-            <Pressable
+            <PressableLoading
               testID="loginButton"
+              loading={mutation.isPending}
+              loadingTextStyle={styles.loginText}
               style={styles.login}
               onPress={() => {
                 mutation.mutate();
               }}>
               <Text style={styles.loginText}>Login</Text>
-            </Pressable>
+            </PressableLoading>
             <Pressable
               testID="registerButton"
               style={styles.register}
