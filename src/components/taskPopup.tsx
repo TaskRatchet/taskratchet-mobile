@@ -1,19 +1,31 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import React from 'react';
+import {useQuery} from '@tanstack/react-query';
+import React, {useMemo} from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
 
 import themeProvider from '../providers/themeProvider';
+import {getTasks} from '../services/taskratchet/getTasks';
 import {TaskInput, updateTask} from '../services/taskratchet/updateTask';
 import {styles} from '../styles/taskPopupStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import checkDate from '../utils/checkDate';
+import PressableLoading from './pressableLoading';
 import {TaskPopupProps} from './types';
 
 export default function TaskPopup({
-  item,
+  id,
   modalVisible,
   setModalVisible,
 }: TaskPopupProps): JSX.Element {
+  const {data: tasks} = useQuery({
+    queryKey: ['tasks'],
+    queryFn: getTasks,
+  });
+
+  const task = useMemo(() => {
+    return tasks?.find(t => t.id === id);
+  }, [tasks, id]);
+
   const isDarkMode = useIsDarkMode();
 
   const backgroundStyle = {
@@ -56,7 +68,7 @@ export default function TaskPopup({
     }
   }
 
-  const deadlineDetails = item && getDeadlineDetails(checkDate(item.due));
+  const deadlineDetails = task && getDeadlineDetails(checkDate(task.due));
   const [stakesWidth, setStakesWidth] = React.useState(0);
 
   return (
@@ -68,13 +80,13 @@ export default function TaskPopup({
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-        {item ? (
+        {task ? (
           <View style={styles.centeredView}>
             <View style={[styles.modalView, backgroundStyle]}>
               <View style={(styles.line, {paddingRight: stakesWidth + 10})}>
                 <View>
                   <Text style={[styles.title, textColorStyle]}>
-                    {item.task}
+                    {task.task}
                   </Text>
                   <Text style={deadlineDetails?.style}>
                     {deadlineDetails?.text}
@@ -86,11 +98,13 @@ export default function TaskPopup({
                     const {width} = event.nativeEvent.layout;
                     setStakesWidth(width);
                   }}>
-                  ${Number(item.cents / 100).toFixed(2)}
+                  ${Number(task.cents / 100).toFixed(2)}
                 </Text>
               </View>
-              {checkDate(item.due) >= 0 ? (
-                <Pressable
+              {checkDate(task.due) >= 0 ? (
+                <PressableLoading
+                  loading={mutation.isPending}
+                  loadingTextStyle={styles.textStyle}
                   style={({pressed}) => [
                     {
                       backgroundColor: pressed
@@ -101,15 +115,18 @@ export default function TaskPopup({
                     styles.buttonComplete,
                   ]}
                   onPress={() => {
+                    if (id === undefined) {
+                      throw new Error('Task ID is undefined');
+                    }
                     mutation.mutate({
-                      taskId: item.id,
-                      data: {complete: !item.complete},
+                      taskId: id,
+                      data: {complete: !task.complete},
                     });
                   }}>
                   <Text style={styles.textStyle}>
-                    {item.complete ? 'Mark Incomplete' : 'Mark Complete'}
+                    {task.complete ? 'Mark Incomplete' : 'Mark Complete'}
                   </Text>
-                </Pressable>
+                </PressableLoading>
               ) : null}
               <Pressable
                 style={({pressed}) => [
@@ -117,7 +134,7 @@ export default function TaskPopup({
                     backgroundColor: pressed
                       ? 'rgba(33, 150, 243, 0.5)'
                       : '#2196F3',
-                    marginTop: checkDate(item.due) >= 0 ? 5 : 35,
+                    marginTop: checkDate(task.due) >= 0 ? 5 : 35,
                   },
                   styles.button,
                 ]}

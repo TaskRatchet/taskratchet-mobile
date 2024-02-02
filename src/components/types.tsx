@@ -1,6 +1,7 @@
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {Dispatch, SetStateAction} from 'react';
+import {PressableProps, StyleProp, TextStyle} from 'react-native';
 
 export type tasksType = {
   [key: string]: taskType;
@@ -33,7 +34,7 @@ export type Props = {
 
 export type TaskPopupProps = {
   testID?: string;
-  item?: taskType;
+  id?: string;
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
@@ -43,6 +44,12 @@ export type infoPopupProps = {
   modalVisible: boolean;
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
+
+export type ButtonLoadingProps = {
+  children?: React.ReactNode;
+  loading: boolean;
+  loadingTextStyle?: StyleProp<TextStyle> | undefined;
+} & PressableProps;
 
 export type DatePickerPopupProps = {
   testID?: string;

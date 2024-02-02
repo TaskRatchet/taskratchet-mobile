@@ -7,6 +7,7 @@ import {addTask} from '../services/taskratchet/addTask';
 import {styles} from '../styles/newTaskPopupStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import DatePickerPopup from './datePickerPopup';
+import PressableLoading from './pressableLoading';
 import type {infoPopupProps} from './types';
 
 export default function NewTaskPopup({
@@ -121,7 +122,9 @@ export default function NewTaskPopup({
 
             <Text style={styles.failMessageTextStyle}>{failMessage}</Text>
 
-            <Pressable
+            <PressableLoading
+              loading={mutation.isPending}
+              loadingTextStyle={styles.buttonText}
               style={({pressed}) => [
                 {
                   backgroundColor: pressed
@@ -141,7 +144,7 @@ export default function NewTaskPopup({
                 }
               }}>
               <Text style={styles.buttonText}>Create</Text>
-            </Pressable>
+            </PressableLoading>
             <Pressable
               style={({pressed}) => [
                 {

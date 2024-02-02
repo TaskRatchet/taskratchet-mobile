@@ -34,7 +34,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [newTaskModalVisible, setNewTaskModalVisible] = useState(false);
-  const [clickedItem, setClickedItem] = useState<taskType>();
+  const [clickedId, setClickedId] = useState<string>();
 
   const {data: tasks} = useQuery({
     queryKey: ['tasks'],
@@ -75,7 +75,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
 
   function taskItemPress(item: taskType) {
     setTaskModalVisible(!taskModalVisible);
-    setClickedItem(item);
+    setClickedId(item.id);
   }
 
   function handleNewTaskPress() {
@@ -96,7 +96,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
       />
       <TaskPopup
         testID="taskPopup"
-        item={clickedItem}
+        id={clickedId}
         modalVisible={taskModalVisible}
         setModalVisible={setTaskModalVisible}
       />
