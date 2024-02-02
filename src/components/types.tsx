@@ -44,6 +44,14 @@ export type infoPopupProps = {
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
 
+export type DatePickerPopupProps = {
+  testID?: string;
+  dateModalVisible: boolean;
+  setDateModalVisible: Dispatch<SetStateAction<boolean>>;
+  date: Date;
+  onDateChange: Dispatch<SetStateAction<Date>>;
+};
+
 export type LoginScreenProps = StackScreenProps<
   RootStackParamList,
   'LoginScreen'

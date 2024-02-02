@@ -5,6 +5,7 @@ import {
   ImageSourcePropType,
   KeyboardAvoidingView,
   Linking,
+  Platform,
   Pressable,
   SafeAreaView,
   Text,
@@ -71,59 +72,68 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
             }
           />
         </Pressable>
-        <KeyboardAvoidingView style={styles.container}>
-          <Image
-            style={styles.logoBordered}
-            source={logoBordered as ImageSourcePropType}
-          />
-          <View style={styles.titleGroup}>
-            <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
-            <Text style={[textColorStyle, styles.title]}>Login</Text>
-          </View>
-          <View style={styles.credentials}>
-            <View style={styles.inputGroup}>
-              <Text style={[textColorStyle, styles.inputTitle]}>Username</Text>
-              <TextInput
-                style={[textColorStyle, styles.inputField]}
-                onChangeText={setUserInput}
-                placeholder="Username"
-                placeholderTextColor={textColorStyle.color}
-                keyboardType="default"
-                autoComplete="username"
-              />
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'android' ? -200 : 0}>
+          <View style={styles.containerInner}>
+            <Image
+              style={styles.logoBordered}
+              source={logoBordered as ImageSourcePropType}
+            />
+            <View style={styles.titleGroup}>
+              <Text style={[textColorStyle, styles.title]}>TaskRatchet</Text>
+              <Text style={[textColorStyle, styles.title]}>Login</Text>
             </View>
-            <View style={styles.inputGroup}>
-              <Text style={[textColorStyle, styles.inputTitle]}>Password</Text>
-              <TextInput
-                style={[textColorStyle, styles.inputField]}
-                onChangeText={setPassInput}
-                placeholder="Password"
-                placeholderTextColor={textColorStyle.color}
-                keyboardType="default"
-                autoComplete="current-password"
-                secureTextEntry={true}
-              />
+            <View style={styles.credentials}>
+              <View style={styles.inputGroup}>
+                <Text style={[textColorStyle, styles.inputTitle]}>
+                  Username
+                </Text>
+                <TextInput
+                  style={[textColorStyle, styles.inputField]}
+                  onChangeText={setUserInput}
+                  placeholder="Username"
+                  placeholderTextColor={textColorStyle.color}
+                  keyboardType="default"
+                  autoComplete="username"
+                />
+              </View>
+              <View style={styles.inputGroup}>
+                <Text style={[textColorStyle, styles.inputTitle]}>
+                  Password
+                </Text>
+                <TextInput
+                  style={[textColorStyle, styles.inputField]}
+                  onChangeText={setPassInput}
+                  placeholder="Password"
+                  placeholderTextColor={textColorStyle.color}
+                  keyboardType="default"
+                  autoComplete="current-password"
+                  secureTextEntry={true}
+                />
+              </View>
             </View>
+            <Pressable
+              testID="loginButton"
+              style={styles.login}
+              onPress={() => {
+                mutation.mutate();
+              }}>
+              <Text style={styles.loginText}>Login</Text>
+            </Pressable>
+            <Pressable
+              testID="registerButton"
+              style={styles.register}
+              onPress={() => {
+                Linking.openURL('https://app.taskratchet.com/register').catch(
+                  err => console.error('An error occurred', err),
+                );
+              }}>
+              <Text style={styles.registerText}>Register</Text>
+            </Pressable>
+            <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
           </View>
-          <Pressable
-            testID="loginButton"
-            style={styles.login}
-            onPress={() => {
-              mutation.mutate();
-            }}>
-            <Text style={styles.loginText}>Login</Text>
-          </Pressable>
-          <Pressable
-            testID="registerButton"
-            style={styles.register}
-            onPress={() => {
-              Linking.openURL('https://app.taskratchet.com/register').catch(
-                err => console.error('An error occurred', err),
-              );
-            }}>
-            <Text style={styles.registerText}>Register</Text>
-          </Pressable>
-          <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </View>

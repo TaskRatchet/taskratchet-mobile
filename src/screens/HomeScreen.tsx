@@ -13,10 +13,13 @@ import helpIconBlack from '../../assets/icons/help_circle(black).png';
 import helpIconWhite from '../../assets/icons/help_circle(white).png';
 import infoIconBlack from '../../assets/icons/information_icon(black).png';
 import infoIconWhite from '../../assets/icons/information_icon(white).png';
+import plusCircleBlack from '../../assets/icons/plus(black).png';
+import plusCircleWhite from '../../assets/icons/plus(white).png';
 import userLogoBlack from '../../assets/icons/user_logo(black).png';
 import userLogoWhite from '../../assets/icons/user_logo(white).png';
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import InfoPopup from '../components/infoPopup';
+import NewTaskPopup from '../components/newTaskPopup';
 import Task from '../components/taskListItem';
 import TaskPopup from '../components/taskPopup';
 import {Props, taskType} from '../components/types';
@@ -30,6 +33,7 @@ import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
 export default function HomeScreen({navigation}: Props): JSX.Element {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
+  const [newTaskModalVisible, setNewTaskModalVisible] = useState(false);
   const [clickedItem, setClickedItem] = useState<taskType>();
 
   const {data: tasks} = useQuery({
@@ -43,6 +47,18 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
     backgroundColor: isDarkMode
       ? themeProvider.colorsDark.background
       : themeProvider.colorsLight.background,
+  };
+
+  const plusButtonColor = {
+    backgroundColor: isDarkMode
+      ? themeProvider.colorsDark.plusButton
+      : themeProvider.colorsLight.plusButton,
+  };
+
+  const plusButtonColorPressed = {
+    backgroundColor: isDarkMode
+      ? themeProvider.colorsDark.plusButtonPressed
+      : themeProvider.colorsLight.plusButtonPressed,
   };
 
   const textColorStyle = {
@@ -62,6 +78,10 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
     setClickedItem(item);
   }
 
+  function handleNewTaskPress() {
+    setNewTaskModalVisible(!newTaskModalVisible);
+  }
+
   return (
     <View style={[backgroundStyle, styles.background]}>
       <Image
@@ -79,6 +99,11 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
         item={clickedItem}
         modalVisible={taskModalVisible}
         setModalVisible={setTaskModalVisible}
+      />
+      <NewTaskPopup
+        testID="NewTaskPopup"
+        modalVisible={newTaskModalVisible}
+        setModalVisible={setNewTaskModalVisible}
       />
       <ScrollView style={styles.scroll} alwaysBounceVertical={true}>
         <View style={styles.profile_infoButtons}>
@@ -155,6 +180,26 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
           <View style={styles.spacer /* spacer */} />
         </View>
       </ScrollView>
+      <Pressable
+        style={({pressed}) => [
+          styles.plusImageBox,
+          {
+            backgroundColor: pressed
+              ? plusButtonColorPressed.backgroundColor
+              : plusButtonColor.backgroundColor,
+          },
+          styles.button,
+        ]}
+        onPress={handleNewTaskPress}>
+        <Image
+          style={styles.plusImage}
+          source={
+            isDarkMode
+              ? (plusCircleWhite as ImageSourcePropType)
+              : (plusCircleBlack as ImageSourcePropType)
+          }
+        />
+      </Pressable>
     </View>
   );
 }
