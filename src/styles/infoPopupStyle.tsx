@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     color: '#A8A8A8',
   },
   paragraph: {
-    fontSize: 18,
+    fontSize: 14,
     textAlign: 'center',
     margin: 5,
     marginBottom: 15,

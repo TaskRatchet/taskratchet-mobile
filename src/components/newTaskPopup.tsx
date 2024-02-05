@@ -1,13 +1,24 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React, {useState} from 'react';
-import {Modal, Pressable, Text, TextInput, View} from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  Modal,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
+import infoIconBlack from '../../assets/icons/information_icon(black).png';
+import infoIconWhite from '../../assets/icons/information_icon(white).png';
 import themeProvider from '../providers/themeProvider';
 import {addTask} from '../services/taskratchet/addTask';
 import {styles} from '../styles/newTaskPopupStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import DatePickerPopup from './datePickerPopup';
 import PressableLoading from './pressableLoading';
+import StakesInfoPopup from './stakesInfoPopup';
 import type {infoPopupProps} from './types';
 
 export default function NewTaskPopup({
@@ -56,6 +67,7 @@ export default function NewTaskPopup({
   const [dollars, setDollars] = useState(5);
   const [failMessage, setFailMessage] = useState('');
   const [datePickerModalVisible, setDatePickerModalVisible] = useState(false);
+  const [stakesInfoModalVisible, setStakesInfoModalVisible] = useState(false);
 
   const taskData = {
     title: title,
@@ -84,6 +96,19 @@ export default function NewTaskPopup({
       <Modal visible={modalVisible} transparent={true} animationType="none">
         <View style={styles.centeredView}>
           <View style={[styles.modalView, backgroundStyle]}>
+            <Pressable
+              onPress={() => {
+                setStakesInfoModalVisible(!stakesInfoModalVisible);
+              }}>
+              <Image
+                style={styles.infoIcon}
+                source={
+                  isDarkMode
+                    ? (infoIconWhite as ImageSourcePropType)
+                    : (infoIconBlack as ImageSourcePropType)
+                }
+              />
+            </Pressable>
             <View style={styles.titlePair}>
               <Text style={[styles.titleTextStyle, textColorStyle]}>Task</Text>
               <TextInput
@@ -95,7 +120,9 @@ export default function NewTaskPopup({
             </View>
 
             <View style={styles.centsPair}>
-              <Text style={[styles.textStyle, textColorStyle]}>Stakes</Text>
+              <View style={styles.stakesTextPair}>
+                <Text style={[styles.textStyle, textColorStyle]}>Stakes</Text>
+              </View>
               <TextInput
                 style={[styles.input, inputBackgroundStyle, textColorStyle]}
                 keyboardType="numeric"
@@ -139,7 +166,6 @@ export default function NewTaskPopup({
                   setModalVisible(!modalVisible);
                   resetTaskData();
                 } else {
-                  console.error('Invalid task data');
                   setFailMessage('Title and Value must be set');
                 }
               }}>
@@ -168,6 +194,11 @@ export default function NewTaskPopup({
           setDateModalVisible={setDatePickerModalVisible}
           date={chosenDate}
           onDateChange={setChosenDate}
+        />
+        <StakesInfoPopup
+          testID="stakesInfoPopup"
+          stakesInfoModalVisible={stakesInfoModalVisible}
+          setStakesInfoModalVisible={setStakesInfoModalVisible}
         />
       </Modal>
     </View>

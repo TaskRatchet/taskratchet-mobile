@@ -52,7 +52,6 @@ export const styles = StyleSheet.create({
   titlePair: {
     marginBottom: 10,
     justifyContent: 'space-between',
-    // alignItems: 'center',
   },
   titleTextStyle: {
     marginBottom: 5,
@@ -86,5 +85,14 @@ export const styles = StyleSheet.create({
     paddingRight: 12,
     paddingLeft: 12,
     borderRadius: 7,
+  },
+  infoIcon: {
+    width: 20,
+    height: 20,
+    marginLeft: '95%',
+  },
+  stakesTextPair: {
+    flexDirection: 'row',
+    alignContent: 'center',
   },
 });
