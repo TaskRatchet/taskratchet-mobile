@@ -45,6 +45,12 @@ export type infoPopupProps = {
   setModalVisible: Dispatch<SetStateAction<boolean>>;
 };
 
+export type stakesInfoPopupProps = {
+  testID?: string;
+  stakesInfoModalVisible: boolean;
+  setStakesInfoModalVisible: Dispatch<SetStateAction<boolean>>;
+};
+
 export type ButtonLoadingProps = {
   children?: React.ReactNode;
   loading: boolean;

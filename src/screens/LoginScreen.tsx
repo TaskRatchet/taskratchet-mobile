@@ -47,7 +47,7 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
     mutationFn: () => login(userInput, passInput),
     onSettled: (data, error) => {
       if (!data || error) {
-        console.error('login error ' + String(error));
+        console.log('login error ' + String(error));
         setOutputStatus('Login Failed, try again!');
         return;
       }
@@ -63,16 +63,19 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
         source={logo as ImageSourcePropType}
       />
       <SafeAreaView>
-        <Pressable style={styles.topButtonBox} onPress={handleHelpButtonPress}>
-          <Image
-            style={styles.helpImageStyle}
-            source={
-              isDarkMode
-                ? (helpIconWhite as ImageSourcePropType)
-                : (helpIconBlack as ImageSourcePropType)
-            }
-          />
+        <Pressable onPress={handleHelpButtonPress}>
+          <View style={styles.helpButtonBox}>
+            <Image
+              style={styles.helpImageStyle}
+              source={
+                isDarkMode
+                  ? (helpIconWhite as ImageSourcePropType)
+                  : (helpIconBlack as ImageSourcePropType)
+              }
+            />
+          </View>
         </Pressable>
+
         <KeyboardAvoidingView
           style={styles.container}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -121,6 +124,10 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
               loadingTextStyle={styles.loginText}
               style={styles.login}
               onPress={() => {
+                if (userInput === '' || passInput === '') {
+                  setOutputStatus('Username and Password Required');
+                  return;
+                }
                 mutation.mutate();
               }}>
               <Text style={styles.loginText}>Login</Text>

@@ -92,14 +92,12 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   helpImageStyle: {
-    marginRight: 5,
-    marginTop: 12,
     width: 22,
     height: 22,
   },
-  topButtonBox: {
-    position: 'absolute',
-    top: 5,
-    right: 10,
+  helpButtonBox: {
+    marginLeft: '91%',
+    marginTop: 10,
+    padding: 5,
   },
 });
