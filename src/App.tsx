@@ -36,7 +36,11 @@ function App(): JSX.Element {
       <WithSplashScreen isAppReady={isAppReady}>
         <UserContext.Provider value={{currentUser, setCurrentUser}}>
           <NavigationContainer>
-            <Stack.Navigator initialRouteName="LoginScreen">
+            <Stack.Navigator
+              initialRouteName="LoginScreen"
+              screenOptions={{
+                headerShown: false,
+              }}>
               <Stack.Screen name="LoginScreen" component={LoginScreen} />
               <Stack.Screen name="HomeScreen" component={HomeScreen} />
               <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
