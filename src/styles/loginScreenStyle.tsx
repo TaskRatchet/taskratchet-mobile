@@ -96,8 +96,8 @@ export const styles = StyleSheet.create({
     height: 22,
   },
   helpButtonBox: {
-    marginLeft: '91%',
-    marginTop: 10,
+    marginLeft: '90%',
+    marginTop: 0,
     padding: 5,
   },
 });

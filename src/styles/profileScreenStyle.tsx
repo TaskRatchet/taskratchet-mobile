@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     padding: 8,
     margin: 8,
   },
-  nameAndAvatar: {
+  profileTitle: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -55,5 +55,8 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: '-30%',
     left: '-40%',
+  },
+  buttons: {
+    marginTop: 20,
   },
 });

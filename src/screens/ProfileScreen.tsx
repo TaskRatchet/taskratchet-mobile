@@ -1,6 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import React from 'react';
 import {Button, Image, ImageSourcePropType, Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import {Props} from '../components/types';
@@ -30,13 +31,14 @@ export default function ProfileScreen({navigation}: Props) {
   }
 
   return (
-    <View style={[backgroundStyle, styles.container]}>
+    <SafeAreaView style={[backgroundStyle, styles.container]}>
       <Image
         style={styles.backgroundImage}
         blurRadius={10}
         source={logo as ImageSourcePropType}
       />
-      <View style={styles.nameAndAvatar}>
+
+      <View style={styles.profileTitle}>
         <Text style={[textColorStyle, styles.name]}>Profile</Text>
       </View>
       <View style={styles.dataGroup}>
@@ -76,8 +78,14 @@ export default function ProfileScreen({navigation}: Props) {
         ) : (
           <Text>Loading...</Text>
         )}
-        <Button title="Logout" onPress={goToLoginScreen} />
+        <View style={styles.buttons}>
+          <Button
+            title="Go to Home"
+            onPress={() => navigation.navigate('HomeScreen')}
+          />
+          <Button title="Logout" onPress={goToLoginScreen} />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
