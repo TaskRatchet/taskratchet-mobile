@@ -16,5 +16,6 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src/", "__tests__/**/*"]
+  "include": ["src/", "__tests__/**/*"],
+  "extends": "expo/tsconfig.base"
 }

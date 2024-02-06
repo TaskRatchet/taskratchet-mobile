@@ -1,7 +1,9 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  scroll: {},
+  scroll: {
+    height: '100%',
+  },
   date: {
     fontSize: 20,
     textAlign: 'center',
