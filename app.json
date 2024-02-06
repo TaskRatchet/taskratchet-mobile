@@ -7,7 +7,16 @@
         "projectId": "634f0123-3105-4f6d-91dc-57d2d4449007"
       }
     },
+    "version": "1.0.0",
     "owner": "taskratchet",
-    "slug": "taskratchet-mobile"
+    "slug": "taskratchet-mobile",
+    "ios": {
+      "bundleIdentifier": "com.taskratchet.mobile",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.taskratchet.mobile",
+      "versionCode": 1
+    }
   }
 }

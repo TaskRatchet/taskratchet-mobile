@@ -3,7 +3,9 @@ import React, {useState} from 'react';
 import {
   Image,
   ImageSourcePropType,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   Text,
   TextInput,
@@ -94,7 +96,10 @@ export default function NewTaskPopup({
   return (
     <View>
       <Modal visible={modalVisible} transparent={true} animationType="none">
-        <View style={styles.centeredView}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'height' : 'position'}
+          style={styles.centeredView}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? -50 : 0}>
           <View style={[styles.modalView, backgroundStyle]}>
             <Pressable
               onPress={() => {
@@ -187,7 +192,8 @@ export default function NewTaskPopup({
               <Text style={styles.buttonText}>Hide</Text>
             </Pressable>
           </View>
-        </View>
+        </KeyboardAvoidingView>
+
         <DatePickerPopup
           testID="datePickerPopup"
           dateModalVisible={datePickerModalVisible}

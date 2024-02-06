@@ -1,8 +1,15 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "typeRoots": ["node_modules/@types", "src/@types"],
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": [
+      "node_modules/@types",
+      "src/@types"
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -16,5 +23,9 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src/", "__tests__/**/*"]
+  "include": [
+    "src/",
+    "__tests__/**/*"
+  ],
+  "extends": "expo/tsconfig.base"
 }
