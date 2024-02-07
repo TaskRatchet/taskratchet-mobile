@@ -12,7 +12,8 @@
     "slug": "taskratchet-mobile",
     "ios": {
       "bundleIdentifier": "com.taskratchet.mobile",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "requiresFullScreen": false
     },
     "android": {
       "package": "com.taskratchet.mobile",
