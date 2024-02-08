@@ -59,4 +59,20 @@ export const styles = StyleSheet.create({
   buttons: {
     marginTop: 20,
   },
+  deleteAccount: {
+    fontSize: 18,
+    color: 'white',
+  },
+  deleteAccountButton: {
+    borderRadius: 20,
+    margin: 5,
+    padding: 10,
+    elevation: 2,
+  },
+  button: {
+    fontSize: 18,
+    color: '#0178FA',
+    textAlign: 'center',
+    padding: 10,
+  },
 });

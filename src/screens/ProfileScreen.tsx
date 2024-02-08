@@ -1,9 +1,10 @@
 import {useQuery} from '@tanstack/react-query';
-import React from 'react';
-import {Button, Image, ImageSourcePropType, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
+import DeleteAccountPopup from '../components/deleteAccountPopup';
 import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
 import {getMe} from '../services/taskratchet/getMe';
@@ -11,6 +12,8 @@ import {styles} from '../styles/profileScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 
 export default function ProfileScreen({navigation}: Props) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   const isDarkMode = useIsDarkMode();
   const backgroundStyle = {
     backgroundColor: isDarkMode
@@ -36,6 +39,12 @@ export default function ProfileScreen({navigation}: Props) {
         style={styles.backgroundImage}
         blurRadius={10}
         source={logo as ImageSourcePropType}
+      />
+
+      <DeleteAccountPopup
+        navigation={navigation}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
       />
 
       <View style={styles.profileTitle}>
@@ -79,11 +88,36 @@ export default function ProfileScreen({navigation}: Props) {
           <Text>Loading...</Text>
         )}
         <View style={styles.buttons}>
-          <Button
-            title="Go to Home"
-            onPress={() => navigation.navigate('HomeScreen')}
-          />
-          <Button title="Logout" onPress={goToLoginScreen} />
+          <Pressable onPress={() => navigation?.navigate('HomeScreen')}>
+            {({pressed}) => (
+              <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={[styles.button, {color: pressed ? 'blue' : '#0178FA'}]}>
+                Go to Home
+              </Text>
+            )}
+          </Pressable>
+          <Pressable onPress={goToLoginScreen}>
+            {({pressed}) => (
+              <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={[styles.button, {color: pressed ? 'blue' : '#0178FA'}]}>
+                Logout
+              </Text>
+            )}
+          </Pressable>
+          <Pressable
+            onPress={() => setModalVisible(true)}
+            style={({pressed}) => [
+              {
+                backgroundColor: pressed ? 'rgba(255, 0, 0, 0.5)' : 'red',
+              },
+              styles.deleteAccountButton,
+            ]}>
+            <Text style={[textColorStyle, styles.deleteAccount]}>
+              Delete Account
+            </Text>
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>

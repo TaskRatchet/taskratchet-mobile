@@ -4,6 +4,7 @@ Identity/
 devReferances
 *.log
 yarn.lock
+.env
 
 # OSX
 #

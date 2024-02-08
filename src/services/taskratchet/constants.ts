@@ -5,6 +5,7 @@ export const IS_PRODUCTION = HOSTNAME === 'app.taskratchet.com';
 export const IS_STAGING = HOSTNAME && HOSTNAME.includes('deploy-preview');
 export const IS_LOCAL = !IS_PRODUCTION && !IS_STAGING;
 export const API1_BASE = 'https://api.taskratchet.com/api1/';
+export const API2_BASE = 'https://api.taskratchet.com/api2/';
 // export const API1_BASE = IS_PRODUCTION
 //   ? 'https://api.taskratchet.com/api1/'
 //   : IS_STAGING
