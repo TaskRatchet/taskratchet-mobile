@@ -86,3 +86,9 @@ export type TaskType = {
 };
 
 export type taskType = TaskType;
+
+export type DeleteAccountPopupProps = {
+  navigation?: ProfileScreenNavigationProp;
+  modalVisible: boolean;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+};
