@@ -1,11 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {initializeApp} from 'firebase/app';
-import {
-  Auth,
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
+import {Auth, getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import RNSecureKeyStore, {ACCESSIBLE} from 'react-native-secure-key-store';
 
 import {firebaseConfig} from '../firebaseConfig';
