@@ -35,17 +35,7 @@ export default function ProfileScreen({navigation}: Props) {
   async function handleLogoutPress() {
     await logout()
       .then(async () => {
-        // console.log('clearing queryClient');
-        // queryClient.clear();
-        // console.log('refetching queries');
-        // await queryClient.refetchQueries();
-        console.log('resetting queries');
         await queryClient.resetQueries();
-        console.log('queries reset');
-
-        // console.log('invalidating queries');
-        // await queryClient.invalidateQueries();
-        // console.log('queriy invalidation complete');
       })
       .catch(error => {
         console.error(`Error logging out: ${String(error)}`);

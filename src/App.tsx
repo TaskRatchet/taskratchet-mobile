@@ -9,10 +9,8 @@ import {enableScreens} from 'react-native-screens';
 import {WithSplashScreen} from './components/splash';
 import Authenticated from './screens/Authenticated';
 import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import {firebaseConfig} from './services/firebaseConfig';
-import useMe from './services/taskratchet/useMe';
 
 initializeApp(firebaseConfig);
 getAuth();
@@ -24,8 +22,6 @@ const queryClient = new QueryClient();
 const Stack = createStackNavigator();
 
 function App(): JSX.Element {
-  // const {isFetching} = useMe();
-
   return (
     <WithSplashScreen isAppReady={true}>
       <NavigationContainer>
@@ -35,7 +31,6 @@ function App(): JSX.Element {
             screenOptions={{
               headerShown: false,
             }}>
-            {/* <Stack.Screen name="LoginScreen" component={LoginScreen} /> */}
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           </Stack.Navigator>

@@ -1,9 +1,4 @@
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React from 'react';
 import {
   Image,
@@ -23,15 +18,13 @@ import helpIconWhite from '../../assets/icons/help_circle(white).png';
 import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import PressableLoading from '../components/pressableLoading';
-import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
-import {getTasks} from '../services/taskratchet/getTasks';
 import {login} from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
 
-export default function LoginScreen({navigation}: Props): JSX.Element {
+export default function LoginScreen(): JSX.Element {
   const isDarkMode = useIsDarkMode();
 
   const backgroundStyle = {

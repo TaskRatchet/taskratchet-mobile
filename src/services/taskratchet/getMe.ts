@@ -22,7 +22,6 @@ export type User = {
 
 export async function getMe(): Promise<User> {
   const response = await fetch1('me', true);
-  console.log('getMe() response', response);
 
   if (!response.ok) {
     throw new Error('Failed to get me');
