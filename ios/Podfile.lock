@@ -13,7 +13,7 @@ PODS:
   - EXJSONUtils (0.7.1)
   - EXManifests (0.7.2):
     - ExpoModulesCore
-  - Expo (49.0.21):
+  - Expo (49.0.22):
     - ExpoModulesCore
   - expo-dev-client (2.4.12):
     - EXManifests
@@ -72,7 +72,7 @@ PODS:
     - React-Core
   - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
-  - ExpoModulesCore (1.5.12):
+  - ExpoModulesCore (1.5.13):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - React-NativeModulesApple
@@ -458,6 +458,9 @@ PODS:
     - React-Core
   - react-native-secure-key-store (2.0.10):
     - React-Core
+  - react-native-webview (13.7.1):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - React-NativeModulesApple (0.72.7):
     - hermes-engine
     - React-callinvoker
@@ -644,6 +647,7 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-secure-key-store (from `../node_modules/react-native-secure-key-store`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -761,6 +765,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-secure-key-store:
     :path: "../node_modules/react-native-secure-key-store"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-perflogger:
@@ -814,13 +820,13 @@ SPEC CHECKSUMS:
   EXFont: 738c44c390953ebcbab075a4848bfbef025fd9ee
   EXJSONUtils: 6802be4282d42b97c51682468ddc1026a06f8276
   EXManifests: cf66451b11b2c2f6464917528d792759f7fd6ce0
-  Expo: 61a8e1aa94311557c137c0a4dfd4fe78281cfbb4
+  Expo: 9060b49fecf07bebf1dd967730d079aa5e750ebe
   expo-dev-client: 1e20e0d67534fd63da37604747a60e7d69fc46f5
   expo-dev-launcher: e9411e0c91abaa448682d0fa688957e7dbff356e
   expo-dev-menu: f7036f78c69f0f6ecb386f5543a06266dde64bf5
   expo-dev-menu-interface: bda969497e73dadc2663c479e0fa726ca79a306e
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
-  ExpoModulesCore: c480fd4e3c7c8e81f0a6ba3a7c56869f25fe016d
+  ExpoModulesCore: cf14fc49a3d5df3ed3cf2a38fc758d073bfd1c13
   EXUpdatesInterface: 82ed48d417cdcd376c12ca1c2ce390d35500bed6
   FBLazyVector: 5fbbff1d7734827299274638deb8ba3024f6c597
   FBReactNativeSpec: 638095fe8a01506634d77b260ef8a322019ac671
@@ -855,6 +861,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 90d1d60802a20085125657940b944f2bb4e5c113
   react-native-safe-area-context: cd1169d797a2ef722a00bfc5af10748d5b6c94f9
   react-native-secure-key-store: 910e6df6bc33cb790aba6ee24bc7818df1fe5898
+  react-native-webview: 83525c9ed4138faf5d5e4f8eb74bf050992935be
   React-NativeModulesApple: b6868ee904013a7923128892ee4a032498a1024a
   React-perflogger: 31ea61077185eb1428baf60c0db6e2886f141a5a
   React-RCTActionSheet: 392090a3abc8992eb269ef0eaa561750588fc39d
