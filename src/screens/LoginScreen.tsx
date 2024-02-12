@@ -4,7 +4,6 @@ import {
   Image,
   ImageSourcePropType,
   KeyboardAvoidingView,
-  Linking,
   Platform,
   Pressable,
   SafeAreaView,
@@ -18,8 +17,9 @@ import helpIconWhite from '../../assets/icons/help_circle(white).png';
 import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import PressableLoading from '../components/pressableLoading';
+import WebViewPopup from '../components/webViewPopup';
 import themeProvider from '../providers/themeProvider';
-import {login} from '../services/taskratchet/login';
+import * as login from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
@@ -41,11 +41,12 @@ export default function LoginScreen(): JSX.Element {
   const [userInput, setUserInput] = React.useState('');
   const [passInput, setPassInput] = React.useState('');
   const [outputStatus, setOutputStatus] = React.useState('');
+  const [WebViewModalVisible, setWebViewModalVisible] = React.useState(false);
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: () => login(userInput, passInput),
+    mutationFn: () => login.login(userInput, passInput),
     onSettled: async (data, error) => {
       if (!data || error) {
         console.log('login error ' + String(error));
@@ -59,6 +60,10 @@ export default function LoginScreen(): JSX.Element {
     },
   });
 
+  function handleRegisterButtonPress() {
+    setWebViewModalVisible(!WebViewModalVisible);
+  }
+
   return (
     <View style={[backgroundStyle, styles.screen]}>
       <Image
@@ -67,6 +72,11 @@ export default function LoginScreen(): JSX.Element {
         source={logo as ImageSourcePropType}
       />
       <SafeAreaView>
+        <WebViewPopup
+          webViewModalVisible={WebViewModalVisible}
+          setWebViewModalVisible={setWebViewModalVisible}
+        />
+
         <Pressable onPress={handleHelpButtonPress}>
           <View style={styles.helpButtonBox}>
             <Image
@@ -141,11 +151,7 @@ export default function LoginScreen(): JSX.Element {
             <Pressable
               testID="registerButton"
               style={styles.register}
-              onPress={() => {
-                Linking.openURL('https://app.taskratchet.com/register').catch(
-                  err => console.error('An error occurred', err),
-                );
-              }}>
+              onPress={handleRegisterButtonPress}>
               <Text style={styles.registerText}>Register</Text>
             </Pressable>
             <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>
