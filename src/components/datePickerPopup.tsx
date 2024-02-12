@@ -1,10 +1,9 @@
-import {useQuery} from '@tanstack/react-query';
 import React from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
 import themeProvider from '../providers/themeProvider';
-import {getMe} from '../services/taskratchet/getMe';
+import useMe from '../services/taskratchet/useMe';
 import {styles} from '../styles/datePickerPopupStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import type {DatePickerPopupProps} from './types';
@@ -15,7 +14,7 @@ export default function DatePickerPopup({
   date,
   onDateChange,
 }: DatePickerPopupProps): JSX.Element {
-  const {data: user} = useQuery({queryKey: ['user'], queryFn: getMe});
+  const {data: user} = useMe();
 
   const isDarkMode = useIsDarkMode();
 
