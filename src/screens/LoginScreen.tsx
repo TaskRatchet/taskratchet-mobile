@@ -1,4 +1,4 @@
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import React from 'react';
 import {
   Image,
@@ -18,14 +18,13 @@ import helpIconWhite from '../../assets/icons/help_circle(white).png';
 import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
 import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import PressableLoading from '../components/pressableLoading';
-import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
 import {login} from '../services/taskratchet/login';
 import {styles} from '../styles/loginScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
 
-export default function LoginScreen({navigation}: Props): JSX.Element {
+export default function LoginScreen(): JSX.Element {
   const isDarkMode = useIsDarkMode();
 
   const backgroundStyle = {
@@ -43,15 +42,20 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
   const [passInput, setPassInput] = React.useState('');
   const [outputStatus, setOutputStatus] = React.useState('');
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: () => login(userInput, passInput),
-    onSettled: (data, error) => {
+    onSettled: async (data, error) => {
       if (!data || error) {
         console.log('login error ' + String(error));
         setOutputStatus('Login Failed, try again!');
         return;
       }
-      navigation?.navigate('HomeScreen');
+
+      await queryClient.invalidateQueries({queryKey: ['user']});
+      setUserInput('');
+      setPassInput('');
     },
   });
 
@@ -97,6 +101,7 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
                 <TextInput
                   style={[textColorStyle, styles.inputField]}
                   onChangeText={setUserInput}
+                  value={userInput}
                   placeholder="Username"
                   placeholderTextColor={textColorStyle.color}
                   keyboardType="default"
@@ -110,6 +115,7 @@ export default function LoginScreen({navigation}: Props): JSX.Element {
                 <TextInput
                   style={[textColorStyle, styles.inputField]}
                   onChangeText={setPassInput}
+                  value={passInput}
                   placeholder="Password"
                   placeholderTextColor={textColorStyle.color}
                   keyboardType="default"

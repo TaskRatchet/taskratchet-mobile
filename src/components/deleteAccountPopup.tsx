@@ -15,7 +15,7 @@ export default function DeleteAccountPopup({
   const mutation = useMutation({
     mutationFn: deleteMe,
     onError: error => {
-      console.log('delete account error ' + String(error));
+      console.log('error deleting account ' + String(error));
     },
   });
 

@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query';
+import {useQueryClient} from '@tanstack/react-query';
 import React, {useState} from 'react';
 import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -7,7 +7,8 @@ import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
 import DeleteAccountPopup from '../components/deleteAccountPopup';
 import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
-import {getMe} from '../services/taskratchet/getMe';
+import {logout} from '../services/taskratchet/logout';
+import useMe from '../services/taskratchet/useMe';
 import {styles} from '../styles/profileScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
 
@@ -25,12 +26,20 @@ export default function ProfileScreen({navigation}: Props) {
     color: isDarkMode ? 'white' : 'black',
   };
 
-  const {data: user} = useQuery({queryKey: ['user'], queryFn: getMe});
+  const {data: user} = useMe();
 
   const dataBorderColor = {borderColor: isDarkMode ? 'white' : 'black'};
 
-  function goToLoginScreen() {
-    navigation?.navigate('LoginScreen');
+  const queryClient = useQueryClient();
+
+  async function handleLogoutPress() {
+    await logout()
+      .then(async () => {
+        await queryClient.resetQueries();
+      })
+      .catch(error => {
+        console.error(`Error logging out: ${String(error)}`);
+      });
   }
 
   return (
@@ -83,42 +92,53 @@ export default function ProfileScreen({navigation}: Props) {
                 </Text>
               </View>
             </View>
+            <View style={styles.buttons}>
+              <Pressable onPress={() => navigation?.navigate('HomeScreen')}>
+                {({pressed}) => (
+                  <Text
+                    style={[
+                      styles.button,
+                      // eslint-disable-next-line react-native/no-inline-styles
+                      {color: pressed ? 'blue' : '#0178FA'},
+                    ]}>
+                    Go to Home
+                  </Text>
+                )}
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  handleLogoutPress().catch(error => {
+                    console.error(`Error logging out: ${String(error)}`);
+                  });
+                }}>
+                {({pressed}) => (
+                  <Text
+                    style={[
+                      styles.button,
+                      // eslint-disable-next-line react-native/no-inline-styles
+                      {color: pressed ? 'blue' : '#0178FA'},
+                    ]}>
+                    Logout
+                  </Text>
+                )}
+              </Pressable>
+              <Pressable
+                onPress={() => setModalVisible(true)}
+                style={({pressed}) => [
+                  {
+                    backgroundColor: pressed ? 'rgba(255, 0, 0, 0.5)' : 'red',
+                  },
+                  styles.deleteAccountButton,
+                ]}>
+                <Text style={[textColorStyle, styles.deleteAccount]}>
+                  Delete Account
+                </Text>
+              </Pressable>
+            </View>
           </>
         ) : (
           <Text>Loading...</Text>
         )}
-        <View style={styles.buttons}>
-          <Pressable onPress={() => navigation?.navigate('HomeScreen')}>
-            {({pressed}) => (
-              <Text
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={[styles.button, {color: pressed ? 'blue' : '#0178FA'}]}>
-                Go to Home
-              </Text>
-            )}
-          </Pressable>
-          <Pressable onPress={goToLoginScreen}>
-            {({pressed}) => (
-              <Text
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={[styles.button, {color: pressed ? 'blue' : '#0178FA'}]}>
-                Logout
-              </Text>
-            )}
-          </Pressable>
-          <Pressable
-            onPress={() => setModalVisible(true)}
-            style={({pressed}) => [
-              {
-                backgroundColor: pressed ? 'rgba(255, 0, 0, 0.5)' : 'red',
-              },
-              styles.deleteAccountButton,
-            ]}>
-            <Text style={[textColorStyle, styles.deleteAccount]}>
-              Delete Account
-            </Text>
-          </Pressable>
-        </View>
       </View>
     </SafeAreaView>
   );

@@ -1,7 +1,7 @@
 import secureKeystore from 'react-native-secure-key-store';
 
 import {API1_BASE} from './constants';
-import {logout} from './sessions';
+import {logout} from './logout';
 
 const _trim = (s: string, c: string) => {
   if (c === ']') {

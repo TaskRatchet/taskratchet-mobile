@@ -32,11 +32,3 @@ export async function publishSession(): Promise<void> {
     x(session);
   });
 }
-
-// TODO: Should this function be in separate file?
-export async function logout(): Promise<void> {
-  await AsyncStorage.removeItem('email');
-  await AsyncStorage.removeItem('token');
-
-  await publishSession();
-}
