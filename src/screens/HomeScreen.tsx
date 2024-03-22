@@ -98,7 +98,12 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
             dueDate && dueDate.getTime() > Date.now() - 24 * 60 * 60 * 1000;
           return isDueInLessThan24Hours;
         })
-      : sortedTasks;
+      : sortedTasks?.filter(task => {
+          const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
+          const isDueInMoreThan24Hours =
+            dueDate && dueDate.getTime() <= Date.now() - 24 * 60 * 60 * 1000;
+          return isDueInMoreThan24Hours;
+        });
 
   const textColorStyle = {
     color: isDarkMode ? 'white' : 'black',
@@ -226,9 +231,15 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               })
             ) : (
               <View style={[primaryStyle, styles.noTasksContainer]}>
-                <Text style={[textColorStyle, styles.noTasks]}>
-                  Congrantulations! You're all caught up!
-                </Text>
+                {selectedOption === 'Next' ? (
+                  <Text style={[textColorStyle, styles.noTasks]}>
+                    Congrantulations! You're all caught up!
+                  </Text>
+                ) : (
+                  <Text style={[textColorStyle, styles.noTasks]}>
+                    Nothing to see here!
+                  </Text>
+                )}
               </View>
             )}
             <View style={styles.spacer /* spacer */} />
