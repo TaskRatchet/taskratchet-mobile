@@ -136,4 +136,22 @@ export const styles = StyleSheet.create({
   spacer: {
     height: 100,
   },
+  selectorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderRadius: 10,
+    margin: 20,
+    marginBottom: 10,
+  },
+  noTasksContainer: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 20,
+    borderRadius: 10,
+    padding: 10,
+  },
+  noTasks: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
 });

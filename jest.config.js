@@ -5,4 +5,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/fileMock.js',
   },
   setupFilesAfterEnv: ['./jest.setup.js'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(firebase/app|@react-native|react-native)/)',
+  ],
 };
