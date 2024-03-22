@@ -41,8 +41,6 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.23.6",
-    "@babel/preset-flow": "^7.24.1",
-    "@babel/preset-typescript": "^7.24.1",
     "@babel/runtime": "^7.20.0",
     "@jest/globals": "^29.7.0",
     "@react-native/eslint-config": "^0.72.2",
