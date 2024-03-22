@@ -95,9 +95,6 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
           const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
           const isDueInLessThan24Hours =
             dueDate && dueDate.getTime() > Date.now() - 24 * 60 * 60 * 1000;
-          console.log('isDueInLessThan24Hours', isDueInLessThan24Hours);
-          console.log('due', task.due);
-          console.log('');
           return isDueInLessThan24Hours;
         })
       : sortedTasks;
