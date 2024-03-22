@@ -1,8 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
+
 import {useQuery} from '@tanstack/react-query';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {
-  Button,
   Image,
   ImageSourcePropType,
   Pressable,
@@ -191,16 +192,28 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
           </View>
 
           <View style={[primaryStyle, styles.selectorContainer]}>
-            <Button
-              title="Next"
-              onPress={() => setSelectedOption('Next')}
-              color={selectedOption === 'Next' ? 'white' : '#999999'}
-            />
-            <Button
-              title="Archive"
-              onPress={() => setSelectedOption('Archive')}
-              color={selectedOption === 'Archive' ? 'white' : '#999999'}
-            />
+            <Pressable
+              style={styles.tabButton}
+              onPress={() => setSelectedOption('Next')}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: selectedOption === 'Next' ? 'white' : 'gray',
+                }}>
+                Next
+              </Text>
+            </Pressable>
+            <Pressable
+              style={styles.tabButton}
+              onPress={() => setSelectedOption('Archive')}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: selectedOption === 'Archive' ? 'white' : 'gray',
+                }}>
+                Archive
+              </Text>
+            </Pressable>
           </View>
           <View style={styles.taskList}>
             {processedTasks && processedTasks.length > 0 ? (

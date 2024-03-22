@@ -154,4 +154,7 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  tabButton: {
+    padding: 10,
+  },
 });
