@@ -1,4 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
+
 import {useQuery} from '@tanstack/react-query';
+import moment from 'moment';
 import React, {useState} from 'react';
 import {
   Image,
@@ -36,6 +39,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [newTaskModalVisible, setNewTaskModalVisible] = useState(false);
   const [clickedId, setClickedId] = useState<string>();
+  const [selectedOption, setSelectedOption] = useState('Next');
 
   const {data: tasks} = useQuery({
     queryKey: ['tasks'],
@@ -50,6 +54,12 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
       : themeProvider.colorsLight.background,
   };
 
+  const primaryStyle = {
+    backgroundColor: isDarkMode
+      ? themeProvider.colorsDark.primary
+      : themeProvider.colorsLight.primary,
+  };
+
   const plusButtonColor = {
     backgroundColor: isDarkMode
       ? themeProvider.colorsDark.plusButton
@@ -61,6 +71,39 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
       ? themeProvider.colorsDark.plusButtonPressed
       : themeProvider.colorsLight.plusButtonPressed,
   };
+
+  const sortedTasks = tasks?.sort((a, b) => {
+    const taskA = a;
+    const taskB = b;
+
+    if ('due' in taskA && 'due' in taskB) {
+      const diffDaysA = checkDate(String(taskA.due));
+      const diffDaysB = checkDate(String(taskB.due));
+
+      // If the deadline is past, return a large number to sort the task to the bottom
+      const timeLeftA = diffDaysA < 0 ? Number.MAX_SAFE_INTEGER : diffDaysA;
+      const timeLeftB = diffDaysB < 0 ? Number.MAX_SAFE_INTEGER : diffDaysB;
+
+      return timeLeftA - timeLeftB;
+    } else {
+      return 0;
+    }
+  });
+
+  const processedTasks =
+    selectedOption === 'Next'
+      ? sortedTasks?.filter(task => {
+          const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
+          const isDueInLessThan24Hours =
+            dueDate && dueDate.getTime() > Date.now() - 24 * 60 * 60 * 1000;
+          return isDueInLessThan24Hours;
+        })
+      : sortedTasks?.filter(task => {
+          const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
+          const isDueInMoreThan24Hours =
+            dueDate && dueDate.getTime() <= Date.now() - 24 * 60 * 60 * 1000;
+          return isDueInMoreThan24Hours;
+        });
 
   const textColorStyle = {
     color: isDarkMode ? 'white' : 'black',
@@ -152,37 +195,53 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               TASK RATCHET
             </Text>
           </View>
+
+          <View style={[primaryStyle, styles.selectorContainer]}>
+            <Pressable
+              style={styles.tabButton}
+              onPress={() => setSelectedOption('Next')}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: selectedOption === 'Next' ? 'white' : 'gray',
+                }}>
+                Next
+              </Text>
+            </Pressable>
+            <Pressable
+              style={styles.tabButton}
+              onPress={() => setSelectedOption('Archive')}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: selectedOption === 'Archive' ? 'white' : 'gray',
+                }}>
+                Archive
+              </Text>
+            </Pressable>
+          </View>
           <View style={styles.taskList}>
-            {tasks &&
-              tasks
-                .sort((a, b) => {
-                  const taskA = a;
-                  const taskB = b;
-
-                  if ('due' in taskA && 'due' in taskB) {
-                    const diffDaysA = checkDate(String(taskA.due));
-                    const diffDaysB = checkDate(String(taskB.due));
-
-                    // If the deadline is past, return a large number to sort the task to the bottom
-                    const timeLeftA =
-                      diffDaysA < 0 ? Number.MAX_SAFE_INTEGER : diffDaysA;
-                    const timeLeftB =
-                      diffDaysB < 0 ? Number.MAX_SAFE_INTEGER : diffDaysB;
-
-                    return timeLeftA - timeLeftB;
-                  } else {
-                    return 0;
-                  }
-                })
-                .map(task => {
-                  return (
-                    <Pressable
-                      key={task.id}
-                      onPress={() => taskItemPress(task)}>
-                      <Task item={task} />
-                    </Pressable>
-                  );
-                })}
+            {processedTasks && processedTasks.length > 0 ? (
+              processedTasks.map(task => {
+                return (
+                  <Pressable key={task.id} onPress={() => taskItemPress(task)}>
+                    <Task item={task} />
+                  </Pressable>
+                );
+              })
+            ) : (
+              <View style={[primaryStyle, styles.noTasksContainer]}>
+                {selectedOption === 'Next' ? (
+                  <Text style={[textColorStyle, styles.noTasks]}>
+                    Congrantulations! You're all caught up!
+                  </Text>
+                ) : (
+                  <Text style={[textColorStyle, styles.noTasks]}>
+                    Nothing to see here!
+                  </Text>
+                )}
+              </View>
+            )}
             <View style={styles.spacer /* spacer */} />
           </View>
         </ScrollView>
