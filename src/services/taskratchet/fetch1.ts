@@ -1,4 +1,3 @@
-import secureKeystore from 'react-native-secure-key-store';
 import * as SecureStore from 'expo-secure-store';
 
 import {API1_BASE} from './constants';

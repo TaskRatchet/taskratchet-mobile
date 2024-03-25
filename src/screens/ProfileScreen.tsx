@@ -98,7 +98,6 @@ export default function ProfileScreen({navigation}: Props) {
                   <Text
                     style={[
                       styles.button,
-                      // eslint-disable-next-line react-native/no-inline-styles
                       {color: pressed ? 'blue' : '#0178FA'},
                     ]}>
                     Go to Home
@@ -115,7 +114,6 @@ export default function ProfileScreen({navigation}: Props) {
                   <Text
                     style={[
                       styles.button,
-                      // eslint-disable-next-line react-native/no-inline-styles
                       {color: pressed ? 'blue' : '#0178FA'},
                     ]}>
                     Logout

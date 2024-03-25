@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-
 import {useQuery} from '@tanstack/react-query';
 import moment from 'moment';
 import React, {useState} from 'react';

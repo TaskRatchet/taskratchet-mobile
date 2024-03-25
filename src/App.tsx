@@ -41,6 +41,7 @@ function App(): JSX.Element {
   );
 }
 
+// eslint-disable-next-line react/display-name
 export default function () {
   return (
     <QueryClientProvider client={queryClient}>
