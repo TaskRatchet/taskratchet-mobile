@@ -1,24 +1,18 @@
-import { useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
-import {
-  Image,
-  ImageSourcePropType,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {useQueryClient} from '@tanstack/react-query';
+import React, {useState} from 'react';
+import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-import logo from "../../app_assets/images/logo_taskratchet_square_64-2.png";
-import DeleteAccountPopup from "../components/deleteAccountPopup";
-import { Props } from "../components/types";
-import themeProvider from "../providers/themeProvider";
-import { logout } from "../services/taskratchet/logout";
-import useMe from "../services/taskratchet/useMe";
-import { styles } from "../styles/profileScreenStyle";
-import useIsDarkMode from "../utils/checkDarkMode";
+import logo from '../../app_assets/images/logo_taskratchet_square_64-2.png';
+import DeleteAccountPopup from '../components/deleteAccountPopup';
+import {Props} from '../components/types';
+import themeProvider from '../providers/themeProvider';
+import {logout} from '../services/taskratchet/logout';
+import useMe from '../services/taskratchet/useMe';
+import {styles} from '../styles/profileScreenStyle';
+import useIsDarkMode from '../utils/checkDarkMode';
 
-export default function ProfileScreen({ navigation }: Props) {
+export default function ProfileScreen({navigation}: Props) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const isDarkMode = useIsDarkMode();
@@ -29,12 +23,12 @@ export default function ProfileScreen({ navigation }: Props) {
   };
 
   const textColorStyle = {
-    color: isDarkMode ? "white" : "black",
+    color: isDarkMode ? 'white' : 'black',
   };
 
-  const { data: user } = useMe();
+  const {data: user} = useMe();
 
-  const dataBorderColor = { borderColor: isDarkMode ? "white" : "black" };
+  const dataBorderColor = {borderColor: isDarkMode ? 'white' : 'black'};
 
   const queryClient = useQueryClient();
 
@@ -43,7 +37,7 @@ export default function ProfileScreen({ navigation }: Props) {
       .then(async () => {
         await queryClient.resetQueries();
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(`Error logging out: ${String(error)}`);
       });
   }
@@ -73,8 +67,7 @@ export default function ProfileScreen({ navigation }: Props) {
                 <Text style={[textColorStyle, styles.dataText]}>Name:</Text>
                 <Text
                   style={[textColorStyle, styles.dataValueText]}
-                  numberOfLines={1}
-                >
+                  numberOfLines={1}>
                   {user.name}
                 </Text>
               </View>
@@ -84,8 +77,7 @@ export default function ProfileScreen({ navigation }: Props) {
                 <Text style={[textColorStyle, styles.dataText]}>Email:</Text>
                 <Text
                   style={[textColorStyle, styles.dataValueText]}
-                  numberOfLines={1}
-                >
+                  numberOfLines={1}>
                   {user.email}
                 </Text>
               </View>
@@ -95,54 +87,49 @@ export default function ProfileScreen({ navigation }: Props) {
                 <Text style={[textColorStyle, styles.dataText]}>Timezone:</Text>
                 <Text
                   style={[textColorStyle, styles.dataValueText]}
-                  numberOfLines={1}
-                >
+                  numberOfLines={1}>
                   {user.timezone}
                 </Text>
               </View>
             </View>
             <View style={styles.buttons}>
-              <Pressable onPress={() => navigation?.navigate("HomeScreen")}>
-                {({ pressed }) => (
+              <Pressable onPress={() => navigation?.navigate('HomeScreen')}>
+                {({pressed}) => (
                   <Text
                     style={[
                       styles.button,
                       // eslint-disable-next-line react-native/no-inline-styles
-                      { color: pressed ? "blue" : "#0178FA" },
-                    ]}
-                  >
+                      {color: pressed ? 'blue' : '#0178FA'},
+                    ]}>
                     Go to Home
                   </Text>
                 )}
               </Pressable>
               <Pressable
                 onPress={() => {
-                  handleLogoutPress().catch((error) => {
+                  handleLogoutPress().catch(error => {
                     console.error(`Error logging out: ${String(error)}`);
                   });
-                }}
-              >
-                {({ pressed }) => (
+                }}>
+                {({pressed}) => (
                   <Text
                     style={[
                       styles.button,
                       // eslint-disable-next-line react-native/no-inline-styles
-                      { color: pressed ? "blue" : "#0178FA" },
-                    ]}
-                  >
+                      {color: pressed ? 'blue' : '#0178FA'},
+                    ]}>
                     Logout
                   </Text>
                 )}
               </Pressable>
               <Pressable
                 onPress={() => setModalVisible(true)}
-                style={({ pressed }) => [
+                style={({pressed}) => [
                   {
-                    backgroundColor: pressed ? "rgba(255, 0, 0, 0.5)" : "red",
+                    backgroundColor: pressed ? 'rgba(255, 0, 0, 0.5)' : 'red',
                   },
                   styles.deleteAccountButton,
-                ]}
-              >
+                ]}>
                 <Text style={[textColorStyle, styles.deleteAccount]}>
                   Delete Account
                 </Text>
