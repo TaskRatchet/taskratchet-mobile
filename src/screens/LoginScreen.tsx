@@ -1,5 +1,5 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import React from 'react';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React from "react";
 import {
   Image,
   ImageSourcePropType,
@@ -10,19 +10,19 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
+} from "react-native";
 
-import helpIconBlack from '../../assets/icons/help_circle(black).png';
-import helpIconWhite from '../../assets/icons/help_circle(white).png';
-import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
-import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
-import PressableLoading from '../components/pressableLoading';
-import WebViewPopup from '../components/webViewPopup';
-import themeProvider from '../providers/themeProvider';
-import * as login from '../services/taskratchet/login';
-import {styles} from '../styles/loginScreenStyle';
-import useIsDarkMode from '../utils/checkDarkMode';
-import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
+import helpIconBlack from "../../app_assets/icons/help_circle(black).png";
+import helpIconWhite from "../../app_assets/icons/help_circle(white).png";
+import logoBordered from "../../app_assets/images/logo_taskratchet_512_bordered.png";
+import logo from "../../app_assets/images/logo_taskratchet_square_64-2.png";
+import PressableLoading from "../components/pressableLoading";
+import WebViewPopup from "../components/webViewPopup";
+import themeProvider from "../providers/themeProvider";
+import * as login from "../services/taskratchet/login";
+import { styles } from "../styles/loginScreenStyle";
+import useIsDarkMode from "../utils/checkDarkMode";
+import { handleHelpButtonPress } from "../utils/handleHelpButtonPress";
 
 export default function LoginScreen(): JSX.Element {
   const isDarkMode = useIsDarkMode();
@@ -34,29 +34,34 @@ export default function LoginScreen(): JSX.Element {
   };
 
   const textColorStyle = {
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? "white" : "black",
   };
 
   // these are the default states for the username and password inputs \/
-  const [userInput, setUserInput] = React.useState('');
-  const [passInput, setPassInput] = React.useState('');
-  const [outputStatus, setOutputStatus] = React.useState('');
+  const [userInput, setUserInput] = React.useState("");
+  const [passInput, setPassInput] = React.useState("");
+  const [outputStatus, setOutputStatus] = React.useState("");
   const [WebViewModalVisible, setWebViewModalVisible] = React.useState(false);
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: () => login.login(userInput, passInput),
+    mutationFn: async () => {
+      console.log("login called (in LoginScreen.tsx)");
+      const result = await login.login(userInput, passInput);
+      console.log(result);
+      return result;
+    },
     onSettled: async (data, error) => {
       if (!data || error) {
-        console.log('login error ' + String(error));
-        setOutputStatus('Login Failed, try again!');
+        console.log("login error " + String(error));
+        setOutputStatus("Login Failed, try again!");
         return;
       }
 
-      await queryClient.invalidateQueries({queryKey: ['user']});
-      setUserInput('');
-      setPassInput('');
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      setUserInput("");
+      setPassInput("");
     },
   });
 
@@ -92,8 +97,9 @@ export default function LoginScreen(): JSX.Element {
 
         <KeyboardAvoidingView
           style={styles.container}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'android' ? -200 : 0}>
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "android" ? -200 : 0}
+        >
           <View style={styles.containerInner}>
             <Image
               style={styles.logoBordered}
@@ -140,18 +146,20 @@ export default function LoginScreen(): JSX.Element {
               loadingTextStyle={styles.loginText}
               style={styles.login}
               onPress={() => {
-                if (userInput === '' || passInput === '') {
-                  setOutputStatus('Username and Password Required');
+                if (userInput === "" || passInput === "") {
+                  setOutputStatus("Username and Password Required");
                   return;
                 }
                 mutation.mutate();
-              }}>
+              }}
+            >
               <Text style={styles.loginText}>Login</Text>
             </PressableLoading>
             <Pressable
               testID="registerButton"
               style={styles.register}
-              onPress={handleRegisterButtonPress}>
+              onPress={handleRegisterButtonPress}
+            >
               <Text style={styles.registerText}>Register</Text>
             </Pressable>
             <Text style={[textColorStyle, styles.text]}>{outputStatus}</Text>

@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 
-import {useQuery} from '@tanstack/react-query';
-import moment from 'moment';
-import React, {useState} from 'react';
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
+import React, { useState } from "react";
 import {
   Image,
   ImageSourcePropType,
@@ -10,39 +10,39 @@ import {
   ScrollView,
   Text,
   View,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import helpIconBlack from '../../assets/icons/help_circle(black).png';
-import helpIconWhite from '../../assets/icons/help_circle(white).png';
-import infoIconBlack from '../../assets/icons/information_icon(black).png';
-import infoIconWhite from '../../assets/icons/information_icon(white).png';
-import plusCircleBlack from '../../assets/icons/plus(black).png';
-import plusCircleWhite from '../../assets/icons/plus(white).png';
-import userLogoBlack from '../../assets/icons/user_logo(black).png';
-import userLogoWhite from '../../assets/icons/user_logo(white).png';
-import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
-import InfoPopup from '../components/infoPopup';
-import NewTaskPopup from '../components/newTaskPopup';
-import Task from '../components/taskListItem';
-import TaskPopup from '../components/taskPopup';
-import {Props, taskType} from '../components/types';
-import themeProvider from '../providers/themeProvider';
-import {getTasks} from '../services/taskratchet/getTasks';
-import {styles} from '../styles/homeScreenStyle';
-import useIsDarkMode from '../utils/checkDarkMode';
-import checkDate from '../utils/checkDate';
-import {handleHelpButtonPress} from '../utils/handleHelpButtonPress';
+import helpIconBlack from "../../app_assets/icons/help_circle(black).png";
+import helpIconWhite from "../../app_assets/icons/help_circle(white).png";
+import infoIconBlack from "../../app_assets/icons/information_icon(black).png";
+import infoIconWhite from "../../app_assets/icons/information_icon(white).png";
+import plusCircleBlack from "../../app_assets/icons/plus(black).png";
+import plusCircleWhite from "../../app_assets/icons/plus(white).png";
+import userLogoBlack from "../../app_assets/icons/user_logo(black).png";
+import userLogoWhite from "../../app_assets/icons/user_logo(white).png";
+import logo from "../../app_assets/images/logo_taskratchet_square_64-2.png";
+import InfoPopup from "../components/infoPopup";
+import NewTaskPopup from "../components/newTaskPopup";
+import Task from "../components/taskListItem";
+import TaskPopup from "../components/taskPopup";
+import { Props, taskType } from "../components/types";
+import themeProvider from "../providers/themeProvider";
+import { getTasks } from "../services/taskratchet/getTasks";
+import { styles } from "../styles/homeScreenStyle";
+import useIsDarkMode from "../utils/checkDarkMode";
+import checkDate from "../utils/checkDate";
+import { handleHelpButtonPress } from "../utils/handleHelpButtonPress";
 
-export default function HomeScreen({navigation}: Props): JSX.Element {
+export default function HomeScreen({ navigation }: Props): JSX.Element {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [newTaskModalVisible, setNewTaskModalVisible] = useState(false);
   const [clickedId, setClickedId] = useState<string>();
-  const [selectedOption, setSelectedOption] = useState('Next');
+  const [selectedOption, setSelectedOption] = useState("Next");
 
-  const {data: tasks} = useQuery({
-    queryKey: ['tasks'],
+  const { data: tasks } = useQuery({
+    queryKey: ["tasks"],
     queryFn: getTasks,
   });
 
@@ -76,7 +76,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
     const taskA = a;
     const taskB = b;
 
-    if ('due' in taskA && 'due' in taskB) {
+    if ("due" in taskA && "due" in taskB) {
       const diffDaysA = checkDate(String(taskA.due));
       const diffDaysB = checkDate(String(taskB.due));
 
@@ -91,26 +91,26 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   });
 
   const processedTasks =
-    selectedOption === 'Next'
-      ? sortedTasks?.filter(task => {
-          const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
+    selectedOption === "Next"
+      ? sortedTasks?.filter((task) => {
+          const dueDate = moment(task.due, "M/D/YYYY, hh:mm A").toDate();
           const isDueInLessThan24Hours =
             dueDate && dueDate.getTime() > Date.now() - 24 * 60 * 60 * 1000;
           return isDueInLessThan24Hours;
         })
-      : sortedTasks?.filter(task => {
-          const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
+      : sortedTasks?.filter((task) => {
+          const dueDate = moment(task.due, "M/D/YYYY, hh:mm A").toDate();
           const isDueInMoreThan24Hours =
             dueDate && dueDate.getTime() <= Date.now() - 24 * 60 * 60 * 1000;
           return isDueInMoreThan24Hours;
         });
 
   const textColorStyle = {
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? "white" : "black",
   };
 
   function handleUserProfilePress() {
-    navigation?.navigate('ProfileScreen');
+    navigation?.navigate("ProfileScreen");
   }
 
   function handleInfoButtonPress() {
@@ -127,7 +127,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   }
 
   return (
-    <SafeAreaView edges={['top']} style={[backgroundStyle, styles.background]}>
+    <SafeAreaView edges={["top"]} style={[backgroundStyle, styles.background]}>
       <View>
         <Image
           style={styles.imageStyle}
@@ -154,7 +154,8 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
           <View style={styles.profile_infoButtons}>
             <Pressable
               style={styles.profile_infoButtons}
-              onPress={handleUserProfilePress}>
+              onPress={handleUserProfilePress}
+            >
               <Image
                 style={styles.profileImage}
                 source={
@@ -199,30 +200,44 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
           <View style={[primaryStyle, styles.selectorContainer]}>
             <Pressable
               style={styles.tabButton}
-              onPress={() => setSelectedOption('Next')}>
+              onPress={() => setSelectedOption("Next")}
+            >
               <Text
                 style={{
                   fontSize: 15,
-                  color: selectedOption === 'Next' ? 'white' : 'gray',
-                }}>
+                  color:
+                    selectedOption === "Next"
+                      ? isDarkMode
+                        ? "white"
+                        : "black"
+                      : "gray",
+                }}
+              >
                 Next
               </Text>
             </Pressable>
             <Pressable
               style={styles.tabButton}
-              onPress={() => setSelectedOption('Archive')}>
+              onPress={() => setSelectedOption("Archive")}
+            >
               <Text
                 style={{
                   fontSize: 15,
-                  color: selectedOption === 'Archive' ? 'white' : 'gray',
-                }}>
+                  color:
+                    selectedOption === "Archive"
+                      ? isDarkMode
+                        ? "white"
+                        : "black"
+                      : "gray",
+                }}
+              >
                 Archive
               </Text>
             </Pressable>
           </View>
           <View style={styles.taskList}>
             {processedTasks && processedTasks.length > 0 ? (
-              processedTasks.map(task => {
+              processedTasks.map((task) => {
                 return (
                   <Pressable key={task.id} onPress={() => taskItemPress(task)}>
                     <Task item={task} />
@@ -231,7 +246,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               })
             ) : (
               <View style={[primaryStyle, styles.noTasksContainer]}>
-                {selectedOption === 'Next' ? (
+                {selectedOption === "Next" ? (
                   <Text style={[textColorStyle, styles.noTasks]}>
                     Congrantulations! You're all caught up!
                   </Text>
@@ -246,7 +261,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
           </View>
         </ScrollView>
         <Pressable
-          style={({pressed}) => [
+          style={({ pressed }) => [
             styles.plusImageBox,
             {
               backgroundColor: pressed
@@ -255,7 +270,8 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
             },
             styles.button,
           ]}
-          onPress={handleNewTaskPress}>
+          onPress={handleNewTaskPress}
+        >
           <Image
             style={styles.plusImage}
             source={

@@ -1,9 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Animated} from 'react-native';
-import {ImageSourcePropType} from 'react-native';
+import React, { useEffect, useRef, useState } from "react";
+import { Animated } from "react-native";
+import { ImageSourcePropType } from "react-native";
 
-import logo from '../../assets/images/logo_taskratchet_512_bordered.png';
-import {styles} from '../styles/splashStyle';
+import logo from "../../app_assets/images/logo_taskratchet_512_bordered.png";
+import { styles } from "../styles/splashStyle";
 
 export function WithSplashScreen({
   children,
@@ -21,13 +21,13 @@ export function WithSplashScreen({
   );
 }
 
-const LOADING_IMAGE = 'Loading image';
-const FADE_IN_IMAGE = 'Fade in image';
-const WAIT_FOR_APP_TO_BE_READY = 'Wait for app to be ready';
-const FADE_OUT = 'Fade out';
-const HIDDEN = 'Hidden';
+const LOADING_IMAGE = "Loading image";
+const FADE_IN_IMAGE = "Fade in image";
+const WAIT_FOR_APP_TO_BE_READY = "Wait for app to be ready";
+const FADE_OUT = "Fade out";
+const HIDDEN = "Hidden";
 
-export const Splash = ({isAppReady}: {isAppReady: boolean}) => {
+export const Splash = ({ isAppReady }: { isAppReady: boolean }) => {
   const containerOpacity = useRef(new Animated.Value(1)).current;
   const imageOpacity = useRef(new Animated.Value(0)).current;
 
@@ -79,23 +79,24 @@ export const Splash = ({isAppReady}: {isAppReady: boolean}) => {
   return (
     <Animated.View
       collapsable={false}
-      style={[styles.container, {opacity: containerOpacity}]}>
+      style={[styles.container, { opacity: containerOpacity }]}
+    >
       <Animated.Image
         source={logo as ImageSourcePropType}
         fadeDuration={0}
         onLoad={() => {
           setState(FADE_IN_IMAGE);
         }}
-        style={[styles.image, {opacity: imageOpacity}]}
+        style={[styles.image, { opacity: imageOpacity }]}
         resizeMode="contain"
       />
-      <Animated.Text style={[styles.title, {opacity: imageOpacity}]}>
+      <Animated.Text style={[styles.title, { opacity: imageOpacity }]}>
         TaskRatchet
       </Animated.Text>
-      <Animated.Text style={[styles.text, {opacity: imageOpacity}]}>
-        {state === LOADING_IMAGE && 'Loading...'}
-        {state === WAIT_FOR_APP_TO_BE_READY && 'Waiting for app to be ready...'}
-        {state === FADE_OUT && 'Loading...'}
+      <Animated.Text style={[styles.text, { opacity: imageOpacity }]}>
+        {state === LOADING_IMAGE && "Loading..."}
+        {state === WAIT_FOR_APP_TO_BE_READY && "Waiting for app to be ready..."}
+        {state === FADE_OUT && "Loading..."}
       </Animated.Text>
     </Animated.View>
   );

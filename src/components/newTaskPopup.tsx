@@ -1,5 +1,5 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import React, {useState} from 'react';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
 import {
   Image,
   ImageSourcePropType,
@@ -10,18 +10,18 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
+} from "react-native";
 
-import infoIconBlack from '../../assets/icons/information_icon(black).png';
-import infoIconWhite from '../../assets/icons/information_icon(white).png';
-import themeProvider from '../providers/themeProvider';
-import {addTask} from '../services/taskratchet/addTask';
-import {styles} from '../styles/newTaskPopupStyle';
-import useIsDarkMode from '../utils/checkDarkMode';
-import DatePickerPopup from './datePickerPopup';
-import PressableLoading from './pressableLoading';
-import StakesInfoPopup from './stakesInfoPopup';
-import type {infoPopupProps} from './types';
+import infoIconBlack from "../../app_assets/icons/information_icon(black).png";
+import infoIconWhite from "../../app_assets/icons/information_icon(white).png";
+import themeProvider from "../providers/themeProvider";
+import { addTask } from "../services/taskratchet/addTask";
+import { styles } from "../styles/newTaskPopupStyle";
+import useIsDarkMode from "../utils/checkDarkMode";
+import DatePickerPopup from "./datePickerPopup";
+import PressableLoading from "./pressableLoading";
+import StakesInfoPopup from "./stakesInfoPopup";
+import type { infoPopupProps } from "./types";
 
 export default function NewTaskPopup({
   modalVisible,
@@ -35,11 +35,11 @@ export default function NewTaskPopup({
         due: taskData.date,
         cents: taskData.cents,
       }),
-    onError: error => {
-      console.error('Error adding task:', error);
+    onError: (error) => {
+      console.error("Error adding task:", error);
     },
     onSettled: () => {
-      return queryClient.invalidateQueries({queryKey: ['tasks']});
+      return queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
   const [chosenDate, setChosenDate] = useState(() => {
@@ -58,16 +58,16 @@ export default function NewTaskPopup({
   };
 
   const inputBackgroundStyle = {
-    backgroundColor: isDarkMode ? '#303845' : '#EFEFF0',
+    backgroundColor: isDarkMode ? "#303845" : "#EFEFF0",
   };
 
   const textColorStyle = {
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? "white" : "black",
   };
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [dollars, setDollars] = useState(5);
-  const [failMessage, setFailMessage] = useState('');
+  const [failMessage, setFailMessage] = useState("");
   const [datePickerModalVisible, setDatePickerModalVisible] = useState(false);
   const [stakesInfoModalVisible, setStakesInfoModalVisible] = useState(false);
 
@@ -82,8 +82,8 @@ export default function NewTaskPopup({
   }
 
   function resetTaskData() {
-    setFailMessage('');
-    setTitle('');
+    setFailMessage("");
+    setTitle("");
     setDollars(5);
     setChosenDate(() => {
       const d = new Date();
@@ -97,14 +97,16 @@ export default function NewTaskPopup({
     <View>
       <Modal visible={modalVisible} transparent={true} animationType="none">
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'height' : 'position'}
+          behavior={Platform.OS === "ios" ? "height" : "position"}
           style={styles.centeredView}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? -50 : 0}>
+          keyboardVerticalOffset={Platform.OS === "ios" ? -50 : 0}
+        >
           <View style={[styles.modalView, backgroundStyle]}>
             <Pressable
               onPress={() => {
                 setStakesInfoModalVisible(!stakesInfoModalVisible);
-              }}>
+              }}
+            >
               <Image
                 style={styles.infoIcon}
                 source={
@@ -120,7 +122,7 @@ export default function NewTaskPopup({
                 style={[styles.input, inputBackgroundStyle, textColorStyle]}
                 keyboardType="default"
                 placeholder="Enter Title"
-                onChangeText={text => setTitle(text)}
+                onChangeText={(text) => setTitle(text)}
               />
             </View>
 
@@ -132,7 +134,7 @@ export default function NewTaskPopup({
                 style={[styles.input, inputBackgroundStyle, textColorStyle]}
                 keyboardType="numeric"
                 placeholder="Enter Value"
-                onChangeText={text => setDollars(parseFloat(text))}
+                onChangeText={(text) => setDollars(parseFloat(text))}
               />
             </View>
 
@@ -142,11 +144,12 @@ export default function NewTaskPopup({
                 style={[styles.inputEmulatorBox, inputBackgroundStyle]}
                 onPress={() => {
                   handleSetDatePress();
-                }}>
+                }}
+              >
                 <Text style={[styles.textStyleInputEmulator, textColorStyle]}>
                   {chosenDate.toLocaleString([], {
-                    dateStyle: 'short',
-                    timeStyle: 'short',
+                    dateStyle: "short",
+                    timeStyle: "short",
                   })}
                 </Text>
               </Pressable>
@@ -157,38 +160,40 @@ export default function NewTaskPopup({
             <PressableLoading
               loading={mutation.isPending}
               loadingTextStyle={styles.buttonText}
-              style={({pressed}) => [
+              style={({ pressed }) => [
                 {
                   backgroundColor: pressed
-                    ? 'rgba(33, 150, 243, 0.5)'
-                    : '#2196F3',
+                    ? "rgba(33, 150, 243, 0.5)"
+                    : "#2196F3",
                 },
                 styles.createButton,
               ]}
               onPress={() => {
-                if (taskData.title !== '' && taskData.cents !== 0) {
+                if (taskData.title !== "" && taskData.cents !== 0) {
                   mutation.mutate();
                   setModalVisible(!modalVisible);
                   resetTaskData();
                 } else {
-                  setFailMessage('Title and Value must be set');
+                  setFailMessage("Title and Value must be set");
                 }
-              }}>
+              }}
+            >
               <Text style={styles.buttonText}>Create</Text>
             </PressableLoading>
             <Pressable
-              style={({pressed}) => [
+              style={({ pressed }) => [
                 {
                   backgroundColor: pressed
-                    ? 'rgba(33, 150, 243, 0.5)'
-                    : '#2196F3',
+                    ? "rgba(33, 150, 243, 0.5)"
+                    : "#2196F3",
                 },
                 styles.button,
               ]}
               onPress={() => {
                 setModalVisible(!modalVisible);
                 resetTaskData();
-              }}>
+              }}
+            >
               <Text style={styles.buttonText}>Hide</Text>
             </Pressable>
           </View>

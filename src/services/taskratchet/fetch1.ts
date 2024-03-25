@@ -1,35 +1,39 @@
-import secureKeystore from 'react-native-secure-key-store';
+import secureKeystore from "react-native-secure-key-store";
+import * as SecureStore from "expo-secure-store";
 
-import {API1_BASE} from './constants';
-import {logout} from './logout';
+import { API1_BASE } from "./constants";
+import { logout } from "./logout";
 
 const _trim = (s: string, c: string) => {
-  if (c === ']') {
-    c = '\\]';
+  if (c === "]") {
+    c = "\\]";
   }
-  if (c === '\\') {
-    c = '\\\\';
+  if (c === "\\") {
+    c = "\\\\";
   }
-  return s.replace(new RegExp('^[' + c + ']+|[' + c + ']+$', 'g'), '');
+  return s.replace(new RegExp("^[" + c + "]+|[" + c + "]+$", "g"), "");
 };
 
 export default async function fetch1(
   route: string,
   protected_: boolean,
-  method = 'GET',
-  data: unknown = null,
+  method = "GET",
+  data: unknown = null
 ): Promise<Response> {
   let token: string | false;
   try {
-    token = (await secureKeystore.get('token')) as string;
+    console.log("getting token");
+    token = (await SecureStore.getItemAsync("token")) as string;
+    //token = (await secureKeystore.get("token")) as string;
+    console.log("token: " + token);
   } catch (error) {
     token = false;
   }
 
-  const route_ = _trim(route, '/');
+  const route_ = _trim(route, "/");
 
   if (protected_ && !token) {
-    throw new Error('User not logged in');
+    throw new Error("User not logged in");
   }
 
   // noinspection SpellCheckingInspection
@@ -37,7 +41,7 @@ export default async function fetch1(
     method: method,
     body: data ? JSON.stringify(data) : undefined,
     headers: {
-      'X-Taskratchet-Token': token || '',
+      "X-Taskratchet-Token": token || "",
     },
   });
 

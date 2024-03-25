@@ -1,23 +1,29 @@
 {
-  "name": "mobile",
-  "displayName": "mobile",
   "expo": {
-    "extra": {
-      "eas": {
-        "projectId": "634f0123-3105-4f6d-91dc-57d2d4449007"
-      }
-    },
+    "name": "taskratchet-mobile-2",
+    "slug": "taskratchet-mobile-2",
     "version": "1.1.0",
-    "owner": "taskratchet",
-    "slug": "taskratchet-mobile",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1A2533"
+    },
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.taskratchet.mobile",
-      "buildNumber": "1.1.0",
-      "requiresFullScreen": false
+      "supportsTablet": true,
+      "buildNumber": "4"
     },
     "android": {
-      "package": "com.taskratchet.mobile",
-      "versionCode": 1
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1A2533"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
   }
 }
