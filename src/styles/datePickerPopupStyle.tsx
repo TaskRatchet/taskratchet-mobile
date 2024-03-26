@@ -39,4 +39,12 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  dateTimeSelectorButton: {
+    borderRadius: 10,
+    marginTop: 10,
+    padding: 5,
+    width: 100,
+    elevation: 2,
+    backgroundColor: '#303030',
+  },
 });

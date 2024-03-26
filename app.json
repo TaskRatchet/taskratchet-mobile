@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "taskratchet-mobile-2",
-    "slug": "taskratchet-mobile-2",
+    "name": "taskratchet-mobile",
+    "slug": "taskratchet-mobile",
     "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

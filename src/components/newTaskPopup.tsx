@@ -23,13 +23,19 @@ import PressableLoading from './pressableLoading';
 import StakesInfoPopup from './stakesInfoPopup';
 import type {infoPopupProps} from './types';
 
+type taskData = {
+  title: string;
+  date: Date;
+  cents: number;
+};
+
 export default function NewTaskPopup({
   modalVisible,
   setModalVisible,
 }: infoPopupProps): JSX.Element {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () =>
+    mutationFn: (taskData: taskData) =>
       addTask({
         task: taskData.title,
         due: taskData.date,
@@ -166,8 +172,9 @@ export default function NewTaskPopup({
                 styles.createButton,
               ]}
               onPress={() => {
-                if (taskData.title !== '' && taskData.cents !== 0) {
-                  mutation.mutate();
+                if (taskData.title.trim() !== '' && taskData.cents !== 0) {
+                  console.log('taskData', taskData);
+                  mutation.mutate(taskData);
                   setModalVisible(!modalVisible);
                   resetTaskData();
                 } else {

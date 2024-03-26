@@ -8,16 +8,24 @@ type Input = {
 
 // Requires that user be authenticated.
 export async function addTask(input: Input): Promise<Response> {
+  console.log('input', input);
+
   const response = await fetch1('me/tasks', true, 'POST', {
     ...input,
     due: formatDate(input.due),
+  }).catch(error => {
+    console.error('Error adding task:', error);
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to add task');
-  }
+  // if (!response.ok) {
+  //   throw new Error('Failed to add task');
+  // }
 
-  return response;
+  if (response) {
+    console.log('Task added successfully');
+    console.log('response', response);
+    return response;
+  }
 }
 
 // convert date to format "2/21/2022, 11:59 PM"
@@ -39,6 +47,7 @@ function formatDate(date: Date): string {
 
   // Make sure minutes have leading zeros if required
   const mm = minutes < 10 ? `0${minutes}` : minutes.toString();
-
-  return `${month}/${day}/${year}, ${hour}:${mm} ${period}`;
+  const result = `${month}/${day}/${year}, ${hour}:${mm} ${period}`;
+  console.log('date', result);
+  return result;
 }

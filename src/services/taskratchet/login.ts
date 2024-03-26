@@ -24,8 +24,6 @@ export async function login(email: string, password: string): Promise<boolean> {
     password,
   });
 
-  console.log('login called');
-
   if (!res.ok) {
     return false;
   }
@@ -34,13 +32,11 @@ export async function login(email: string, password: string): Promise<boolean> {
 
   try {
     await SecureStore.setItemAsync('token', token);
-    console.log('token set');
   } catch (error) {
     console.error(`Error setting token: ${String(error)}`);
   }
 
   await AsyncStorage.setItem('email', email);
-  console.log('email set');
 
   const cred = await signInWithEmailAndPassword(_getAuth(), email, password);
 
@@ -49,7 +45,6 @@ export async function login(email: string, password: string): Promise<boolean> {
       'firebase_token',
       await cred.user.getIdToken(),
     );
-    console.log('firebase token set');
   } catch (error) {
     console.error(`Error setting firebase token: ${String(error)}`);
   }

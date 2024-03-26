@@ -47,9 +47,7 @@ export default function LoginScreen(): JSX.Element {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      console.log('login called (in LoginScreen.tsx)');
       const result = await login.login(userInput, passInput);
-      console.log(result);
       return result;
     },
     onSettled: async (data, error) => {

@@ -21,10 +21,8 @@ export default async function fetch1(
 ): Promise<Response> {
   let token: string | false;
   try {
-    console.log('getting token');
     token = (await SecureStore.getItemAsync('token')) as string;
     //token = (await secureKeystore.get("token")) as string;
-    console.log('token: ' + token);
   } catch (error) {
     token = false;
   }
