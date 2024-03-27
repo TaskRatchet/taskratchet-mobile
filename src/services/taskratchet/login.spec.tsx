@@ -1,24 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import fetchMock from 'jest-fetch-mock';
-import RNSecureKeyStore, {ACCESSIBLE} from 'react-native-secure-key-store';
+import * as SecureStore from 'expo-secure-store';
 
 import fetch1 from './fetch1';
 import {login} from './login';
-
-jest.mock('react-native-secure-key-store', () => ({
-  set: jest.fn(),
-  get: jest.fn(() => Promise.resolve('token')),
-  ACCESSIBLE: {
-    ALWAYS_THIS_DEVICE_ONLY: 'ALWAYS_THIS_DEVICE_ONLY',
-  },
-}));
-
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  setItem: jest.fn(),
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-}));
 
 jest.mock('./fetch1', () => {
   return jest.fn(() => ({
@@ -45,9 +30,7 @@ describe('login', () => {
     const loginResult = await login('email', 'password');
 
     expect(loginResult).toBeTruthy();
-    expect(RNSecureKeyStore.set).toHaveBeenCalledWith('token', 'token', {
-      accessible: ACCESSIBLE.ALWAYS_THIS_DEVICE_ONLY,
-    });
+    expect(SecureStore.setItemAsync).toHaveBeenCalledWith('token', 'token');
   });
 
   it('stores session email on successful login', async () => {
