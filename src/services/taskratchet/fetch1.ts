@@ -1,4 +1,4 @@
-import secureKeystore from 'react-native-secure-key-store';
+import * as SecureStore from 'expo-secure-store';
 
 import {API1_BASE} from './constants';
 import {logout} from './logout';
@@ -21,7 +21,7 @@ export default async function fetch1(
 ): Promise<Response> {
   let token: string | false;
   try {
-    token = (await secureKeystore.get('token')) as string;
+    token = (await SecureStore.getItemAsync('token')) as string;
   } catch (error) {
     token = false;
   }

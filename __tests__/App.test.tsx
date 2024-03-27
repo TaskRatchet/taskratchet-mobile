@@ -1,15 +1,11 @@
-/**
- * @format
- */
-
 import 'react-native';
-
 import {it} from '@jest/globals';
 import React from 'react';
-import renderer from 'react-test-renderer';
-
+import {render} from '@testing-library/react-native';
 import App from '../src/App';
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+it('renders correctly', async () => {
+  const {findByText} = render(<App />);
+  const element = await findByText('Username');
+  expect(element).toBeVisible();
 });

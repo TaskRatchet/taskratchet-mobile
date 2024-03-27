@@ -1,8 +1,6 @@
-/* eslint-disable react-native/no-inline-styles */
-
 import {useQuery} from '@tanstack/react-query';
 import moment from 'moment';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -13,15 +11,15 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import helpIconBlack from '../../assets/icons/help_circle(black).png';
-import helpIconWhite from '../../assets/icons/help_circle(white).png';
-import infoIconBlack from '../../assets/icons/information_icon(black).png';
-import infoIconWhite from '../../assets/icons/information_icon(white).png';
-import plusCircleBlack from '../../assets/icons/plus(black).png';
-import plusCircleWhite from '../../assets/icons/plus(white).png';
-import userLogoBlack from '../../assets/icons/user_logo(black).png';
-import userLogoWhite from '../../assets/icons/user_logo(white).png';
-import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
+import helpIconBlack from '../../app_assets/icons/help_circle(black).png';
+import helpIconWhite from '../../app_assets/icons/help_circle(white).png';
+import infoIconBlack from '../../app_assets/icons/information_icon(black).png';
+import infoIconWhite from '../../app_assets/icons/information_icon(white).png';
+import plusCircleBlack from '../../app_assets/icons/plus(black).png';
+import plusCircleWhite from '../../app_assets/icons/plus(white).png';
+import userLogoBlack from '../../app_assets/icons/user_logo(black).png';
+import userLogoWhite from '../../app_assets/icons/user_logo(white).png';
+import logo from '../../app_assets/images/logo_taskratchet_square_64-2.png';
 import InfoPopup from '../components/infoPopup';
 import NewTaskPopup from '../components/newTaskPopup';
 import Task from '../components/taskListItem';
@@ -72,38 +70,45 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
       : themeProvider.colorsLight.plusButtonPressed,
   };
 
-  const sortedTasks = tasks?.sort((a, b) => {
-    const taskA = a;
-    const taskB = b;
+  const sortedTasks = useMemo(() => {
+    return tasks?.sort((a, b) => {
+      const taskA = a;
+      const taskB = b;
 
-    if ('due' in taskA && 'due' in taskB) {
-      const diffDaysA = checkDate(String(taskA.due));
-      const diffDaysB = checkDate(String(taskB.due));
+      if ('due' in taskA && 'due' in taskB) {
+        const diffDaysA = checkDate(String(taskA.due));
+        const diffDaysB = checkDate(String(taskB.due));
 
-      // If the deadline is past, return a large number to sort the task to the bottom
-      const timeLeftA = diffDaysA < 0 ? Number.MAX_SAFE_INTEGER : diffDaysA;
-      const timeLeftB = diffDaysB < 0 ? Number.MAX_SAFE_INTEGER : diffDaysB;
+        // If the deadline is past, return a large number to sort the task to the bottom
+        const timeLeftA = diffDaysA < 0 ? Number.MAX_SAFE_INTEGER : diffDaysA;
+        const timeLeftB = diffDaysB < 0 ? Number.MAX_SAFE_INTEGER : diffDaysB;
 
-      return timeLeftA - timeLeftB;
-    } else {
-      return 0;
-    }
-  });
+        return timeLeftA - timeLeftB;
+      } else {
+        return 0;
+      }
+    });
+  }, [tasks]);
 
-  const processedTasks =
-    selectedOption === 'Next'
-      ? sortedTasks?.filter(task => {
-          const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
-          const isDueInLessThan24Hours =
-            dueDate && dueDate.getTime() > Date.now() - 24 * 60 * 60 * 1000;
-          return isDueInLessThan24Hours;
-        })
-      : sortedTasks?.filter(task => {
-          const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
-          const isDueInMoreThan24Hours =
-            dueDate && dueDate.getTime() <= Date.now() - 24 * 60 * 60 * 1000;
-          return isDueInMoreThan24Hours;
-        });
+  const nextTasks = useMemo(() => {
+    return sortedTasks?.filter(task => {
+      const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
+      const isDueInLessThan24Hours =
+        dueDate && dueDate.getTime() > Date.now() - 24 * 60 * 60 * 1000;
+      return isDueInLessThan24Hours;
+    });
+  }, [sortedTasks]);
+
+  const archiveTasks = useMemo(() => {
+    return sortedTasks?.filter(task => {
+      const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
+      const isDueInMoreThan24Hours =
+        dueDate && dueDate.getTime() <= Date.now() - 24 * 60 * 60 * 1000;
+      return isDueInMoreThan24Hours;
+    });
+  }, [sortedTasks]);
+
+  const processedTasks = selectedOption === 'Next' ? nextTasks : archiveTasks;
 
   const textColorStyle = {
     color: isDarkMode ? 'white' : 'black',
@@ -203,7 +208,12 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               <Text
                 style={{
                   fontSize: 15,
-                  color: selectedOption === 'Next' ? 'white' : 'gray',
+                  color:
+                    selectedOption === 'Next'
+                      ? isDarkMode
+                        ? 'white'
+                        : 'black'
+                      : 'gray',
                 }}>
                 Next
               </Text>
@@ -214,7 +224,12 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               <Text
                 style={{
                   fontSize: 15,
-                  color: selectedOption === 'Archive' ? 'white' : 'gray',
+                  color:
+                    selectedOption === 'Archive'
+                      ? isDarkMode
+                        ? 'white'
+                        : 'black'
+                      : 'gray',
                 }}>
                 Archive
               </Text>

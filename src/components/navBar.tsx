@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, ImageSourcePropType, StyleSheet, View} from 'react-native';
 
-import navCheckBlack from '../../assets/images/nav_check_black.png';
+import navCheckBlack from '../../app_assets/images/nav_check_black.png';
 import themeProvider from '../providers/themeProvider';
 import useIsDarkMode from '../utils/checkDarkMode';
 

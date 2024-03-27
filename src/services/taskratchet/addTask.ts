@@ -39,6 +39,6 @@ function formatDate(date: Date): string {
 
   // Make sure minutes have leading zeros if required
   const mm = minutes < 10 ? `0${minutes}` : minutes.toString();
-
-  return `${month}/${day}/${year}, ${hour}:${mm} ${period}`;
+  const result = `${month}/${day}/${year}, ${hour}:${mm} ${period}`;
+  return result;
 }

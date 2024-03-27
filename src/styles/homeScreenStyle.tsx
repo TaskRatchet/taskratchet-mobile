@@ -123,7 +123,6 @@ export const styles = StyleSheet.create({
   },
   screenTitle: {
     fontSize: 28,
-    fontFamily: 'Roboto-Bold',
   },
   imageStyle: {
     width: '140%',

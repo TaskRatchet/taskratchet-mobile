@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {ImageSourcePropType} from 'react-native';
 
-import logo from '../../assets/images/logo_taskratchet_512_bordered.png';
+import logo from '../../app_assets/images/logo_taskratchet_512_bordered.png';
 import {styles} from '../styles/splashStyle';
 
 export function WithSplashScreen({

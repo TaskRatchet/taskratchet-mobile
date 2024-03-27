@@ -1,11 +1,11 @@
 module.exports = {
-  preset: 'react-native',
-  moduleNameMapper: {
-    // Match all files ending in `.png` or other image formats if needed
-    '\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/fileMock.js',
+  preset: 'jest-expo',
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
   },
-  setupFilesAfterEnv: ['./jest.setup.js'],
   transformIgnorePatterns: [
-    'node_modules/(?!(firebase/app|@react-native|react-native)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|firebase|@firebase/util|@react-native-async-storage/async-storage|@react-native-community/datetimepicker|@tanstack/react-query|@react-native-date-picker|react-native-secure-key-store|react-native-url-polyfill|react-native-webview|expo-secure-store|expo-status-bar)',
   ],
+  setupFilesAfterEnv: ['./jest.setup.ts'],
+  testEnvironment: 'jsdom',
 };

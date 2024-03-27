@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
+import logo from '../../app_assets/images/logo_taskratchet_square_64-2.png';
 import DeleteAccountPopup from '../components/deleteAccountPopup';
 import {Props} from '../components/types';
 import themeProvider from '../providers/themeProvider';
@@ -98,7 +98,6 @@ export default function ProfileScreen({navigation}: Props) {
                   <Text
                     style={[
                       styles.button,
-                      // eslint-disable-next-line react-native/no-inline-styles
                       {color: pressed ? 'blue' : '#0178FA'},
                     ]}>
                     Go to Home
@@ -115,7 +114,6 @@ export default function ProfileScreen({navigation}: Props) {
                   <Text
                     style={[
                       styles.button,
-                      // eslint-disable-next-line react-native/no-inline-styles
                       {color: pressed ? 'blue' : '#0178FA'},
                     ]}>
                     Logout

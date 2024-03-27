@@ -12,10 +12,10 @@ import {
   View,
 } from 'react-native';
 
-import helpIconBlack from '../../assets/icons/help_circle(black).png';
-import helpIconWhite from '../../assets/icons/help_circle(white).png';
-import logoBordered from '../../assets/images/logo_taskratchet_512_bordered.png';
-import logo from '../../assets/images/logo_taskratchet_square_64@2.png';
+import helpIconBlack from '../../app_assets/icons/help_circle(black).png';
+import helpIconWhite from '../../app_assets/icons/help_circle(white).png';
+import logoBordered from '../../app_assets/images/logo_taskratchet_512_bordered.png';
+import logo from '../../app_assets/images/logo_taskratchet_square_64-2.png';
 import PressableLoading from '../components/pressableLoading';
 import WebViewPopup from '../components/webViewPopup';
 import themeProvider from '../providers/themeProvider';
@@ -46,7 +46,7 @@ export default function LoginScreen(): JSX.Element {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: () => login.login(userInput, passInput),
+    mutationFn: async () => login.login(userInput, passInput),
     onSettled: async (data, error) => {
       if (!data || error) {
         console.log('login error ' + String(error));

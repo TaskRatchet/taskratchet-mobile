@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal, Pressable, Text, View} from 'react-native';
-import DatePicker from 'react-native-date-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import themeProvider from '../providers/themeProvider';
 import useMe from '../services/taskratchet/useMe';
@@ -12,7 +12,7 @@ export default function DatePickerPopup({
   dateModalVisible,
   setDateModalVisible,
   date,
-  onDateChange,
+  onDateChange: setChosenDate,
 }: DatePickerPopupProps): JSX.Element {
   const {data: user} = useMe();
 
@@ -28,20 +28,45 @@ export default function DatePickerPopup({
     color: isDarkMode ? 'white' : 'black',
   };
 
+  const onDateChange = (event, selectedDate) => {
+    setChosenDate(selectedDate);
+  };
+
+  const [dateOrTime, setDateOrTime] = React.useState('date');
+
   return (
     <View>
       <Modal visible={dateModalVisible} transparent={true} animationType="none">
         <View style={styles.centeredView}>
           <View style={[styles.modalView, backgroundStyle]}>
             <View style={styles.datePickerGroup}>
-              <Text style={[styles.textStyle, textColorStyle]}>
-                Select Date:
-              </Text>
-              <DatePicker
-                style={styles.datePicker}
-                date={date}
-                onDateChange={onDateChange}
-              />
+              <Text style={[textColorStyle]}>Select Date and Time</Text>
+              <Pressable
+                style={styles.dateTimeSelectorButton}
+                onPress={() => {
+                  setDateOrTime(dateOrTime === 'date' ? 'time' : 'date');
+                }}>
+                <Text style={styles.textStyle}>
+                  {dateOrTime === 'time' ? 'Time' : 'Date'}
+                </Text>
+              </Pressable>
+              {dateOrTime === 'date' ? (
+                <DateTimePicker
+                  style={styles.datePicker}
+                  value={date}
+                  mode="date"
+                  display="spinner"
+                  onChange={onDateChange}
+                />
+              ) : (
+                <DateTimePicker
+                  style={styles.datePicker}
+                  value={date}
+                  mode="time"
+                  display="spinner"
+                  onChange={onDateChange}
+                />
+              )}
               <Text style={[textColorStyle]}>{user?.timezone}</Text>
             </View>
             <Pressable

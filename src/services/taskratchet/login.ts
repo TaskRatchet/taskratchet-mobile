@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {initializeApp} from 'firebase/app';
 import {Auth, getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import RNSecureKeyStore, {ACCESSIBLE} from 'react-native-secure-key-store';
 
 import {firebaseConfig} from '../firebaseConfig';
 import fetch1 from './fetch1';
 import {publishSession} from './sessions';
+import * as SecureStore from 'expo-secure-store';
 
 let _auth: Auth;
 
@@ -31,9 +31,7 @@ export async function login(email: string, password: string): Promise<boolean> {
   const token = await res.text();
 
   try {
-    await RNSecureKeyStore.set('token', token, {
-      accessible: ACCESSIBLE.ALWAYS_THIS_DEVICE_ONLY,
-    });
+    await SecureStore.setItemAsync('token', token);
   } catch (error) {
     console.error(`Error setting token: ${String(error)}`);
   }
@@ -43,9 +41,10 @@ export async function login(email: string, password: string): Promise<boolean> {
   const cred = await signInWithEmailAndPassword(_getAuth(), email, password);
 
   try {
-    await RNSecureKeyStore.set('firebase_token', await cred.user.getIdToken(), {
-      accessible: ACCESSIBLE.ALWAYS_THIS_DEVICE_ONLY,
-    });
+    await SecureStore.setItemAsync(
+      'firebase_token',
+      await cred.user.getIdToken(),
+    );
   } catch (error) {
     console.error(`Error setting firebase token: ${String(error)}`);
   }
