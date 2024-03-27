@@ -173,7 +173,6 @@ export default function NewTaskPopup({
               ]}
               onPress={() => {
                 if (taskData.title.trim() !== '' && taskData.cents !== 0) {
-                  console.log('taskData', taskData);
                   mutation.mutate(taskData);
                   setModalVisible(!modalVisible);
                   resetTaskData();

@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     fontSize: 30,
-    fontFamily: 'Trebuchet MS',
   },
   title: {
     flexShrink: 1,

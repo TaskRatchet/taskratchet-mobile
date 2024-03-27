@@ -8,8 +8,6 @@ type Input = {
 
 // Requires that user be authenticated.
 export async function addTask(input: Input): Promise<Response> {
-  console.log('input', input);
-
   const response = await fetch1('me/tasks', true, 'POST', {
     ...input,
     due: formatDate(input.due),
@@ -22,8 +20,6 @@ export async function addTask(input: Input): Promise<Response> {
   // }
 
   if (response) {
-    console.log('Task added successfully');
-    console.log('response', response);
     return response;
   }
 }
@@ -48,6 +44,5 @@ function formatDate(date: Date): string {
   // Make sure minutes have leading zeros if required
   const mm = minutes < 10 ? `0${minutes}` : minutes.toString();
   const result = `${month}/${day}/${year}, ${hour}:${mm} ${period}`;
-  console.log('date', result);
   return result;
 }
