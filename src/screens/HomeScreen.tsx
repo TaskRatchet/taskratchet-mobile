@@ -71,7 +71,6 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   };
 
   const sortedTasks = useMemo(() => {
-    console.log('sorting tasks');
     return tasks?.sort((a, b) => {
       const taskA = a;
       const taskB = b;
@@ -92,7 +91,6 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   }, [tasks]);
 
   const nextTasks = useMemo(() => {
-    console.log('filtering next tasks');
     return sortedTasks?.filter(task => {
       const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
       const isDueInLessThan24Hours =
@@ -102,7 +100,6 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   }, [sortedTasks]);
 
   const archiveTasks = useMemo(() => {
-    console.log('filtering archive tasks');
     return sortedTasks?.filter(task => {
       const dueDate = moment(task.due, 'M/D/YYYY, hh:mm A').toDate();
       const isDueInMoreThan24Hours =

@@ -6,6 +6,12 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "owner": "taskratchet",
+    "extra": {
+      "eas": {
+        "projectId": "634f0123-3105-4f6d-91dc-57d2d4449007"
+      }
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,10 +19,14 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.taskratchet.mobile",
       "supportsTablet": true,
-      "buildNumber": "4"
+      "buildNumber": "4",
+      "requiresFullScreen": false
     },
     "android": {
+      "package": "com.taskratchet.mobile",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1A2533"

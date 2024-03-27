@@ -11,17 +11,13 @@ export async function addTask(input: Input): Promise<Response> {
   const response = await fetch1('me/tasks', true, 'POST', {
     ...input,
     due: formatDate(input.due),
-  }).catch(error => {
-    console.error('Error adding task:', error);
   });
 
-  // if (!response.ok) {
-  //   throw new Error('Failed to add task');
-  // }
-
-  if (response) {
-    return response;
+  if (!response.ok) {
+    throw new Error('Failed to add task');
   }
+
+  return response;
 }
 
 // convert date to format "2/21/2022, 11:59 PM"

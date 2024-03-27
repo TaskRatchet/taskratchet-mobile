@@ -22,7 +22,6 @@ export default async function fetch1(
   let token: string | false;
   try {
     token = (await SecureStore.getItemAsync('token')) as string;
-    //token = (await secureKeystore.get("token")) as string;
   } catch (error) {
     token = false;
   }

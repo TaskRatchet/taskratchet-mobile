@@ -19,7 +19,7 @@ const queryClient = new QueryClient();
 
 const Stack = createStackNavigator();
 
-function App(): JSX.Element {
+function AppInter(): JSX.Element {
   return (
     <WithSplashScreen isAppReady={true}>
       <NavigationContainer>
@@ -38,11 +38,10 @@ function App(): JSX.Element {
   );
 }
 
-// eslint-disable-next-line react/display-name
-export default function () {
+export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <App />
+      <AppInter />
     </QueryClientProvider>
   );
 }

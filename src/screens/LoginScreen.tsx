@@ -46,10 +46,7 @@ export default function LoginScreen(): JSX.Element {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async () => {
-      const result = await login.login(userInput, passInput);
-      return result;
-    },
+    mutationFn: async () => login.login(userInput, passInput),
     onSettled: async (data, error) => {
       if (!data || error) {
         console.log('login error ' + String(error));
