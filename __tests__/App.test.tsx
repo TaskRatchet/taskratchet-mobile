@@ -2,7 +2,7 @@ import 'react-native';
 import {it} from '@jest/globals';
 import React from 'react';
 import {render} from '@testing-library/react-native';
-import App from '../src/App';
+import App from '../App';
 
 it('renders correctly', async () => {
   const {findByText} = render(<App />);

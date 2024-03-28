@@ -21,8 +21,7 @@
     "ios": {
       "bundleIdentifier": "com.taskratchet.mobile",
       "supportsTablet": true,
-      "buildNumber": "4",
-      "requiresFullScreen": false
+      "buildNumber": "4"
     },
     "android": {
       "package": "com.taskratchet.mobile",
