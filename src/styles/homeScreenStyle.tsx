@@ -52,11 +52,6 @@ export const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  taskList: {
-    shadowColor: '#000',
-    shadowOffset: {width: 2, height: 2},
-    shadowOpacity: 0.5,
-  },
   avatar: {
     width: 50,
     height: 50,

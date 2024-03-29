@@ -89,22 +89,24 @@ export default function Task({item}: taskProps): JSX.Element {
     : {style: {}};
 
   return (
-    <View style={[primaryStyle, styles.taskBlock]}>
-      <View style={[styles.row]}>
-        <View style={[styles.flexOne]}>
-          <Text style={[textColorStyle, styles.taskTitle]} numberOfLines={1}>
-            {item.task}
-          </Text>
-          <Text style={deadlineDetails.style}>{deadlineDetails.text}</Text>
-        </View>
+    <View style={[primaryStyle, styles.wrapperView]}>
+      <View style={styles.taskBlock}>
+        <View style={[styles.row]}>
+          <View style={[styles.flexOne]}>
+            <Text style={[textColorStyle, styles.taskTitle]} numberOfLines={1}>
+              {item.task}
+            </Text>
+            <Text style={deadlineDetails.style}>{deadlineDetails.text}</Text>
+          </View>
 
-        <View style={styles.taskSideRight}>
-          <Text style={[textColorStyle, styles.taskStakes]}>
-            {convertCents(item.cents)}
-          </Text>
+          <View style={styles.taskSideRight}>
+            <Text style={[textColorStyle, styles.taskStakes]}>
+              {convertCents(item.cents)}
+            </Text>
+          </View>
         </View>
+        <View style={[footerStyle.style, styles.statusFooter]} />
       </View>
-      <View style={[footerStyle.style, styles.statusFooter]} />
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import secureKeystore from 'react-native-secure-key-store';
+import secureStore from 'expo-secure-store';
 
 import {API2_BASE} from './constants';
 import {logout} from './logout';
@@ -19,7 +19,8 @@ export default async function fetch2(
   method = 'GET',
   data: unknown = null,
 ): Promise<Response> {
-  const token = ((await secureKeystore.get('firebase_token')) as string) || '';
+  const token =
+    ((await secureStore.getItemAsync('firebase_token')) as string) || '';
   const route_ = _trim(route, '/');
 
   if (protected_ && !token) {

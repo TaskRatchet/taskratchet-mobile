@@ -20,15 +20,19 @@ export const styles = StyleSheet.create({
     marginLeft: -20,
     marginRight: -20,
   },
+  wrapperView: {
+    shadowColor: '#000',
+    shadowOffset: {width: 1, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    margin: 10,
+    borderRadius: 15,
+  },
   taskBlock: {
     padding: 15,
     paddingLeft: 20,
     paddingRight: 20,
-    margin: 10,
     borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: {width: 1, height: 2},
-    shadowOpacity: 0.25,
     overflow: 'hidden',
   },
   row: {
