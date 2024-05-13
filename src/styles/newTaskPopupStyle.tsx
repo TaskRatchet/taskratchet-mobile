@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 15,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',

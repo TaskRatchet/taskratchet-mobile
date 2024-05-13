@@ -59,6 +59,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#2196F3',
   },
   textStyle: {
+    fontSize: 15,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',

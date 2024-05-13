@@ -41,10 +41,15 @@ export const styles = StyleSheet.create({
   },
   dateTimeSelectorButton: {
     borderRadius: 10,
+    margin: 5,
     marginTop: 10,
+    marginBottom: 0,
     padding: 5,
     width: 100,
     elevation: 2,
     backgroundColor: '#303030',
+  },
+  dateTimeSelector: {
+    flexDirection: 'row',
   },
 });
