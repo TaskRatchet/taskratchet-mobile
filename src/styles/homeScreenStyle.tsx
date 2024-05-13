@@ -71,7 +71,6 @@ export const styles = StyleSheet.create({
   navBar: {},
   profile_infoButtons: {
     flex: 1,
-    flexContent: 'space_between',
     flexDirection: 'row',
     alignContent: 'center',
   },

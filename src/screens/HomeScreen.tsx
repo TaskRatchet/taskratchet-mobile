@@ -39,7 +39,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
   const [clickedId, setClickedId] = useState<string>();
   const [selectedOption, setSelectedOption] = useState('Next');
 
-  const {data: tasks} = useQuery({
+  const {data: tasks, isLoading} = useQuery({
     queryKey: ['tasks'],
     queryFn: getTasks,
   });
@@ -246,7 +246,11 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               })
             ) : (
               <View style={[primaryStyle, styles.noTasksContainer]}>
-                {selectedOption === 'Next' ? (
+                {isLoading ? (
+                  <Text style={[textColorStyle, styles.noTasks]}>
+                    Loading...
+                  </Text>
+                ) : selectedOption === 'Next' ? (
                   <Text style={[textColorStyle, styles.noTasks]}>
                     Congrantulations! You're all caught up!
                   </Text>
