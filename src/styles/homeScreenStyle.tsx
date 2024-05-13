@@ -150,5 +150,7 @@ export const styles = StyleSheet.create({
   },
   tabButton: {
     padding: 10,
+    width: '50%',
+    alignItems: 'center',
   },
 });
