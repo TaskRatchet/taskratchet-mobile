@@ -76,4 +76,18 @@ export const styles = StyleSheet.create({
   label_input_groups: {
     marginBottom: 20,
   },
+  boxStyles: {
+    width: '100%',
+    fontSize: 18,
+    borderRadius: 7,
+    borderWidth: 0,
+  },
+  boxInput: {
+    width: '100%',
+    fontSize: 18,
+  },
+  dropdownItemStyles: {
+    fontSize: 18,
+    borderRadius: 7,
+  },
 });

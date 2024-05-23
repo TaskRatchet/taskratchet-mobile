@@ -10,6 +10,9 @@ import {updateMe} from '../services/taskratchet/updateMe';
 import useMe from '../services/taskratchet/useMe';
 import PressableLoading from './pressableLoading';
 import {useMutation} from '@tanstack/react-query';
+import {SelectList} from 'react-native-dropdown-select-list';
+import fetchTimezoneList from '../utils/fetchTimezoneList';
+import {useEffect} from 'react';
 
 export default function UpdateProfilePopup({
   modalVisible,
@@ -49,9 +52,21 @@ export default function UpdateProfilePopup({
     backgroundColor: isDarkMode ? '#303845' : '#EFEFF0',
   };
 
+  const [timezoneListData, setTimezoneListData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchTimezoneList();
+      setTimezoneListData(data);
+    };
+
+    fetchData();
+  }, []);
+
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [timezone, setTimezone] = useState(user.timezone);
+  // const [selectedTimezone, setSelectedTimezone] = useState('');
 
   return (
     <View>
@@ -100,12 +115,16 @@ export default function UpdateProfilePopup({
 
               <View style={styles.label_input_group}>
                 <Text style={[styles.label, textColorStyle]}>Timezone:</Text>
-                <TextInput
-                  style={[styles.input, inputBackgroundStyle, textColorStyle]}
-                  keyboardType="default"
-                  placeholder="Enter Timezone"
-                  onChange={i => {
-                    setTimezone(i.nativeEvent.text);
+
+                <SelectList
+                  data={timezoneListData}
+                  boxStyles={[styles.boxStyles, inputBackgroundStyle]}
+                  inputStyles={[styles.boxInput, textColorStyle]}
+                  dropdownItemStyles={styles.dropdownItemStyles}
+                  dropdownTextStyles={textColorStyle}
+                  setSelected={item => {
+                    console.log('selected:', timezoneListData[item].value);
+                    setTimezone(timezoneListData[item].value);
                   }}
                 />
               </View>
@@ -136,6 +155,7 @@ export default function UpdateProfilePopup({
                   timezone: updatedTimezone,
                 });
 
+                console.log('timezone:', updatedTimezone);
                 console.log('updating profile');
               }}>
               <Text style={[styles.textStyle, textColorStyle]}>Update</Text>
