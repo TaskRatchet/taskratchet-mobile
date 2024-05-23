@@ -23,6 +23,13 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 0,
+  },
+  errorTextStyle: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 0,
   },
   button: {
     borderRadius: 20,
@@ -65,5 +72,8 @@ export const styles = StyleSheet.create({
   label_input_group: {
     justifyContent: 'space-between',
     marginTop: 15,
+  },
+  label_input_groups: {
+    marginBottom: 20,
   },
 });

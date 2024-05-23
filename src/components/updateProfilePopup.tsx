@@ -8,11 +8,31 @@ import type {infoPopupProps} from './types';
 import {TextInput} from 'react-native-gesture-handler';
 import {updateMe} from '../services/taskratchet/updateMe';
 import useMe from '../services/taskratchet/useMe';
+import PressableLoading from './pressableLoading';
+import {useMutation} from '@tanstack/react-query';
 
 export default function UpdateProfilePopup({
   modalVisible,
   setModalVisible,
 }: infoPopupProps): JSX.Element {
+  const {data: user, refetch} = useMe();
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const Mutation = useMutation({
+    mutationFn: (vars: {name: string; email: string; timezone: string}) => {
+      return updateMe(vars);
+    },
+    onSuccess: async () => {
+      await refetch();
+      setModalVisible(!modalVisible);
+    },
+    onError: error => {
+      console.error('Error updating profile:', error);
+      setErrorMessage('Error updating profile');
+    },
+  });
+
   const isDarkMode = useIsDarkMode();
 
   const backgroundStyle = {
@@ -28,8 +48,6 @@ export default function UpdateProfilePopup({
   const inputBackgroundStyle = {
     backgroundColor: isDarkMode ? '#303845' : '#EFEFF0',
   };
-
-  const {data: user} = useMe();
 
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -47,73 +65,90 @@ export default function UpdateProfilePopup({
             <Text style={[styles.textStyle, textColorStyle]}>
               * Fields left blank will remain unchanged.{'\n'}
             </Text>
+            {
+              // Display error message if there is one
+              errorMessage !== '' ? (
+                <Text style={styles.errorTextStyle}>{errorMessage}</Text>
+              ) : null
+            }
 
             {/* inputs */}
-            <View style={styles.label_input_group}>
-              <Text style={[styles.label, textColorStyle]}>Name:</Text>
-              <TextInput
-                style={[styles.input, inputBackgroundStyle, textColorStyle]}
-                keyboardType="default"
-                placeholder="Enter Name"
-                onChange={i => {
-                  setName(i.nativeEvent.text);
-                  console.log('updating local name');
-                }}
-              />
-            </View>
+            <View style={styles.label_input_groups}>
+              <View style={styles.label_input_group}>
+                <Text style={[styles.label, textColorStyle]}>Name:</Text>
+                <TextInput
+                  style={[styles.input, inputBackgroundStyle, textColorStyle]}
+                  keyboardType="default"
+                  placeholder="Enter Name"
+                  onChange={i => {
+                    setName(i.nativeEvent.text);
+                  }}
+                />
+              </View>
 
-            <View style={styles.label_input_group}>
-              <Text style={[styles.label, textColorStyle]}>Email:</Text>
-              <TextInput
-                style={[styles.input, inputBackgroundStyle, textColorStyle]}
-                keyboardType="email-address"
-                placeholder="Enter Email"
-                onChange={i => {
-                  setEmail(i.nativeEvent.text);
-                  console.log('updating local email');
-                }}
-              />
-            </View>
+              <View style={styles.label_input_group}>
+                <Text style={[styles.label, textColorStyle]}>Email:</Text>
+                <TextInput
+                  style={[styles.input, inputBackgroundStyle, textColorStyle]}
+                  keyboardType="email-address"
+                  placeholder="Enter Email"
+                  onChange={i => {
+                    setEmail(i.nativeEvent.text);
+                  }}
+                />
+              </View>
 
-            <View style={styles.label_input_group}>
-              <Text style={[styles.label, textColorStyle]}>Timezone:</Text>
-              <TextInput
-                style={[styles.input, inputBackgroundStyle, textColorStyle]}
-                keyboardType="default"
-                placeholder="Enter Timezone"
-                onChange={i => {
-                  setTimezone(i.nativeEvent.text);
-                  console.log('updating local timezone');
-                }}
-              />
+              <View style={styles.label_input_group}>
+                <Text style={[styles.label, textColorStyle]}>Timezone:</Text>
+                <TextInput
+                  style={[styles.input, inputBackgroundStyle, textColorStyle]}
+                  keyboardType="default"
+                  placeholder="Enter Timezone"
+                  onChange={i => {
+                    setTimezone(i.nativeEvent.text);
+                  }}
+                />
+              </View>
             </View>
 
             {/* buttons */}
-            <Pressable
-              style={[styles.button, backgroundStyle]}
+            <PressableLoading
+              loading={Mutation.isPending}
+              loadingTextStyle={styles.textStyle}
+              style={({pressed}) => [
+                {
+                  backgroundColor: pressed
+                    ? 'rgba(0, 103, 69, 0.5)'
+                    : '#006745',
+                },
+                styles.button,
+              ]}
               onPress={async () => {
-                try {
-                  // If the fields are empty, use the original user data
-                  const updatedName = name !== '' ? name : user.name;
-                  const updatedEmail = email !== '' ? email : user.email;
-                  const updatedTimezone =
-                    timezone !== '' ? timezone : user.timezone;
+                // If the fields are empty, use the original user data
+                const updatedName = name !== '' ? name : user.name;
+                const updatedEmail = email !== '' ? email : user.email;
+                const updatedTimezone =
+                  timezone !== '' ? timezone : user.timezone;
 
-                  await updateMe({
-                    name: updatedName,
-                    email: updatedEmail,
-                    timezone: updatedTimezone,
-                  });
-                  setModalVisible(!modalVisible);
-                  console.log('updating profile');
-                } catch (error) {
-                  console.error(`Error updating profile: ${String(error)}`);
-                }
+                Mutation.mutate({
+                  name: updatedName,
+                  email: updatedEmail,
+                  timezone: updatedTimezone,
+                });
+
+                console.log('updating profile');
               }}>
               <Text style={[styles.textStyle, textColorStyle]}>Update</Text>
-            </Pressable>
+            </PressableLoading>
             <Pressable
-              style={[styles.button, backgroundStyle]}
+              style={({pressed}) => [
+                {
+                  backgroundColor: pressed
+                    ? 'rgba(33, 150, 243, 0.5)'
+                    : '#2196F3',
+                },
+                styles.button,
+              ]}
               onPress={() => setModalVisible(!modalVisible)}>
               <Text style={[styles.textStyle, textColorStyle]}>Close</Text>
             </Pressable>
