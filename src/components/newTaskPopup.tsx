@@ -167,7 +167,7 @@ export default function NewTaskPopup({
                 {
                   backgroundColor: pressed
                     ? 'rgba(33, 150, 243, 0.5)'
-                    : '#2196F3',
+                    : '#006745',
                 },
                 styles.createButton,
               ]}
@@ -195,7 +195,7 @@ export default function NewTaskPopup({
                 setModalVisible(!modalVisible);
                 resetTaskData();
               }}>
-              <Text style={styles.buttonText}>Hide</Text>
+              <Text style={styles.buttonText}>Close</Text>
             </Pressable>
           </View>
         </KeyboardAvoidingView>

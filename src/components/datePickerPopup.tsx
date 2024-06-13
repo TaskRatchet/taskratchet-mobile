@@ -41,15 +41,56 @@ export default function DatePickerPopup({
           <View style={[styles.modalView, backgroundStyle]}>
             <View style={styles.datePickerGroup}>
               <Text style={[textColorStyle]}>Select Date and Time</Text>
-              <Pressable
-                style={styles.dateTimeSelectorButton}
-                onPress={() => {
-                  setDateOrTime(dateOrTime === 'date' ? 'time' : 'date');
-                }}>
-                <Text style={styles.textStyle}>
-                  {dateOrTime === 'time' ? 'Time' : 'Date'}
-                </Text>
-              </Pressable>
+              <View style={styles.dateTimeSelector}>
+                <Pressable
+                  style={[
+                    styles.dateTimeSelectorButton,
+                    {backgroundColor: isDarkMode ? '#303030' : '#EFEFF0'},
+                  ]}
+                  onPress={() => {
+                    setDateOrTime('date');
+                  }}
+                  disabled={dateOrTime === 'date'}>
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color:
+                          dateOrTime === 'date'
+                            ? 'gray'
+                            : isDarkMode
+                              ? 'white'
+                              : 'black',
+                      },
+                    ]}>
+                    Date
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={[
+                    styles.dateTimeSelectorButton,
+                    {backgroundColor: isDarkMode ? '#303030' : '#EFEFF0'},
+                  ]}
+                  onPress={() => {
+                    setDateOrTime('time');
+                  }}
+                  disabled={dateOrTime === 'time'}>
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color:
+                          dateOrTime === 'time'
+                            ? 'gray'
+                            : isDarkMode
+                              ? 'white'
+                              : 'black',
+                      },
+                    ]}>
+                    Time
+                  </Text>
+                </Pressable>
+              </View>
               {dateOrTime === 'date' ? (
                 <DateTimePicker
                   style={styles.datePicker}
