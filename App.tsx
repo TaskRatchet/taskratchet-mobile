@@ -1,15 +1,16 @@
+import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import React from 'react';
 import {enableScreens} from 'react-native-screens';
 
-import {WithSplashScreen} from './components/splash';
-import Authenticated from './screens/Authenticated';
-import HomeScreen from './screens/HomeScreen';
-import ProfileScreen from './screens/ProfileScreen';
+import {WithSplashScreen} from './src/components/splash';
+import Authenticated from './src/screens/Authenticated';
+import HomeScreen from './src/screens/HomeScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 import 'react-native-url-polyfill/auto';
-import {initializeFirebase} from './firebase/localGetAuth';
+import {initializeFirebase} from './src/firebase/localGetAuth';
 
 initializeFirebase();
 

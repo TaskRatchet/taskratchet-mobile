@@ -21,8 +21,13 @@
     "ios": {
       "bundleIdentifier": "com.taskratchet.mobile",
       "supportsTablet": true,
-      "buildNumber": "4",
-      "requiresFullScreen": false
+      "buildNumber": "11",
+      "infoPlist": {
+        "MinimumOSVersion": "12.0"
+      },
+      "entitlements": {
+        "aps-environment": "production"
+      }
     },
     "android": {
       "package": "com.taskratchet.mobile",

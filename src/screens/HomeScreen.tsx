@@ -235,7 +235,7 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
               </Text>
             </Pressable>
           </View>
-          <View style={styles.taskList}>
+          <View>
             {processedTasks && processedTasks.length > 0 ? (
               processedTasks.map(task => {
                 return (
