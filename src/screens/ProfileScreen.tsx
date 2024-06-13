@@ -11,9 +11,11 @@ import {logout} from '../services/taskratchet/logout';
 import useMe from '../services/taskratchet/useMe';
 import {styles} from '../styles/profileScreenStyle';
 import useIsDarkMode from '../utils/checkDarkMode';
+import UpdateModalVisible from '../components/updateProfilePopup';
 
 export default function ProfileScreen({navigation}: Props) {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
 
   const isDarkMode = useIsDarkMode();
   const backgroundStyle = {
@@ -52,8 +54,13 @@ export default function ProfileScreen({navigation}: Props) {
 
       <DeleteAccountPopup
         navigation={navigation}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        modalVisible={deleteModalVisible}
+        setModalVisible={setDeleteModalVisible}
+      />
+
+      <UpdateModalVisible
+        modalVisible={editModalVisible}
+        setModalVisible={setEditModalVisible}
       />
 
       <View style={styles.profileTitle}>
@@ -93,6 +100,20 @@ export default function ProfileScreen({navigation}: Props) {
               </View>
             </View>
             <View style={styles.buttons}>
+              <Pressable
+                onPress={() => {
+                  setEditModalVisible(true);
+                }}>
+                {({pressed}) => (
+                  <Text
+                    style={[
+                      styles.button,
+                      {color: pressed ? 'blue' : '#0178FA'},
+                    ]}>
+                    Edit Profile
+                  </Text>
+                )}
+              </Pressable>
               <Pressable onPress={() => navigation?.navigate('HomeScreen')}>
                 {({pressed}) => (
                   <Text
@@ -120,8 +141,9 @@ export default function ProfileScreen({navigation}: Props) {
                   </Text>
                 )}
               </Pressable>
+
               <Pressable
-                onPress={() => setModalVisible(true)}
+                onPress={() => setDeleteModalVisible(true)}
                 style={({pressed}) => [
                   {
                     backgroundColor: pressed ? 'rgba(255, 0, 0, 0.5)' : 'red',
