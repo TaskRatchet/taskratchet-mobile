@@ -210,10 +210,10 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
                   fontSize: 15,
                   color:
                     selectedOption === 'Next'
-                      ? isDarkMode
+                      ? 'gray'
+                      : isDarkMode
                         ? 'white'
-                        : 'black'
-                      : 'gray',
+                        : 'black',
                 }}>
                 Next
               </Text>
@@ -226,10 +226,10 @@ export default function HomeScreen({navigation}: Props): JSX.Element {
                   fontSize: 15,
                   color:
                     selectedOption === 'Archive'
-                      ? isDarkMode
+                      ? 'gray'
+                      : isDarkMode
                         ? 'white'
-                        : 'black'
-                      : 'gray',
+                        : 'black',
                 }}>
                 Archive
               </Text>
